@@ -1,0 +1,2480 @@
+[
+    {
+        "clientCompany": "ALS",
+        "mineSites": [
+            {
+                "mineSiteName": "ALS Balcata",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0043 LGS-500 Rentel",
+                        "jobCode": "AQ0043",
+                        "jobType": "AQ",
+                        "taskName": "LGS-500 Rentel"
+                    },
+                    {
+                        "taskFolderName": "AQ0046 LGS-100",
+                        "jobCode": "AQ0046",
+                        "jobType": "AQ",
+                        "taskName": "LGS-100"
+                    },
+                    {
+                        "taskFolderName": "AS0007 LGS-500 Installation",
+                        "jobCode": "AS0007",
+                        "jobType": "AS",
+                        "taskName": "LGS-500 Installation"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "AVL",
+        "mineSites": [
+            {
+                "mineSiteName": "The Australian Vanadium Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0005 General Inquiry",
+                        "jobCode": "AC0005",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AQ0093 AVL CV002 Mag Sep-",
+                        "jobCode": "AQ0093",
+                        "jobType": "AQ",
+                        "taskName": "AVL CV002 Mag Sep-"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Agile_Mining",
+        "mineSites": [
+            {
+                "mineSiteName": "Commonwelth_Hill",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0022 General Inquiry",
+                        "jobCode": "AC0022",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AT0047 Magnetic Separation Testwork",
+                        "jobCode": "AT0047",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Allup_Silica",
+        "mineSites": [
+            {
+                "mineSiteName": "McLaren_Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0061 LIMS(IHC JN561)",
+                        "jobCode": "AQ0061",
+                        "jobType": "AQ",
+                        "taskName": "LIMS(IHC JN561)"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Athenas_Reource",
+        "mineSites": [
+            {
+                "mineSiteName": "Byro",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0008 General Inquiry",
+                        "jobCode": "AC0008",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AT0061 Metallurgical Testworks",
+                        "jobCode": "AT0061",
+                        "jobType": "AT",
+                        "taskName": "Metallurgical Testworks"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Aurora_Construction_Materials",
+        "mineSites": [
+            {
+                "mineSiteName": "Quarry",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0071 Static Magnet",
+                        "jobCode": "AQ0071",
+                        "jobType": "AQ",
+                        "taskName": "Static Magnet"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "BCI",
+        "mineSites": [
+            {
+                "mineSiteName": "Mardie Salt",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0094 BCI Stcokyard Belt Magnet",
+                        "jobCode": "AQ0094",
+                        "jobType": "AQ",
+                        "taskName": "BCI Stcokyard Belt Magnet"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "BV",
+        "mineSites": [
+            {
+                "mineSiteName": "BV Perth",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0041 LGS-EX Replacement",
+                        "jobCode": "AQ0041",
+                        "jobType": "AQ",
+                        "taskName": "LGS-EX Replacement"
+                    },
+                    {
+                        "taskFolderName": "AQ0079 Demag-Coil",
+                        "jobCode": "AQ0079",
+                        "jobType": "AQ",
+                        "taskName": "Demag-Coil"
+                    },
+                    {
+                        "taskFolderName": "AQ0087 Jaw Crusher Operation Platform",
+                        "jobCode": "AQ0087",
+                        "jobType": "AQ",
+                        "taskName": "Jaw Crusher Operation Platform"
+                    },
+                    {
+                        "taskFolderName": "AS0006 WHIMS Service",
+                        "jobCode": "AS0006",
+                        "jobType": "AS",
+                        "taskName": "WHIMS Service"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Barto_Gold",
+        "mineSites": [
+            {
+                "mineSiteName": "Southern Cross Operation",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0114  CV04 overhead belt magnet",
+                        "jobCode": "AQ0114",
+                        "jobType": "AQ",
+                        "taskName": "CV04 overhead belt magnet"
+                    },
+                    {
+                        "taskFolderName": "AQ0114 CV04 overhead belt magnet",
+                        "jobCode": "AQ0114",
+                        "jobType": "AQ",
+                        "taskName": "CV04 overhead belt magnet"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Blackore",
+        "mineSites": [
+            {
+                "mineSiteName": "Extension Hill",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0018 DLIMS",
+                        "jobCode": "AQ0018",
+                        "jobType": "AQ",
+                        "taskName": "DLIMS"
+                    },
+                    {
+                        "taskFolderName": "AQ0039 LCGJ DMS",
+                        "jobCode": "AQ0039",
+                        "jobType": "AQ",
+                        "taskName": "LCGJ DMS"
+                    },
+                    {
+                        "taskFolderName": "AT0014 Dry Magnetic Separation Testwork(BV)",
+                        "jobCode": "AT0014",
+                        "jobType": "AT",
+                        "taskName": "Dry Magnetic Separation Testwork(BV)"
+                    },
+                    {
+                        "taskFolderName": "AT0019 MS Testworks(HQ)",
+                        "jobCode": "AT0019",
+                        "jobType": "AT",
+                        "taskName": "MS Testworks(HQ)"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Liberia Bang",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0018 LJC Testwork",
+                        "jobCode": "AT0018",
+                        "jobType": "AT",
+                        "taskName": "LJC Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Bravus_Mining&Resuroces",
+        "mineSites": [
+            {
+                "mineSiteName": "Carmichael_coal",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0066 HMDS Drum",
+                        "jobCode": "AQ0066",
+                        "jobType": "AQ",
+                        "taskName": "HMDS Drum"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "CXL",
+        "mineSites": [
+            {
+                "mineSiteName": "Greensteel",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0018 Greensteel Mag Separation Collbaration",
+                        "jobCode": "AC0018",
+                        "jobType": "AC",
+                        "taskName": "Greensteel Mag Separation Collbaration"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Capricorn_Metals",
+        "mineSites": [
+            {
+                "mineSiteName": "Karlawinda Expansion",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0085 828 - Tramp Metal Magnet",
+                        "jobCode": "AQ0085",
+                        "jobType": "AQ",
+                        "taskName": "828 - Tramp Metal Magnet"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Chalice_Mining",
+        "mineSites": [
+            {
+                "mineSiteName": "Gonneville Sulphide Processing Facility",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0100 13041-CP008 - Magnetic Separators- PFS",
+                        "jobCode": "AQ0100",
+                        "jobType": "AQ",
+                        "taskName": "13041-CP008 - Magnetic Separators- PFS"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Cockatoo_Island_Mining",
+        "mineSites": [
+            {
+                "mineSiteName": "Cockatoo_Island",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0019 General Inquiry",
+                        "jobCode": "AC0019",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AQ0077 High Strength Dry Mag Separation Mod Plant",
+                        "jobCode": "AQ0077",
+                        "jobType": "AQ",
+                        "taskName": "High Strength Dry Mag Separation Mod Plant"
+                    },
+                    {
+                        "taskFolderName": "AT0033 Magnetic Separation Testwork",
+                        "jobCode": "AT0033",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "ConsMin",
+        "mineSites": [
+            {
+                "mineSiteName": "Woodie Woodie",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0017 Tails WHIMS Testwork",
+                        "jobCode": "AT0017",
+                        "jobType": "AT",
+                        "taskName": "Tails WHIMS Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Covalent_Lithium",
+        "mineSites": [
+            {
+                "mineSiteName": "Mount Holland",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0016 Mount Holland Lithium Expansion",
+                        "jobCode": "AQ0016",
+                        "jobType": "AQ",
+                        "taskName": "Mount Holland Lithium Expansion"
+                    },
+                    {
+                        "taskFolderName": "AQ0101 MTH-300-ME-RFT-0048 Covalent Expansion Project - WHIMS",
+                        "jobCode": "AQ0101",
+                        "jobType": "AQ",
+                        "taskName": "MTH-300-ME-RFT-0048 Covalent Expansion Project - WHIMS"
+                    },
+                    {
+                        "taskFolderName": "AQ0102  MTH-300-ME-RFT-0003 Covalent Expansion Project - LIMS",
+                        "jobCode": "AQ0102",
+                        "jobType": "AQ",
+                        "taskName": "MTH-300-ME-RFT-0003 Covalent Expansion Project - LIMS"
+                    },
+                    {
+                        "taskFolderName": "AQ0102 MTH-300-ME-RFT-0003 Covalent Expansion Project - LIMS",
+                        "jobCode": "AQ0102",
+                        "jobType": "AQ",
+                        "taskName": "MTH-300-ME-RFT-0003 Covalent Expansion Project - LIMS"
+                    },
+                    {
+                        "taskFolderName": "AQ0108 CON-EXP-015 LIMS& WHIMS",
+                        "jobCode": "AQ0108",
+                        "jobType": "AQ",
+                        "taskName": "CON-EXP-015 LIMS& WHIMS"
+                    },
+                    {
+                        "taskFolderName": "AS0009 General Service",
+                        "jobCode": "AS0009",
+                        "jobType": "AS",
+                        "taskName": "General Service"
+                    },
+                    {
+                        "taskFolderName": "AT0013 Chemical Plant",
+                        "jobCode": "AT0013",
+                        "jobType": "AT",
+                        "taskName": "Chemical Plant"
+                    },
+                    {
+                        "taskFolderName": "AT0032 Dry Magnetic Separation Testwork",
+                        "jobCode": "AT0032",
+                        "jobType": "AT",
+                        "taskName": "Dry Magnetic Separation Testwork"
+                    },
+                    {
+                        "taskFolderName": "AT0043 Coarse DMS Cons MS Testwork",
+                        "jobCode": "AT0043",
+                        "jobType": "AT",
+                        "taskName": "Coarse DMS Cons MS Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Crimson_Metals",
+        "mineSites": [
+            {
+                "mineSiteName": "MT GIBSON GOLD",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0091 Mt Gibson Gold Project Tramp Magents",
+                        "jobCode": "AQ0091",
+                        "jobType": "AQ",
+                        "taskName": "Mt Gibson Gold Project Tramp Magents"
+                    },
+                    {
+                        "taskFolderName": "AQ0091 REV.A",
+                        "jobCode": "AQ0091",
+                        "jobType": "AQ",
+                        "taskName": "REV.A"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Critica_Limited",
+        "mineSites": [
+            {
+                "mineSiteName": "Jupiter",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0059 WHIMS Testwork",
+                        "jobCode": "AT0059",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Delta_Lithium",
+        "mineSites": [
+            {
+                "mineSiteName": "Yinnetharra",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0068 Yinnetharra Project PFS-LIMS",
+                        "jobCode": "AQ0068",
+                        "jobType": "AQ",
+                        "taskName": "Yinnetharra Project PFS-LIMS"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Dome_Gold",
+        "mineSites": [
+            {
+                "mineSiteName": "Sigatoka_Ironsands_Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0096 2679 Sand Washing and Magnetite Recovery Plant",
+                        "jobCode": "AQ0096",
+                        "jobType": "AQ",
+                        "taskName": "2679 Sand Washing and Magnetite Recovery Plant"
+                    },
+                    {
+                        "taskFolderName": "AT0048 Metallurgical Testworks",
+                        "jobCode": "AT0048",
+                        "jobType": "AT",
+                        "taskName": "Metallurgical Testworks"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Empire_Metals ",
+        "mineSites": [
+            {
+                "mineSiteName": "Pitfield",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0016 General Inquiry",
+                        "jobCode": "AC0016",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "FMG",
+        "mineSites": [
+            {
+                "mineSiteName": "Belinga",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0038 General Inquiry",
+                        "jobCode": "AT0038",
+                        "jobType": "AT",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Christmas Creek ",
+                "tasks": [
+                    {
+                        "taskFolderName": "AP0001 Spare Parts",
+                        "jobCode": "AP0001",
+                        "jobType": "AP",
+                        "taskName": "Spare Parts"
+                    },
+                    {
+                        "taskFolderName": "AQ0065 Green Steel Pilot Plant",
+                        "jobCode": "AQ0065",
+                        "jobType": "AQ",
+                        "taskName": "Green Steel Pilot Plant"
+                    },
+                    {
+                        "taskFolderName": "AS0010 WHIMS Service",
+                        "jobCode": "AS0010",
+                        "jobType": "AS",
+                        "taskName": "WHIMS Service"
+                    },
+                    {
+                        "taskFolderName": "AT0020 WHIMS Investigation",
+                        "jobCode": "AT0020",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Investigation"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Cloudbreak",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0008 WHIMS Testwork",
+                        "jobCode": "AT0008",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Dragon",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0080 Tramp Magnet and Metal Detector",
+                        "jobCode": "AQ0080",
+                        "jobType": "AQ",
+                        "taskName": "Tramp Magnet and Metal Detector"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Eliwana",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0051 Hematite Dry Mag Sep",
+                        "jobCode": "AT0051",
+                        "jobType": "AT",
+                        "taskName": "Hematite Dry Mag Sep"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Iron Bridge",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0005 IB Spray bar",
+                        "jobCode": "AQ0005",
+                        "jobType": "AQ",
+                        "taskName": "IB Spray bar"
+                    },
+                    {
+                        "taskFolderName": "AQ0012 dewater drum replacement",
+                        "jobCode": "AQ0012",
+                        "jobType": "AQ",
+                        "taskName": "dewater drum replacement"
+                    },
+                    {
+                        "taskFolderName": "AQ0021 RMS Replacement",
+                        "jobCode": "AQ0021",
+                        "jobType": "AQ",
+                        "taskName": "RMS Replacement"
+                    },
+                    {
+                        "taskFolderName": "AQ0049 RCMS Replacement(LJC)",
+                        "jobCode": "AQ0049",
+                        "jobType": "AQ",
+                        "taskName": "RCMS Replacement(LJC)"
+                    },
+                    {
+                        "taskFolderName": "AQ0053 Dry Magnetic Separation Drum Replacement",
+                        "jobCode": "AQ0053",
+                        "jobType": "AQ",
+                        "taskName": "Dry Magnetic Separation Drum Replacement"
+                    },
+                    {
+                        "taskFolderName": "AQ0064 LJK Package For CV301",
+                        "jobCode": "AQ0064",
+                        "jobType": "AQ",
+                        "taskName": "LJK Package For CV301"
+                    },
+                    {
+                        "taskFolderName": "AQ0085 hhhhhh",
+                        "jobCode": "AQ0085",
+                        "jobType": "AQ",
+                        "taskName": "hhhhhh"
+                    },
+                    {
+                        "taskFolderName": "AT0007 LJC Testwork",
+                        "jobCode": "AT0007",
+                        "jobType": "AT",
+                        "taskName": "LJC Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Kings",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0021  OPF Tails Scavenging Testwork",
+                        "jobCode": "AC0021",
+                        "jobType": "AC",
+                        "taskName": "OPF Tails Scavenging Testwork"
+                    },
+                    {
+                        "taskFolderName": "AC0021 OPF Tails Scavenging Testwork",
+                        "jobCode": "AC0021",
+                        "jobType": "AC",
+                        "taskName": "OPF Tails Scavenging Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Newman",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0050 Second LGS500",
+                        "jobCode": "AQ0050",
+                        "jobType": "AQ",
+                        "taskName": "Second LGS500"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Solomon",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0030 DMS LIMS",
+                        "jobCode": "AQ0030",
+                        "jobType": "AQ",
+                        "taskName": "DMS LIMS"
+                    },
+                    {
+                        "taskFolderName": "AT0009 WHIMS Testwork",
+                        "jobCode": "AT0009",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "GM_3",
+        "mineSites": [
+            {
+                "mineSiteName": "Dendrobium Mine",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0099 MS Drum Replacement",
+                        "jobCode": "AQ0099",
+                        "jobType": "AQ",
+                        "taskName": "MS Drum Replacement"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Glencore",
+        "mineSites": [
+            {
+                "mineSiteName": "Ravensworth_Coal",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0063 Replace MSR2301 and MSR3301",
+                        "jobCode": "AQ0063",
+                        "jobType": "AQ",
+                        "taskName": "Replace MSR2301 and MSR3301"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Globel_Lithium",
+        "mineSites": [
+            {
+                "mineSiteName": "Manna Lithium",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0002 Manna lithium DFS",
+                        "jobCode": "AQ0002",
+                        "jobType": "AQ",
+                        "taskName": "Manna lithium DFS"
+                    },
+                    {
+                        "taskFolderName": "AQ0040 DFS CP008 MS",
+                        "jobCode": "AQ0040",
+                        "jobType": "AQ",
+                        "taskName": "DFS CP008 MS"
+                    },
+                    {
+                        "taskFolderName": "AT0003 General Inquiry",
+                        "jobCode": "AT0003",
+                        "jobType": "AT",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Grange",
+        "mineSites": [
+            {
+                "mineSiteName": "Savage River",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0001 LJC testline",
+                        "jobCode": "AQ0001",
+                        "jobType": "AQ",
+                        "taskName": "LJC testline"
+                    },
+                    {
+                        "taskFolderName": "AQ0075 LJC300 Modelar Plant Trial",
+                        "jobCode": "AQ0075",
+                        "jobType": "AQ",
+                        "taskName": "LJC300 Modelar Plant Trial"
+                    },
+                    {
+                        "taskFolderName": "AQ0113 Semimobile crushing and Dry mag sepration plant",
+                        "jobCode": "AQ0113",
+                        "jobType": "AQ",
+                        "taskName": "Semimobile crushing and Dry mag sepration plant"
+                    },
+                    {
+                        "taskFolderName": "AT0055 CY25 LJC Testwork",
+                        "jobCode": "AT0055",
+                        "jobType": "AT",
+                        "taskName": "CY25 LJC Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Southdown",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0013 DRY+WET new plant",
+                        "jobCode": "AQ0013",
+                        "jobType": "AQ",
+                        "taskName": "DRY+WET new plant"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Green_Capital",
+        "mineSites": [
+            {
+                "mineSiteName": "Mt Magnet Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0028 General Inquiry",
+                        "jobCode": "AC0028",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Group6Metals",
+        "mineSites": [
+            {
+                "mineSiteName": "Dolphin Tungsten Mine",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0053 Tungsten WHIMS  Testwork",
+                        "jobCode": "AT0053",
+                        "jobType": "AT",
+                        "taskName": "Tungsten WHIMS  Testwork"
+                    },
+                    {
+                        "taskFolderName": "AT0053 Tungsten WHIMS Testwork",
+                        "jobCode": "AT0053",
+                        "jobType": "AT",
+                        "taskName": "Tungsten WHIMS Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "HASTING",
+        "mineSites": [
+            {
+                "mineSiteName": "Yangibana",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0049 Tailing sample MS test",
+                        "jobCode": "AT0049",
+                        "jobType": "AT",
+                        "taskName": "Tailing sample MS test"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "HY_Mineral",
+        "mineSites": [
+            {
+                "mineSiteName": "Momo",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0058 Metallurgical Testworks",
+                        "jobCode": "AT0058",
+                        "jobType": "AT",
+                        "taskName": "Metallurgical Testworks"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "HanRoy",
+        "mineSites": [
+            {
+                "mineSiteName": "Mt Beavan",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0011 DMS",
+                        "jobCode": "AQ0011",
+                        "jobType": "AQ",
+                        "taskName": "DMS"
+                    },
+                    {
+                        "taskFolderName": "AT0001 Magnetic Separation Trial",
+                        "jobCode": "AT0001",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Trial"
+                    },
+                    {
+                        "taskFolderName": "AT0016 VRM and MS Pilot Testwork",
+                        "jobCode": "AT0016",
+                        "jobType": "AT",
+                        "taskName": "VRM and MS Pilot Testwork"
+                    },
+                    {
+                        "taskFolderName": "AT0028 LCGF Pilot Testwork",
+                        "jobCode": "AT0028",
+                        "jobType": "AT",
+                        "taskName": "LCGF Pilot Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Ridley",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0004 General Inquiry",
+                        "jobCode": "AC0004",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AQ0010 Ridley LIMS",
+                        "jobCode": "AQ0010",
+                        "jobType": "AQ",
+                        "taskName": "Ridley LIMS"
+                    },
+                    {
+                        "taskFolderName": "AQ0024 HI-RDLY-0109",
+                        "jobCode": "AQ0024",
+                        "jobType": "AQ",
+                        "taskName": "HI-RDLY-0109"
+                    },
+                    {
+                        "taskFolderName": "AT0005 LJC Fiber Removal Testwork",
+                        "jobCode": "AT0005",
+                        "jobType": "AT",
+                        "taskName": "LJC Fiber Removal Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Unknown",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0001 Magnetic Separation Trial",
+                        "jobCode": "AT0001",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Trial"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Havilah_Resources",
+        "mineSites": [
+            {
+                "mineSiteName": "GRANTS_GRANTS_BASIN",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0026 General Inquiry",
+                        "jobCode": "AC0026",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AT0052 Dry Magnetic Separation Testwork",
+                        "jobCode": "AT0052",
+                        "jobType": "AT",
+                        "taskName": "Dry Magnetic Separation Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Hawsons_Iron",
+        "mineSites": [
+            {
+                "mineSiteName": "Hawsons Iron Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0098 Magnetic Separators",
+                        "jobCode": "AQ0098",
+                        "jobType": "AQ",
+                        "taskName": "Magnetic Separators"
+                    },
+                    {
+                        "taskFolderName": "AT0050 HAWSONS Dry Mag Separation",
+                        "jobCode": "AT0050",
+                        "jobType": "AT",
+                        "taskName": "HAWSONS Dry Mag Separation"
+                    },
+                    {
+                        "taskFolderName": "AT0063 LCGF Pilot Testwork",
+                        "jobCode": "AT0063",
+                        "jobType": "AT",
+                        "taskName": "LCGF Pilot Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Huntore_Australia",
+        "mineSites": [
+            {
+                "mineSiteName": "Mt_Veteran",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0067  Process Plant Reinstatement Project",
+                        "jobCode": "AQ0067",
+                        "jobType": "AQ",
+                        "taskName": "Process Plant Reinstatement Project"
+                    },
+                    {
+                        "taskFolderName": "AQ0067 Process Plant Reinstatement Project",
+                        "jobCode": "AQ0067",
+                        "jobType": "AQ",
+                        "taskName": "Process Plant Reinstatement Project"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Iondrive",
+        "mineSites": [
+            {
+                "mineSiteName": "Pretreatment Facility",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0076 Low capacity LIMS units",
+                        "jobCode": "AQ0076",
+                        "jobType": "AQ",
+                        "taskName": "Low capacity LIMS units"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "KUREEM",
+        "mineSites": [
+            {
+                "mineSiteName": "KUREEM",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0003 KUREEM Project Pilot Plant",
+                        "jobCode": "AQ0003",
+                        "jobType": "AQ",
+                        "taskName": "KUREEM Project Pilot Plant"
+                    },
+                    {
+                        "taskFolderName": "AQ0004 KUREEM Project FS",
+                        "jobCode": "AQ0004",
+                        "jobType": "AQ",
+                        "taskName": "KUREEM Project FS"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Karara_Mining",
+        "mineSites": [
+            {
+                "mineSiteName": "Karara",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0017 Spray bar",
+                        "jobCode": "AQ0017",
+                        "jobType": "AQ",
+                        "taskName": "Spray bar"
+                    },
+                    {
+                        "taskFolderName": "AT0023 MS Investigation",
+                        "jobCode": "AT0023",
+                        "jobType": "AT",
+                        "taskName": "MS Investigation"
+                    },
+                    {
+                        "taskFolderName": "AT0064 Dry Magnetic Separation Testwork",
+                        "jobCode": "AT0064",
+                        "jobType": "AT",
+                        "taskName": "Dry Magnetic Separation Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Karawara_Minerals",
+        "mineSites": [
+            {
+                "mineSiteName": "Broula_Magnetite",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0020 General Inquiry",
+                        "jobCode": "AC0020",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AT0039 Magnetic Separation Trial",
+                        "jobCode": "AT0039",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Trial"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "LMA",
+        "mineSites": [
+            {
+                "mineSiteName": "Warehouse",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0059 LGS-100",
+                        "jobCode": "AQ0059",
+                        "jobType": "AQ",
+                        "taskName": "LGS-100"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Leo_Lithium",
+        "mineSites": [
+            {
+                "mineSiteName": "GOULAMINA",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0007 GOULAMINA LITHIUM EXPANSION PROJECT",
+                        "jobCode": "AC0007",
+                        "jobType": "AC",
+                        "taskName": "GOULAMINA LITHIUM EXPANSION PROJECT"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Lincoln_Minerals",
+        "mineSites": [
+            {
+                "mineSiteName": "Green Iron Magnetite",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0014 General Inquiry",
+                        "jobCode": "AC0014",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Lindian_Resources",
+        "mineSites": [
+            {
+                "mineSiteName": "Kangankunde",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0011 WHIMS Plant",
+                        "jobCode": "AC0011",
+                        "jobType": "AC",
+                        "taskName": "WHIMS Plant"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Lion_Town",
+        "mineSites": [
+            {
+                "mineSiteName": "Buldania",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0010 Buldania",
+                        "jobCode": "AC0010",
+                        "jobType": "AC",
+                        "taskName": "Buldania"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Kathleen Valley",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0009 Kathleen Valley Lithium – Tantalum Expansion Project",
+                        "jobCode": "AC0009",
+                        "jobType": "AC",
+                        "taskName": "Kathleen Valley Lithium – Tantalum Expansion Project"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Loesche",
+        "mineSites": [
+            {
+                "mineSiteName": "Loesche",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0015 General Inquiry",
+                        "jobCode": "AC0015",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AQ0110 Indian Mag Separation Enquiry",
+                        "jobCode": "AQ0110",
+                        "jobType": "AQ",
+                        "taskName": "Indian Mag Separation Enquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "MNREC",
+        "mineSites": [
+            {
+                "mineSiteName": "Khalzan_Buregtei",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0038 WHIMS PFS",
+                        "jobCode": "AQ0038",
+                        "jobType": "AQ",
+                        "taskName": "WHIMS PFS"
+                    },
+                    {
+                        "taskFolderName": "AT0025 WHIMS Pilot",
+                        "jobCode": "AT0025",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Pilot"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "MRL",
+        "mineSites": [
+            {
+                "mineSiteName": "Mauritania",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0060 El Aouj Project in Mauritania",
+                        "jobCode": "AQ0060",
+                        "jobType": "AQ",
+                        "taskName": "El Aouj Project in Mauritania"
+                    },
+                    {
+                        "taskFolderName": "AQ0074 El Aouj Project LJK",
+                        "jobCode": "AQ0074",
+                        "jobType": "AQ",
+                        "taskName": "El Aouj Project LJK"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Mt Marion",
+                "tasks": [
+                    {
+                        "taskFolderName": "AP0002 Spare Parts",
+                        "jobCode": "AP0002",
+                        "jobType": "AP",
+                        "taskName": "Spare Parts"
+                    },
+                    {
+                        "taskFolderName": "AQ0022 LIMS and WHIMS(Minsol)",
+                        "jobCode": "AQ0022",
+                        "jobType": "AQ",
+                        "taskName": "LIMS and WHIMS(Minsol)"
+                    },
+                    {
+                        "taskFolderName": "AQ0025 Heat Exchanger Upgade",
+                        "jobCode": "AQ0025",
+                        "jobType": "AQ",
+                        "taskName": "Heat Exchanger Upgade"
+                    },
+                    {
+                        "taskFolderName": "AQ0029 WHIMS SPARES",
+                        "jobCode": "AQ0029",
+                        "jobType": "AQ",
+                        "taskName": "WHIMS SPARES"
+                    },
+                    {
+                        "taskFolderName": "AQ0031 WHIMS SPARES",
+                        "jobCode": "AQ0031",
+                        "jobType": "AQ",
+                        "taskName": "WHIMS SPARES"
+                    },
+                    {
+                        "taskFolderName": "AQ0051 WHIMS Protection LIMS",
+                        "jobCode": "AQ0051",
+                        "jobType": "AQ",
+                        "taskName": "WHIMS Protection LIMS"
+                    },
+                    {
+                        "taskFolderName": "AQ0057 Fine Flotation Study",
+                        "jobCode": "AQ0057",
+                        "jobType": "AQ",
+                        "taskName": "Fine Flotation Study"
+                    },
+                    {
+                        "taskFolderName": "AQ0078 HDMS Drum Assembly",
+                        "jobCode": "AQ0078",
+                        "jobType": "AQ",
+                        "taskName": "HDMS Drum Assembly"
+                    },
+                    {
+                        "taskFolderName": "AS0001 Service",
+                        "jobCode": "AS0001",
+                        "jobType": "AS",
+                        "taskName": "Service"
+                    },
+                    {
+                        "taskFolderName": "AS0004 LIMS Service",
+                        "jobCode": "AS0004",
+                        "jobType": "AS",
+                        "taskName": "LIMS Service"
+                    },
+                    {
+                        "taskFolderName": "AT0029 Belt Magnet Drum Testwork",
+                        "jobCode": "AT0029",
+                        "jobType": "AT",
+                        "taskName": "Belt Magnet Drum Testwork"
+                    },
+                    {
+                        "taskFolderName": "AT0045 Coarse MS Testwork",
+                        "jobCode": "AT0045",
+                        "jobType": "AT",
+                        "taskName": "Coarse MS Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "TBA",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0062 Stationary Tramp Iron Magnet",
+                        "jobCode": "AQ0062",
+                        "jobType": "AQ",
+                        "taskName": "Stationary Tramp Iron Magnet"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Wodgina",
+                "tasks": [
+                    {
+                        "taskFolderName": "AP0003 Spare Parts",
+                        "jobCode": "AP0003",
+                        "jobType": "AP",
+                        "taskName": "Spare Parts"
+                    },
+                    {
+                        "taskFolderName": "AQ0006 Wodina Train 4",
+                        "jobCode": "AQ0006",
+                        "jobType": "AQ",
+                        "taskName": "Wodina Train 4"
+                    },
+                    {
+                        "taskFolderName": "AQ0033 WHIMS SPARES",
+                        "jobCode": "AQ0033",
+                        "jobType": "AQ",
+                        "taskName": "WHIMS SPARES"
+                    },
+                    {
+                        "taskFolderName": "AQ0054 RFP - PP007 - MRL3468 MS (LIMS) - Train 4",
+                        "jobCode": "AQ0054",
+                        "jobType": "AQ",
+                        "taskName": "RFP - PP007 - MRL3468 MS (LIMS) - Train 4"
+                    },
+                    {
+                        "taskFolderName": "AQ0055 RFP - PP007 - MRL3468 MS (WHIMS) - Train 4",
+                        "jobCode": "AQ0055",
+                        "jobType": "AQ",
+                        "taskName": "RFP - PP007 - MRL3468 MS (WHIMS) - Train 4"
+                    },
+                    {
+                        "taskFolderName": "AS0005 WHIMS Service",
+                        "jobCode": "AS0005",
+                        "jobType": "AS",
+                        "taskName": "WHIMS Service"
+                    },
+                    {
+                        "taskFolderName": "AT0041 WHIMS Testwork",
+                        "jobCode": "AT0041",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Testwork"
+                    },
+                    {
+                        "taskFolderName": "AT0060 LIMS Testwork",
+                        "jobCode": "AT0060",
+                        "jobType": "AT",
+                        "taskName": "LIMS Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Magnetite_Mines",
+        "mineSites": [
+            {
+                "mineSiteName": "The Razorback ",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0012 General Inquiry",
+                        "jobCode": "AC0012",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AT0015 WHIMS Hematite Investigation",
+                        "jobCode": "AT0015",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Hematite Investigation"
+                    },
+                    {
+                        "taskFolderName": "AT0031 LCGF  Trial",
+                        "jobCode": "AT0031",
+                        "jobType": "AT",
+                        "taskName": "LCGF  Trial"
+                    },
+                    {
+                        "taskFolderName": "AT0031 LCGF Trial",
+                        "jobCode": "AT0031",
+                        "jobType": "AT",
+                        "taskName": "LCGF Trial"
+                    },
+                    {
+                        "taskFolderName": "AT0040 Dry Magnetic Separation Testwork",
+                        "jobCode": "AT0040",
+                        "jobType": "AT",
+                        "taskName": "Dry Magnetic Separation Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Mayur",
+        "mineSites": [
+            {
+                "mineSiteName": "Orokolo_Bay",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0052 RFQ-004 LIMS",
+                        "jobCode": "AQ0052",
+                        "jobType": "AQ",
+                        "taskName": "RFQ-004 LIMS"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Mindax",
+        "mineSites": [
+            {
+                "mineSiteName": "Mt Forrest",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0032 General Inquiry",
+                        "jobCode": "AC0032",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Nagrom",
+        "mineSites": [
+            {
+                "mineSiteName": "Nagrom",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0017 General Inquiry",
+                        "jobCode": "AC0017",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AS0008 LGS-100 Installation",
+                        "jobCode": "AS0008",
+                        "jobType": "AS",
+                        "taskName": "LGS-100 Installation"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Northern_Iron",
+        "mineSites": [
+            {
+                "mineSiteName": "Northern Iron",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0090 Iron Concentrate Desliming project",
+                        "jobCode": "AQ0090",
+                        "jobType": "AQ",
+                        "taskName": "Iron Concentrate Desliming project"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Northern_Mineral",
+        "mineSites": [
+            {
+                "mineSiteName": "Browns_Range",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0070 Heavy Rare Earth Project  HGMS (CP085)",
+                        "jobCode": "AQ0070",
+                        "jobType": "AQ",
+                        "taskName": "Heavy Rare Earth Project  HGMS (CP085)"
+                    },
+                    {
+                        "taskFolderName": "AQ0070 Heavy Rare Earth Project HGMS (CP085)",
+                        "jobCode": "AQ0070",
+                        "jobType": "AQ",
+                        "taskName": "Heavy Rare Earth Project HGMS (CP085)"
+                    },
+                    {
+                        "taskFolderName": "AQ0092 Wolverine Project 12874 CP004 – MAGNETS",
+                        "jobCode": "AQ0092",
+                        "jobType": "AQ",
+                        "taskName": "Wolverine Project 12874 CP004 – MAGNETS"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Norton",
+        "mineSites": [
+            {
+                "mineSiteName": "Binduli",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0081 Upgrade Tramp Magnets Assembly Binduli",
+                        "jobCode": "AQ0081",
+                        "jobType": "AQ",
+                        "taskName": "Upgrade Tramp Magnets Assembly Binduli"
+                    },
+                    {
+                        "taskFolderName": "AQ0082 One-off Discount to Support MG201 Replacement",
+                        "jobCode": "AQ0082",
+                        "jobType": "AQ",
+                        "taskName": "One-off Discount to Support MG201 Replacement"
+                    },
+                    {
+                        "taskFolderName": "AQ0111 Semimobile Cruhsing Magnets",
+                        "jobCode": "AQ0111",
+                        "jobType": "AQ",
+                        "taskName": "Semimobile Cruhsing Magnets"
+                    },
+                    {
+                        "taskFolderName": "AS0013 General Service",
+                        "jobCode": "AS0013",
+                        "jobType": "AS",
+                        "taskName": "General Service"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Paddington",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0036 Belt iron remover",
+                        "jobCode": "AQ0036",
+                        "jobType": "AQ",
+                        "taskName": "Belt iron remover"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Oscar_Resources",
+        "mineSites": [
+            {
+                "mineSiteName": "Mt Oscar Iron Ore Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0062 Metallurgical Testworks",
+                        "jobCode": "AT0062",
+                        "jobType": "AT",
+                        "taskName": "Metallurgical Testworks"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "PEABODY_ENERGY",
+        "mineSites": [
+            {
+                "mineSiteName": "WINBO",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0028 HMDS Drum Replacment",
+                        "jobCode": "AQ0028",
+                        "jobType": "AQ",
+                        "taskName": "HMDS Drum Replacment"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "PLS",
+        "mineSites": [
+            {
+                "mineSiteName": "Pilgangoora",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0035 P1000",
+                        "jobCode": "AQ0035",
+                        "jobType": "AQ",
+                        "taskName": "P1000"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "PeakRE",
+        "mineSites": [
+            {
+                "mineSiteName": "Ngualla",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0002 WHIMS Testwork",
+                        "jobCode": "AT0002",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Peak_Iron",
+        "mineSites": [
+            {
+                "mineSiteName": "Hawks Nest Magnetite",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0010 Fine Dry Magnetic Separation testing",
+                        "jobCode": "AT0010",
+                        "jobType": "AT",
+                        "taskName": "Fine Dry Magnetic Separation testing"
+                    },
+                    {
+                        "taskFolderName": "AT0065 Dry Magnetic Separation Testwork",
+                        "jobCode": "AT0065",
+                        "jobType": "AT",
+                        "taskName": "Dry Magnetic Separation Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Pure_Resources",
+        "mineSites": [
+            {
+                "mineSiteName": "Reedy Creek Garnet Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0031 General Inquiry",
+                        "jobCode": "AC0031",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Ridge",
+        "mineSites": [
+            {
+                "mineSiteName": "TBA",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0106 Tramp Metal Magnets(RCDFJ-16-T4)",
+                        "jobCode": "AQ0106",
+                        "jobType": "AQ",
+                        "taskName": "Tramp Metal Magnets(RCDFJ-16-T4)"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Riotinto",
+        "mineSites": [
+            {
+                "mineSiteName": "Green Steel",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0021 Greensteel WHIMS",
+                        "jobCode": "AT0021",
+                        "jobType": "AT",
+                        "taskName": "Greensteel WHIMS"
+                    },
+                    {
+                        "taskFolderName": "AT0042 Q4'24 WHIMS Testwork",
+                        "jobCode": "AT0042",
+                        "jobType": "AT",
+                        "taskName": "Q4'24 WHIMS Testwork"
+                    },
+                    {
+                        "taskFolderName": "AT0044 Magnetic Separation Trial(LCGF)",
+                        "jobCode": "AT0044",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Trial(LCGF)"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Gudai-Darri 3",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0011 WHIMS Testwork",
+                        "jobCode": "AT0011",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Tom Price",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0013 General Inquiry",
+                        "jobCode": "AC0013",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AQ0020 Replacing Magnetic Separators",
+                        "jobCode": "AQ0020",
+                        "jobType": "AQ",
+                        "taskName": "Replacing Magnetic Separators"
+                    },
+                    {
+                        "taskFolderName": "AT0012 WHIMS Testwork",
+                        "jobCode": "AT0012",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Unknown",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0058 Modular Concentrator Conceptual Study(FOC)",
+                        "jobCode": "AQ0058",
+                        "jobType": "AQ",
+                        "taskName": "Modular Concentrator Conceptual Study(FOC)"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Rox_Resources",
+        "mineSites": [
+            {
+                "mineSiteName": "Youanmi",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0112 Youanmi Gold",
+                        "jobCode": "AQ0112",
+                        "jobType": "AQ",
+                        "taskName": "Youanmi Gold"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Roy_Hill",
+        "mineSites": [
+            {
+                "mineSiteName": "Roy_Hill",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0107 Low Grade Denside Medium Recovery Drum",
+                        "jobCode": "AQ0107",
+                        "jobType": "AQ",
+                        "taskName": "Low Grade Denside Medium Recovery Drum"
+                    },
+                    {
+                        "taskFolderName": "AT0034 Cyclone OF Recovery Testwork",
+                        "jobCode": "AT0034",
+                        "jobType": "AT",
+                        "taskName": "Cyclone OF Recovery Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "SIMEC",
+        "mineSites": [
+            {
+                "mineSiteName": "Hematite",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0024 Tails Recovery Project",
+                        "jobCode": "AC0024",
+                        "jobType": "AC",
+                        "taskName": "Tails Recovery Project"
+                    },
+                    {
+                        "taskFolderName": "AT0030 WHIMS Testwork",
+                        "jobCode": "AT0030",
+                        "jobType": "AT",
+                        "taskName": "WHIMS Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "MEP 1",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0001 General Inquiry",
+                        "jobCode": "AC0001",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AQ0008 SIMEC Wet Plant",
+                        "jobCode": "AQ0008",
+                        "jobType": "AQ",
+                        "taskName": "SIMEC Wet Plant"
+                    },
+                    {
+                        "taskFolderName": "AQ0009 SIMEC Dry Plant",
+                        "jobCode": "AQ0009",
+                        "jobType": "AQ",
+                        "taskName": "SIMEC Dry Plant"
+                    },
+                    {
+                        "taskFolderName": "AQ0026 Metal Detector",
+                        "jobCode": "AQ0026",
+                        "jobType": "AQ",
+                        "taskName": "Metal Detector"
+                    },
+                    {
+                        "taskFolderName": "AQ0037 DIMS FS MT",
+                        "jobCode": "AQ0037",
+                        "jobType": "AQ",
+                        "taskName": "DIMS FS MT"
+                    },
+                    {
+                        "taskFolderName": "AQ0042 UCMS FS MT",
+                        "jobCode": "AQ0042",
+                        "jobType": "AQ",
+                        "taskName": "UCMS FS MT"
+                    },
+                    {
+                        "taskFolderName": "AQ0047 12935 CP008B DIMS Package",
+                        "jobCode": "AQ0047",
+                        "jobType": "AQ",
+                        "taskName": "12935 CP008B DIMS Package"
+                    },
+                    {
+                        "taskFolderName": "AQ0048 12935 CP008C LJC Package",
+                        "jobCode": "AQ0048",
+                        "jobType": "AQ",
+                        "taskName": "12935 CP008C LJC Package"
+                    },
+                    {
+                        "taskFolderName": "AQ0069 DIMS LJK Tramp Magnet Package",
+                        "jobCode": "AQ0069",
+                        "jobType": "AQ",
+                        "taskName": "DIMS LJK Tramp Magnet Package"
+                    },
+                    {
+                        "taskFolderName": "AT0022 LJC Pilot Test",
+                        "jobCode": "AT0022",
+                        "jobType": "AT",
+                        "taskName": "LJC Pilot Test"
+                    },
+                    {
+                        "taskFolderName": "AT0024 LCGF Testwork",
+                        "jobCode": "AT0024",
+                        "jobType": "AT",
+                        "taskName": "LCGF Testwork"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "MEP 2",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0002 General Inquiry",
+                        "jobCode": "AC0002",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AQ0019 CAP-MAG066-1186 Wet Magnetic Separators",
+                        "jobCode": "AQ0019",
+                        "jobType": "AQ",
+                        "taskName": "CAP-MAG066-1186 Wet Magnetic Separators"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "MEP 3",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0003 General Inquiry",
+                        "jobCode": "AC0003",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AQ0032 LJC Budget",
+                        "jobCode": "AQ0032",
+                        "jobType": "AQ",
+                        "taskName": "LJC Budget"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Savannah_Resources",
+        "mineSites": [
+            {
+                "mineSiteName": "Barroso Lithium Project(Portugal)",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0023 BLP LIMS and WHIMS(Minsol)",
+                        "jobCode": "AQ0023",
+                        "jobType": "AQ",
+                        "taskName": "BLP LIMS and WHIMS(Minsol)"
+                    },
+                    {
+                        "taskFolderName": "AQ0023 BLP LIMS and WHIMS(Minsol) 1",
+                        "jobCode": "AQ0023",
+                        "jobType": "AQ",
+                        "taskName": "BLP LIMS and WHIMS(Minsol) 1"
+                    },
+                    {
+                        "taskFolderName": "AQ0023 BLP LIMS and WHIMS(Minsol) 2",
+                        "jobCode": "AQ0023",
+                        "jobType": "AQ",
+                        "taskName": "BLP LIMS and WHIMS(Minsol) 2"
+                    },
+                    {
+                        "taskFolderName": "AQ0023 BLP LIMS and WHIMS(Minsol) 3",
+                        "jobCode": "AQ0023",
+                        "jobType": "AQ",
+                        "taskName": "BLP LIMS and WHIMS(Minsol) 3"
+                    },
+                    {
+                        "taskFolderName": "AQ0023 BLP LIMS and WHIMS(Minsol) 4",
+                        "jobCode": "AQ0023",
+                        "jobType": "AQ",
+                        "taskName": "BLP LIMS and WHIMS(Minsol) 4"
+                    },
+                    {
+                        "taskFolderName": "AQ0073 B069-D02-07280-RQ-0001(WHIMS & LIMS)",
+                        "jobCode": "AQ0073",
+                        "jobType": "AQ",
+                        "taskName": "B069-D02-07280-RQ-0001(WHIMS & LIMS)"
+                    },
+                    {
+                        "taskFolderName": "AQ0073 B069-D02-07280-RQ-0001(WHIMS & LIMS) 1",
+                        "jobCode": "AQ0073",
+                        "jobType": "AQ",
+                        "taskName": "B069-D02-07280-RQ-0001(WHIMS & LIMS) 1"
+                    },
+                    {
+                        "taskFolderName": "AQ0073 B069-D02-07280-RQ-0001(WHIMS & LIMS) 2",
+                        "jobCode": "AQ0073",
+                        "jobType": "AQ",
+                        "taskName": "B069-D02-07280-RQ-0001(WHIMS & LIMS) 2"
+                    },
+                    {
+                        "taskFolderName": "AQ0073 B069-D02-07280-RQ-0001(WHIMS & LIMS) 3",
+                        "jobCode": "AQ0073",
+                        "jobType": "AQ",
+                        "taskName": "B069-D02-07280-RQ-0001(WHIMS & LIMS) 3"
+                    },
+                    {
+                        "taskFolderName": "AQ0073 B069-D02-07280-RQ-0001(WHIMS & LIMS) 4",
+                        "jobCode": "AQ0073",
+                        "jobType": "AQ",
+                        "taskName": "B069-D02-07280-RQ-0001(WHIMS & LIMS) 4"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Sibanye_Stillwater",
+        "mineSites": [
+            {
+                "mineSiteName": "Mt Lyell Class 2",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0095 Mt Lyell Class 2 FS-CP004-Tramp Metal Magnets",
+                        "jobCode": "AQ0095",
+                        "jobType": "AQ",
+                        "taskName": "Mt Lyell Class 2 FS-CP004-Tramp Metal Magnets"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Silica_Resources_Australia",
+        "mineSites": [
+            {
+                "mineSiteName": "Mourilya_ Silica_Sands_Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0023 General Inquiry",
+                        "jobCode": "AC0023",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "TBA",
+        "mineSites": [
+            {
+                "mineSiteName": "TBA 1",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0014 LIMS+WHIMS",
+                        "jobCode": "AQ0014",
+                        "jobType": "AQ",
+                        "taskName": "LIMS+WHIMS"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "TMT",
+        "mineSites": [
+            {
+                "mineSiteName": "Murchison",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0015 Murchison",
+                        "jobCode": "AQ0015",
+                        "jobType": "AQ",
+                        "taskName": "Murchison"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Talison",
+        "mineSites": [
+            {
+                "mineSiteName": "Greenbush",
+                "tasks": [
+                    {
+                        "taskFolderName": "AP0004 CGP3 2025",
+                        "jobCode": "AP0004",
+                        "jobType": "AP",
+                        "taskName": "CGP3 2025"
+                    },
+                    {
+                        "taskFolderName": "AQ0007 Talison CPG4",
+                        "jobCode": "AQ0007",
+                        "jobType": "AQ",
+                        "taskName": "Talison CPG4"
+                    },
+                    {
+                        "taskFolderName": "AQ0072 CGP3 spares",
+                        "jobCode": "AQ0072",
+                        "jobType": "AQ",
+                        "taskName": "CGP3 spares"
+                    },
+                    {
+                        "taskFolderName": "AS0002 CPG3 Equipment Inspection",
+                        "jobCode": "AS0002",
+                        "jobType": "AS",
+                        "taskName": "CPG3 Equipment Inspection"
+                    },
+                    {
+                        "taskFolderName": "AS0003 CGP1 Oil Cooling Coil upgrade",
+                        "jobCode": "AS0003",
+                        "jobType": "AS",
+                        "taskName": "CGP1 Oil Cooling Coil upgrade"
+                    },
+                    {
+                        "taskFolderName": "AS0011 General Service",
+                        "jobCode": "AS0011",
+                        "jobType": "AS",
+                        "taskName": "General Service"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Tanbreez_Mining",
+        "mineSites": [
+            {
+                "mineSiteName": "Tanbreez Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0027 General Inquiry",
+                        "jobCode": "AC0027",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AQ0104 ENC Group Rare Earth Pilot Plant",
+                        "jobCode": "AQ0104",
+                        "jobType": "AQ",
+                        "taskName": "ENC Group Rare Earth Pilot Plant"
+                    },
+                    {
+                        "taskFolderName": "AQ0105 Ore Sorter Lab Equipment",
+                        "jobCode": "AQ0105",
+                        "jobType": "AQ",
+                        "taskName": "Ore Sorter Lab Equipment"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Terra_Metals",
+        "mineSites": [
+            {
+                "mineSiteName": "Dante",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0033 General Inquiry",
+                        "jobCode": "AC0033",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Terra_mining",
+        "mineSites": [
+            {
+                "mineSiteName": "Extension Hill",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0018 DLIMS",
+                        "jobCode": "AQ0018",
+                        "jobType": "AQ",
+                        "taskName": "DLIMS"
+                    },
+                    {
+                        "taskFolderName": "AQ0039 LCGJ DMS",
+                        "jobCode": "AQ0039",
+                        "jobType": "AQ",
+                        "taskName": "LCGJ DMS"
+                    },
+                    {
+                        "taskFolderName": "AQ0083  DMS Replacement Unit",
+                        "jobCode": "AQ0083",
+                        "jobType": "AQ",
+                        "taskName": "DMS Replacement Unit"
+                    },
+                    {
+                        "taskFolderName": "AQ0083 DMS Replacement Unit",
+                        "jobCode": "AQ0083",
+                        "jobType": "AQ",
+                        "taskName": "DMS Replacement Unit"
+                    },
+                    {
+                        "taskFolderName": "AQ0084  Second DMS Modular Plant (DMS Assembly & Platform)",
+                        "jobCode": "AQ0084",
+                        "jobType": "AQ",
+                        "taskName": "Second DMS Modular Plant (DMS Assembly & Platform)"
+                    },
+                    {
+                        "taskFolderName": "AQ0084 Second DMS Modular Plant (DMS Assembly & Platform)",
+                        "jobCode": "AQ0084",
+                        "jobType": "AQ",
+                        "taskName": "Second DMS Modular Plant (DMS Assembly & Platform)"
+                    },
+                    {
+                        "taskFolderName": "AQ0086 Dry Mag Separation Platform(batch 2)",
+                        "jobCode": "AQ0086",
+                        "jobType": "AQ",
+                        "taskName": "Dry Mag Separation Platform(batch 2)"
+                    },
+                    {
+                        "taskFolderName": "AQ0089 3rd DMS Unit",
+                        "jobCode": "AQ0089",
+                        "jobType": "AQ",
+                        "taskName": "3rd DMS Unit"
+                    },
+                    {
+                        "taskFolderName": "AQ0097 DMS Drum Skin with lining and end plate",
+                        "jobCode": "AQ0097",
+                        "jobType": "AQ",
+                        "taskName": "DMS Drum Skin with lining and end plate"
+                    },
+                    {
+                        "taskFolderName": "AQ0103 4th DMS and Platform Assembly",
+                        "jobCode": "AQ0103",
+                        "jobType": "AQ",
+                        "taskName": "4th DMS and Platform Assembly"
+                    },
+                    {
+                        "taskFolderName": "AQ0109 LCGZ Lab equipment",
+                        "jobCode": "AQ0109",
+                        "jobType": "AQ",
+                        "taskName": "LCGZ Lab equipment"
+                    },
+                    {
+                        "taskFolderName": "AS0012 LCGJ DMS",
+                        "jobCode": "AS0012",
+                        "jobType": "AS",
+                        "taskName": "LCGJ DMS"
+                    },
+                    {
+                        "taskFolderName": "AT0014 Dry Magnetic Separation Testwork(BV)",
+                        "jobCode": "AT0014",
+                        "jobType": "AT",
+                        "taskName": "Dry Magnetic Separation Testwork(BV)"
+                    },
+                    {
+                        "taskFolderName": "AT0019 MS Testworks(HQ)",
+                        "jobCode": "AT0019",
+                        "jobType": "AT",
+                        "taskName": "MS Testworks(HQ)"
+                    },
+                    {
+                        "taskFolderName": "AT0066 Metallurgical Testworks",
+                        "jobCode": "AT0066",
+                        "jobType": "AT",
+                        "taskName": "Metallurgical Testworks"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Test Mining Corp",
+        "mineSites": [
+            {
+                "mineSiteName": "Test Mine Site",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0067 Magnetic Separation Test Project",
+                        "jobCode": "AT0067",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Test Project"
+                    },
+                    {
+                        "taskFolderName": "AT0068 Magnetic Separation Test Project",
+                        "jobCode": "AT0068",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Test Project"
+                    },
+                    {
+                        "taskFolderName": "AT0069 Magnetic Separation Test Project",
+                        "jobCode": "AT0069",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Test Project"
+                    },
+                    {
+                        "taskFolderName": "AT0070 Magnetic Separation Test Project",
+                        "jobCode": "AT0070",
+                        "jobType": "AT",
+                        "taskName": "Magnetic Separation Test Project"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Trenel",
+        "mineSites": [
+            {
+                "mineSiteName": "Trenel",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0026 Minral sand MS testwork",
+                        "jobCode": "AT0026",
+                        "jobType": "AT",
+                        "taskName": "Minral sand MS testwork"
+                    },
+                    {
+                        "taskFolderName": "AT0027 TRENEL",
+                        "jobCode": "AT0027",
+                        "jobType": "AT",
+                        "taskName": "TRENEL"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Tungsten_Mining",
+        "mineSites": [
+            {
+                "mineSiteName": "Mt_Mulgine",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0025 General Inquiry",
+                        "jobCode": "AC0025",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Venus_Metals",
+        "mineSites": [
+            {
+                "mineSiteName": "Younami_Gabbro_Project",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0046 Metallurgical Testworks",
+                        "jobCode": "AT0046",
+                        "jobType": "AT",
+                        "taskName": "Metallurgical Testworks"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Vytas",
+        "mineSites": [
+            {
+                "mineSiteName": "Ultra High Grade Quartz",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0054 Dry Eletromagnet Filter Enquiry",
+                        "jobCode": "AT0054",
+                        "jobType": "AT",
+                        "taskName": "Dry Eletromagnet Filter Enquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Wyoming_Rare_USA",
+        "mineSites": [
+            {
+                "mineSiteName": "Halleck Creek",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0030 General Inquiry",
+                        "jobCode": "AC0030",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "YINGHUI_INTERNATIONAL",
+        "mineSites": [
+            {
+                "mineSiteName": "Recycling  belt magnet",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0088 Recycling plant RCY-C65  Belt Magnet",
+                        "jobCode": "AQ0088",
+                        "jobType": "AQ",
+                        "taskName": "Recycling plant RCY-C65  Belt Magnet"
+                    },
+                    {
+                        "taskFolderName": "AQ0088 Recycling plant RCY-C65 Belt Magnet",
+                        "jobCode": "AQ0088",
+                        "jobType": "AQ",
+                        "taskName": "Recycling plant RCY-C65 Belt Magnet"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "Young_Steel",
+        "mineSites": [
+            {
+                "mineSiteName": "Commmonwelth_Hill",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0037 MS Testworks",
+                        "jobCode": "AT0037",
+                        "jobType": "AT",
+                        "taskName": "MS Testworks"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Peko",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0029 PEKO project General Enquiry",
+                        "jobCode": "AC0029",
+                        "jobType": "AC",
+                        "taskName": "PEKO project General Enquiry"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Snaefell",
+                "tasks": [
+                    {
+                        "taskFolderName": "AC0006 General Inquiry",
+                        "jobCode": "AC0006",
+                        "jobType": "AC",
+                        "taskName": "General Inquiry"
+                    },
+                    {
+                        "taskFolderName": "AT0035 Metallurgical Testworks",
+                        "jobCode": "AT0035",
+                        "jobType": "AT",
+                        "taskName": "Metallurgical Testworks"
+                    },
+                    {
+                        "taskFolderName": "AT0056 Second batch magnetite Testowrk",
+                        "jobCode": "AT0056",
+                        "jobType": "AT",
+                        "taskName": "Second batch magnetite Testowrk"
+                    },
+                    {
+                        "taskFolderName": "AT0057 Leejun HPGR product",
+                        "jobCode": "AT0057",
+                        "jobType": "AT",
+                        "taskName": "Leejun HPGR product"
+                    }
+                ]
+            },
+            {
+                "mineSiteName": "Waste Dam",
+                "tasks": [
+                    {
+                        "taskFolderName": "AT0036 Dry MS Testwork",
+                        "jobCode": "AT0036",
+                        "jobType": "AT",
+                        "taskName": "Dry MS Testwork"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "clientCompany": "_MWPA",
+        "mineSites": [
+            {
+                "mineSiteName": "Mid West Port Authority",
+                "tasks": [
+                    {
+                        "taskFolderName": "AQ0027 Metal Detector",
+                        "jobCode": "AQ0027",
+                        "jobType": "AQ",
+                        "taskName": "Metal Detector"
+                    }
+                ]
+            }
+        ]
+    }
+]

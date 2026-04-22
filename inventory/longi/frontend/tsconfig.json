@@ -1,0 +1,16 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+      "baseUrl": ".",
+       "paths": {
+      "@/*": ["src/*"], 
+      "@features": ["features/index.ts"],
+      "@features/*": ["features/*"],
+      "@app/*": ["app/*"],
+      "@app": ["app/store"]}},
+        "skipLibCheck": true
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "系统管理员",
+    "code": "ADMIN",
+    "description": "拥有系统级别的管理权限",
+    "isActive": true
+  },
+  {
+    "name": "部门负责人",
+    "code": "DEPT_LEAD",
+    "description": "部门级别的项目和团队管理",
+    "isActive": true
+  },
+  {
+    "name": "项目经理",
+    "code": "PM",
+    "description": "负责项目整体管理",
+    "isActive": true
+  },
+  {
+    "name": "试验工程师",
+    "code": "TEST_ENGINEER",
+    "description": "负责试验执行与分析",
+    "isActive": true
+  },
+  {
+    "name": "质检员",
+    "code": "QA",
+    "description": "负责质量检验与报告",
+    "isActive": true
+  },
+  {
+    "name": "普通成员",
+    "code": "MEMBER",
+    "description": "参与项目与任务的执行",
+    "isActive": true
+  }
+]

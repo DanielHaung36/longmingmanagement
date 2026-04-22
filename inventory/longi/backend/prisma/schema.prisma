@@ -1,0 +1,194 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum permission_type {
+  page
+  button
+  admin
+  api
+  menu
+  product
+  warehouse
+}
+
+enum transaction_type {
+  IN
+  OUT
+  SALE
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
+model users {
+  id            Int       @id @default(autoincrement())
+  username      String
+  version       BigInt    @default(1)
+  password_hash String
+  full_name     String?
+  email         String
+  is_active     Boolean?  @default(true)
+  created_at    DateTime? @db.Timestamptz
+  updated_at    DateTime? @db.Timestamptz
+  deleted_at    DateTime? @db.Timestamptz
+  role_id       Int?
+  avatar_url    String?   @db.VarChar(255)
+  cognito_id    String?   @unique
+  last_login_at DateTime? @db.Timestamptz
+
+  role             role?              @relation(fields: [role_id], references: [id])
+  user_permissions user_permissions[]
+
+  @@index([role_id])
+}
+
+model role {
+  id           Int       @id @default(autoincrement())
+  name         String
+  display_name String
+  description  String?
+  created_at   DateTime? @default(now()) @db.Timestamptz
+
+  users            users[]
+  role_permissions role_permission[]
+}
+
+model permission {
+  id           Int       @id @default(autoincrement())
+  name         String
+  display_name String?
+  description  String?
+  type         String    @default("button")
+  updated_at   DateTime? @db.Timestamptz
+  label        String?   @db.VarChar(100)
+  menu_id      Int?
+
+  role_permissions role_permission[]
+  user_permissions user_permissions[]
+}
+
+model role_permission {
+  role_id       Int
+  permission_id Int
+
+  role       role       @relation(fields: [role_id], references: [id])
+  permission permission @relation(fields: [permission_id], references: [id])
+
+  @@id([role_id, permission_id])
+  @@index([role_id])
+  @@index([permission_id])
+}
+
+model user_permissions {
+  user_id       Int
+  permission_id Int
+
+  user       users      @relation(fields: [user_id], references: [id])
+  permission permission @relation(fields: [permission_id], references: [id])
+
+  @@id([user_id, permission_id])
+  @@index([user_id])
+  @@index([permission_id])
+}
+
+model product_group {
+  id          BigInt    @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  created_at  DateTime? @db.Timestamptz
+  updated_at  DateTime? @db.Timestamptz
+
+  products product[]
+}
+
+model product {
+  id                  String    @id @db.Char(36)
+  part_number_cn      String?
+  part_number_au      String?
+  barcode             String?
+  compatiblemodels    String?
+  description         String?
+  code_seq            BigInt    @default(autoincrement())
+  code                String    @db.VarChar(64)
+  description_chinese String?
+  asset               String?
+  customer            String?
+  note                String?
+  part_group          String?
+  group_id            BigInt?
+  part_life           String?
+  oem                 String?
+  purchase_price      Decimal?
+  unit_price          Decimal?
+  created_at          DateTime? @db.Timestamptz
+  updated_at          DateTime? @db.Timestamptz
+
+  group     product_group? @relation(fields: [group_id], references: [id])
+  inventory inventory[]
+
+  @@index([group_id])
+}
+
+model inventory {
+  id             BigInt    @id @default(autoincrement())
+  product_id     String    @db.Char(36)
+  warehouse_id   BigInt
+  site_location  String?
+  actual_qty     BigInt?
+  locked_qty     BigInt?
+  operator       String?
+  operation_time DateTime? @db.Timestamptz
+  created_at     DateTime? @db.Timestamptz
+  updated_at     DateTime? @db.Timestamptz
+
+  product    product    @relation(fields: [product_id], references: [id])
+  warehouse  warehouses @relation(fields: [warehouse_id], references: [id])
+  transactions inventory_transaction[]
+
+  @@index([product_id])
+  @@index([warehouse_id])
+}
+
+model inventory_transaction {
+  id           BigInt           @id @default(autoincrement())
+  inventory_id BigInt
+  tx_type      transaction_type @default(IN)
+  quantity     BigInt?
+  operator     String?
+  created_at   DateTime?        @db.Timestamptz
+  note         String?          @db.VarChar(500)
+
+  inventory inventory @relation(fields: [inventory_id], references: [id])
+
+  @@index([inventory_id])
+}
+
+model orders {
+  id            BigInt    @id @default(autoincrement())
+  order_number  String    @db.VarChar(64)
+  customer_name String    @db.VarChar(128)
+  order_date    DateTime  @db.Timestamptz
+  status        String    @default("待处理") @db.VarChar(32)
+  total_amount  Decimal
+  created_at    DateTime? @db.Timestamptz
+  updated_at    DateTime? @db.Timestamptz
+  deleted_at    DateTime? @db.Timestamptz
+}
+
+model warehouses {
+  id         BigInt    @id @default(autoincrement())
+  name       String?
+  location   String?
+  created_at DateTime? @db.Timestamptz
+  updated_at DateTime? @db.Timestamptz
+
+  inventory inventory[]
+}

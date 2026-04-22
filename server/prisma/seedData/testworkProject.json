@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "projectId": 2,
+    "testType": "LABORATORY",
+    "sampleCode": "TW-2024-001",
+    "sampleSource": "宝钢铁矿一号矿井",
+    "testObjective": "评估铁矿石品位和可选性",
+    "expectedResult": "获取矿石成分分析和选矿工艺参数",
+    "status": "IN_PROGRESS",
+    "startDate": "2024-09-01T00:00:00.000Z",
+    "endDate": "2024-10-15T00:00:00.000Z"
+  }
+]

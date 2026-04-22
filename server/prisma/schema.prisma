@@ -1,0 +1,1448 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model attachments {
+  id           Int      @id @default(autoincrement())
+  fileName     String
+  originalName String
+  fileUrl      String
+  fileSize     BigInt
+  mimeType     String
+  thumbnailUrl String?
+  entityType   String
+  entityId     Int
+  uploadedById Int
+  isTemplate   Boolean  @default(false)
+  category     String?
+  tags         String[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime  @updatedAt
+  users        users    @relation(fields: [uploadedById], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([isTemplate, category])
+}
+
+model audit_logs {
+  id        Int      @id @default(autoincrement())
+  tableName String
+  recordId  Int
+  action    String
+  changes   Json?
+  userId    Int?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  users     users?   @relation(fields: [userId], references: [id])
+
+  @@index([tableName, recordId])
+  @@index([userId, createdAt])
+}
+
+model backup_records {
+  id           Int       @id @default(autoincrement())
+  backupType   String
+  backupSize   BigInt
+  filePath     String
+  cloudPath    String?
+  status       String
+  startTime    DateTime
+  endTime      DateTime?
+  errorMessage String?
+  checksum     String?
+  retention    Int       @default(30)
+  createdBy    Int?
+  users        users?    @relation(fields: [createdBy], references: [id])
+
+  @@index([backupType, status])
+  @@index([startTime])
+}
+
+model chat_mentions {
+  id            Int           @id @default(autoincrement())
+  messageId     Int
+  userId        Int
+  createdAt     DateTime      @default(now())
+  chat_messages chat_messages @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId])
+}
+
+model chat_messages {
+  id                  Int                 @id @default(autoincrement())
+  roomId              Int
+  userId              Int
+  message             String
+  messageType         String              @default("text")
+  replyToId           Int?
+  fileUrl             String?
+  fileName            String?
+  isEdited            Boolean             @default(false)
+  isDeleted           Boolean             @default(false)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  chat_mentions       chat_mentions[] 
+  chat_messages       chat_messages?      @relation("chat_messagesTochat_messages", fields: [replyToId], references: [id])
+  other_chat_messages chat_messages[]     @relation("chat_messagesTochat_messages")
+  chat_rooms          chat_rooms          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  users               users               @relation(fields: [userId], references: [id])
+  message_reactions   message_reactions[]
+}
+
+model chat_room_members {
+  id         Int        @id @default(autoincrement())
+  roomId     Int
+  userId     Int
+  role       String     @default("member")
+  joinedAt   DateTime   @default(now())
+  leftAt     DateTime?
+  chat_rooms chat_rooms @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  users      users      @relation(fields: [userId], references: [id])
+
+  @@unique([roomId, userId])
+}
+
+model chat_rooms {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  description       String?
+  type              String              @default("project")
+  projectId         Int?
+  isActive          Boolean             @default(true)
+  createdAt         DateTime            @default(now())
+  chat_messages     chat_messages[]
+  chat_room_members chat_room_members[]
+  projects          projects?           @relation(fields: [projectId], references: [id])
+}
+
+model comment_mentions {
+  id        Int      @id @default(autoincrement())
+  commentId Int
+  userId    Int
+  createdAt DateTime @default(now())
+  comments  comments @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  users     users    @relation(fields: [userId], references: [id])
+
+  @@unique([commentId, userId])
+}
+
+model comments {
+  id               Int                @id @default(autoincrement())
+  content          String
+  images           String?            @db.Text // JSON数组存储图片URLs
+  entityType       String             // 'project' 或 'task'
+  entityId         Int                // 动态外键，不强制关联
+  userId           Int
+  parentId         Int?
+  isEdited         Boolean            @default(false)
+  isDeleted        Boolean            @default(false)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  comment_mentions comment_mentions[]
+  comments         comments?          @relation("commentsTocomments", fields: [parentId], references: [id])
+  other_comments   comments[]         @relation("commentsTocomments")
+  users            users              @relation(fields: [userId], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model departments {
+  id                                    Int                  @id @default(autoincrement())
+  code                                  String               @unique
+  name                                  String
+  description                           String?
+  parentId                              Int?
+  managerId                             Int?
+  isActive                              Boolean              @default(true)
+  createdAt                             DateTime             @default(now())
+  updatedAt                             DateTime             @updatedAt
+  users_departments_managerIdTousers    users?               @relation("departments_managerIdTousers", fields: [managerId], references: [id])
+  departments                           departments?         @relation("departmentsTodepartments", fields: [parentId], references: [id])
+  other_departments                     departments[]        @relation("departmentsTodepartments")
+  users_users_departmentIdTodepartments users[]              @relation("users_departmentIdTodepartments")
+  workflow_templates                    workflow_templates[]
+}
+
+model email_blacklist {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  reason    String
+  type      String
+  addedBy   Int?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     users?   @relation(fields: [addedBy], references: [id])
+}
+
+model email_logs {
+  id           Int           @id @default(autoincrement())
+  smtpConfigId Int?
+  fromEmail    String
+  fromName     String?
+  toEmails     String[]
+  ccEmails     String[]
+  bccEmails    String[]
+  replyTo      String?
+  subject      String
+  htmlContent  String?
+  textContent  String?
+  attachments  Json?
+  status       String
+  priority     Int           @default(0)
+  attempts     Int           @default(0)
+  maxAttempts  Int           @default(3)
+  scheduledAt  DateTime?
+  sentAt       DateTime?
+  deliveredAt  DateTime?
+  openedAt     DateTime?
+  clickedAt    DateTime?
+  errorMessage String?
+  bounceReason String?
+  messageId    String?
+  trackingId   String?
+  ipAddress    String?
+  userAgent    String?
+  entityType   String?
+  entityId     Int?
+  userId       Int?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime       @updatedAt
+  smtp_configs smtp_configs? @relation(fields: [smtpConfigId], references: [id])
+  users        users?        @relation(fields: [userId], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([status, scheduledAt])
+  @@index([toEmails])
+  @@index([userId, createdAt])
+}
+
+model email_statistics {
+  id             Int           @id @default(autoincrement())
+  date           DateTime      @db.Date
+  smtpConfigId   Int?
+  totalSent      Int           @default(0)
+  totalDelivered Int           @default(0)
+  totalBounced   Int           @default(0)
+  totalOpened    Int           @default(0)
+  totalClicked   Int           @default(0)
+  totalFailed    Int           @default(0)
+  uniqueOpens    Int           @default(0)
+  uniqueClicks   Int           @default(0)
+  deliveryRate   Decimal?      @db.Decimal(5, 2)
+  openRate       Decimal?      @db.Decimal(5, 2)
+  clickRate      Decimal?      @db.Decimal(5, 2)
+  bounceRate     Decimal?      @db.Decimal(5, 2)
+  createdAt      DateTime      @default(now())
+  smtp_configs   smtp_configs? @relation(fields: [smtpConfigId], references: [id])
+
+  @@unique([date, smtpConfigId])
+}
+
+model email_templates {
+  id                                     Int      @id @default(autoincrement())
+  name                                   String   @unique
+  code                                   String   @unique
+  category                               String
+  subject                                String
+  htmlContent                            String
+  textContent                            String?
+  variables                              Json?
+  description                            String?
+  isActive                               Boolean  @default(true)
+  version                                Int      @default(1)
+  createdBy                              Int
+  updatedBy                              Int?
+  createdAt                              DateTime @default(now())
+  updatedAt                              DateTime @updatedAt
+  users_email_templates_createdByTousers users    @relation("email_templates_createdByTousers", fields: [createdBy], references: [id])
+  users_email_templates_updatedByTousers users?   @relation("email_templates_updatedByTousers", fields: [updatedBy], references: [id])
+}
+
+model error_logs {
+  id                                 Int       @id @default(autoincrement())
+  errorType                          String
+  errorCode                          String?
+  message                            String
+  stackTrace                         String?
+  endpoint                           String?
+  userId                             Int?
+  ipAddress                          String?
+  userAgent                          String?
+  severity                           String    @default("error")
+  isResolved                         Boolean   @default(false)
+  resolvedBy                         Int?
+  resolvedAt                         DateTime?
+  createdAt                          DateTime  @default(now())
+  users_error_logs_resolvedByTousers users?    @relation("error_logs_resolvedByTousers", fields: [resolvedBy], references: [id])
+  users_error_logs_userIdTousers     users?    @relation("error_logs_userIdTousers", fields: [userId], references: [id])
+
+  @@index([errorType, severity, createdAt])
+  @@index([isResolved, severity])
+}
+
+model message_reactions {
+  id            Int           @id @default(autoincrement())
+  messageId     Int
+  userId        Int
+  emoji         String
+  createdAt     DateTime      @default(now())
+  chat_messages chat_messages @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId, emoji])
+}
+
+model mine_zone_codes {
+  id        Int      @id @default(autoincrement())
+  company   String
+  siteName  String?
+  code      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([company, siteName])
+}
+
+model mine_zones {
+  id          Int        @id @default(autoincrement())
+  code        String     @unique
+  name        String
+  location    String?
+  description String?
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  projects    projects[]
+}
+
+model notifications {
+  id                                     Int                   @id @default(autoincrement())
+  type                                   NotificationType
+  title                                  String
+  content                                String
+  priority                               Priority              @default(MEDIUM)
+  recipientId                            Int
+  senderId                               Int?
+  relatedType                            String?
+  relatedId                              Int?
+  isRead                                 Boolean               @default(false)
+  readAt                                 DateTime?
+  channels                               NotificationChannel[] @default([IN_APP])
+  emailSent                              Boolean               @default(false)
+  pushSent                               Boolean               @default(false)
+  metadata                               Json?
+  createdAt                              DateTime              @default(now())
+  updatedAt                              DateTime              @updatedAt
+  users_notifications_recipientIdTousers users                 @relation("notifications_recipientIdTousers", fields: [recipientId], references: [id])
+  users_notifications_senderIdTousers    users?                @relation("notifications_senderIdTousers", fields: [senderId], references: [id])
+
+  @@index([recipientId, createdAt])
+  @@index([recipientId, isRead])
+}
+
+model password_reset_tokens {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  isUsed    Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  users     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@index([token])
+  @@index([userId])
+}
+
+model performance_logs {
+  id          Int      @id @default(autoincrement())
+  metricType  String
+  endpoint    String?
+  userId      Int?
+  duration    Int?
+  memoryUsage BigInt?
+  queryCount  Int?
+  errorCount  Int?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  users       users?   @relation(fields: [userId], references: [id])
+
+  @@index([metricType, createdAt])
+  @@index([userId, createdAt])
+}
+
+model permission_definitions {
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @unique
+  name                 String
+  description          String?
+  resource             ResourceType
+  action               ActionType
+  scope                PermissionScope
+  isActive             Boolean                @default(true)
+  createdAt            DateTime               @default(now())
+  resource_permissions resource_permissions[]
+  role_permissions     role_permissions[]
+  user_permissions     user_permissions[]
+}
+
+model project_budgets {
+  id            Int       @id @default(autoincrement())
+  projectId     Int       @unique
+  budget        Decimal?  @db.Decimal(15, 2)
+  actualCost    Decimal?  @db.Decimal(15, 2)
+  currency      String    @default("AUD")
+  startDate     DateTime?
+  endDate       DateTime?
+  actualEndDate DateTime?
+  notes         String?
+  projects      projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model project_files {
+  id              Int          @id @default(autoincrement())
+  projectId       Int
+  fileName        String
+  fileType        FileType
+  fileSize        BigInt
+  mimeType        String
+  localPath       String
+  oneDrivePath    String?
+  relativePath    String
+  md5Hash         String
+  uploadStatus    UploadStatus @default(PENDING)
+  uploadProgress  Float        @default(0)
+  uploadSessionId String?      @unique
+  totalChunks     Int?
+  uploadedChunks  Json?
+  chunkSize       Int          @default(5242880)
+  uploadedBy      Int
+  description     String?
+  tags            String[]
+  version         Int          @default(1)
+  isPublic        Boolean      @default(false)
+  downloadCount   Int          @default(0)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  projects        projects     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  users           users        @relation(fields: [uploadedBy], references: [id])
+
+  @@index([md5Hash])
+  @@index([projectId, fileType])
+  @@index([uploadSessionId])
+  @@index([uploadStatus])
+  @@index([uploadedBy])
+}
+
+model project_members {
+  id        Int       @id @default(autoincrement())
+  projectId Int
+  userId    Int
+  role      String    @default("MEMBER")
+  joinedAt  DateTime  @default(now())
+  leftAt    DateTime?
+  projects  projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  users     users     @relation(fields: [userId], references: [id])
+
+  @@unique([projectId, userId])
+}
+
+model project_mining_info {
+  id               Int      @id @default(autoincrement())
+  projectId        Int      @unique
+  mineralType      String?
+  estimatedTonnage Decimal? @db.Decimal(15, 2)
+  grade            String?
+  contactPerson    String?
+  contactEmail     String?
+  projects         projects @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model project_quotations {
+  id                    Int       @id @default(autoincrement())
+  projectId             Int       @unique
+  quotationNumber       String?
+  requestDate           DateTime?
+  quotationProvidedDate DateTime?
+  feedbackFromClient    String?
+  projects              projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model project_teams {
+  id          Int       @id @default(autoincrement())
+  projectId   Int
+  teamId      Int
+  role        TeamRole  @default(COLLABORATOR)
+  description String?
+  joinedAt    DateTime  @default(now())
+  leftAt      DateTime?
+  projects    projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  teams       teams     @relation(fields: [teamId], references: [id])
+
+  @@unique([projectId, teamId])
+}
+
+model projects {
+  id                  Int                  @id @default(autoincrement())
+  name                String
+  description         String?
+  projectCode         String
+  // jobType 已删除 - jobType 只在 task 级别定义，避免歧义
+  status              ProjectStatus        @default(PLANNING)
+  priority            Priority             @default(LOW)
+  progress            Int                  @default(0)
+  clientCompany              String?
+  mineSiteName               String?
+  mineZoneId                 Int?
+  clientFolderPath           String?  // 本地客户文件夹路径
+  mineSiteFolderPath         String?  // 本地矿区文件夹路径
+  oneDriveClientFolderPath   String?  // OneDrive客户文件夹路径
+  oneDriveMineSiteFolderPath String?  // OneDrive矿区文件夹路径
+  ownerId                    Int
+  teamId              Int?
+  approvalStatus      String               @default("DRAFT")
+  approvedBy          Int?
+  approvedAt          DateTime?
+  rejectionReason     String?
+  deleteRequestedBy   Int?
+  deleteRequestedAt   DateTime?
+  deleteReason        String?
+  syncStatus          String               @default("NOT_SYNCED")
+  lastSyncTime        DateTime?
+  syncError           String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime              @updatedAt
+  chat_rooms          chat_rooms[]
+  project_budgets     project_budgets?
+  project_files       project_files[]
+  project_members     project_members[]
+  project_mining_info project_mining_info?
+  project_quotations  project_quotations?
+  project_teams       project_teams[]
+  mine_zones          mine_zones?          @relation(fields: [mineZoneId], references: [id])
+  users               users                @relation(fields: [ownerId], references: [id])
+  teams               teams?               @relation(fields: [teamId], references: [id])
+  quotations          quotations[]
+  sync_logs           sync_logs[]
+  tasks               tasks[]
+  testwork_projects   testwork_projects?
+  workflow_instances  workflow_instances[]
+
+  @@index([approvalStatus])
+  // @@index([jobType]) - 已删除，jobType 只在 task 级别定义
+  @@index([projectCode])
+}
+
+model queue_jobs {
+  id           Int       @id @default(autoincrement())
+  queue        String
+  jobType      String
+  payload      Json
+  status       String
+  priority     Int       @default(0)
+  attempts     Int       @default(0)
+  maxAttempts  Int       @default(3)
+  errorMessage String?
+  processedBy  String?
+  scheduledAt  DateTime?
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([queue, status, priority])
+  @@index([scheduledAt])
+}
+
+model refresh_tokens {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  isRevoked Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  ipAddress String?
+  userAgent String?
+  users     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@index([token])
+  @@index([userId])
+}
+
+model resource_permissions {
+  id                     Int                    @id @default(autoincrement())
+  permissionId           Int
+  resourceType           ResourceType
+  resourceId             Int
+  ownerId                Int?
+  isPublic               Boolean                @default(false)
+  inheritParent          Boolean                @default(true)
+  createdAt              DateTime               @default(now())
+  users                  users?                 @relation(fields: [ownerId], references: [id])
+  permission_definitions permission_definitions @relation(fields: [permissionId], references: [id])
+
+  @@unique([permissionId, resourceType, resourceId])
+}
+
+model role_permissions {
+  id                     Int                    @id @default(autoincrement())
+  roleId                 Int
+  permissionId           Int
+  granted                Boolean                @default(true)
+  createdAt              DateTime               @default(now())
+  permission_definitions permission_definitions @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  roles                  roles                  @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+}
+
+model roles {
+  id               Int                @id @default(autoincrement())
+  name             String             @unique
+  description      String?
+  scope            PermissionScope    @default(SYSTEM)
+  isActive         Boolean            @default(true)
+  isSystem         Boolean            @default(false)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  role_permissions role_permissions[]
+  user_roles       user_roles[]
+}
+
+model search_contents {
+  id          Int       @id @default(autoincrement())
+  entityType  String
+  entityId    Int
+  title       String
+  content     String
+  tags        String[]
+  metadata    Json?
+  isIndexed   Boolean   @default(false)
+  lastIndexed DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([entityType, entityId])
+  @@index([isIndexed])
+  @@index([title])
+}
+
+model search_indexes {
+  id          Int           @id @default(autoincrement())
+  indexName   String        @unique
+  entityType  String
+  mapping     Json
+  settings    Json?
+  isActive    Boolean       @default(true)
+  lastSync    DateTime?
+  syncCount   Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  search_logs search_logs[] 
+}
+
+model search_logs {
+  id             Int             @id @default(autoincrement())
+  userId         Int?
+  indexId        Int?
+  query          String
+  filters        Json?
+  results        Json?
+  resultCount    Int             @default(0)
+  executionTime  Int?
+  ipAddress      String?
+  userAgent      String?
+  createdAt      DateTime        @default(now())
+  search_indexes search_indexes? @relation(fields: [indexId], references: [id])
+  users          users?          @relation(fields: [userId], references: [id])
+
+  @@index([query])
+  @@index([userId, createdAt])
+}
+
+model search_statistics {
+  id               Int      @id @default(autoincrement())
+  date             DateTime @unique @db.Date
+  totalSearches    Int      @default(0)
+  uniqueUsers      Int      @default(0)
+  avgExecutionTime Int?     @default(0)
+  topQueries       Json?
+  topUsers         Json?
+  noResultsCount   Int      @default(0)
+  createdAt        DateTime @default(now())
+}
+
+model smtp_configs {
+  id               Int                @id @default(autoincrement())
+  name             String
+  host             String
+  port             Int
+  username         String
+  password         String
+  encryption       String
+  fromEmail        String
+  fromName         String
+  isDefault        Boolean            @default(false)
+  isActive         Boolean            @default(true)
+  maxPerHour       Int                @default(100)
+  maxPerDay        Int                @default(1000)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  email_logs       email_logs[]
+  email_statistics email_statistics[]
+}
+
+model sync_logs {
+  id           Int       @id @default(autoincrement())
+  projectId    Int
+  syncType     String
+  status       String
+  startTime    DateTime  @default(now())
+  endTime      DateTime?
+  errorMessage String?
+  filesCount   Int?
+  projects     projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model system_cache {
+  id         Int       @id @default(autoincrement())
+  cacheKey   String    @unique
+  cacheValue Json
+  cacheType  String
+  expiresAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([cacheType, expiresAt])
+}
+
+model system_configs {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  value       String
+  description String?
+  category    String
+  isActive    Boolean  @default(true)
+  updatedBy   Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       users?   @relation(fields: [updatedBy], references: [id])
+}
+
+model task_approvals {
+  id             Int            @id @default(autoincrement())
+  taskId         Int
+  userId         Int
+  result         String
+  comments       String?
+  attachments    String[]
+  approvedAt     DateTime       @default(now())
+  workflow_tasks workflow_tasks @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  users          users          @relation(fields: [userId], references: [id])
+
+  @@unique([taskId, userId])
+}
+
+model task_dependencies {
+  id                                             Int    @id @default(autoincrement())
+  dependentTaskId                                Int
+  dependsOnTaskId                                Int
+  type                                           String @default("FS")
+  delay                                          Int    @default(0)
+  tasks_task_dependencies_dependentTaskIdTotasks tasks  @relation("task_dependencies_dependentTaskIdTotasks", fields: [dependentTaskId], references: [id], onDelete: Cascade)
+  tasks_task_dependencies_dependsOnTaskIdTotasks tasks  @relation("task_dependencies_dependsOnTaskIdTotasks", fields: [dependsOnTaskId], references: [id], onDelete: Cascade)
+
+  @@unique([dependentTaskId, dependsOnTaskId])
+}
+
+model quotations {
+  id                    Int       @id @default(autoincrement())
+  quotationNumber       String    @unique              // 报价编号 (Excel列9)
+  taskId                Int?                           // 关联的任务ID (可选)
+  projectId             Int?                           // 关联的项目ID (可选)
+  clientCompany         String                         // 客户公司
+  mineSiteName          String?                        // 矿区名称
+  contactPerson         String?                        // 联系人
+  contactCompany        String?                        // 联系公司(if not the Client)
+  mineral               String?                        // 矿物类型
+  projectManager        String?                        // 项目经理/负责人
+  requestDate           DateTime?                      // 请求日期
+  quotationDate         DateTime?                      // 报价提供日期
+  clientFeedback        String?                        // 客户反馈
+  status                String    @default("DRAFT")    // 报价状态: DRAFT/SENT/ACCEPTED/REJECTED/EXPIRED
+  amount                Decimal?  @db.Decimal(15, 2)   // 报价金额
+  currency              String    @default("AUD")      // 货币
+  validUntil            DateTime?                      // 有效期至
+  notes                 String?                        // 备注
+  attachmentPath        String?                        // 报价单附件路径
+  createdBy             Int                            // 创建人
+  approvedBy            Int?                           // 审批人
+  approvedAt            DateTime?                      // 审批时间
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  tasks                 tasks?    @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  projects              projects? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  users_quotations_createdByTousers users  @relation("quotations_createdByTousers", fields: [createdBy], references: [id])
+  users_quotations_approvedByTousers users? @relation("quotations_approvedByTousers", fields: [approvedBy], references: [id])
+
+  @@index([quotationNumber])
+  @@index([taskId])
+  @@index([projectId])
+  @@index([status])
+  @@index([clientCompany])
+}
+
+model task_files {
+  id              Int          @id @default(autoincrement())
+  taskId          Int
+  fileName        String
+  fileType        FileType
+  fileSize        BigInt
+  mimeType        String
+  localPath       String
+  oneDrivePath    String?
+  relativePath    String
+  md5Hash         String
+  uploadStatus    UploadStatus @default(PENDING)
+  uploadProgress  Float        @default(0)
+  uploadSessionId String?      @unique
+  totalChunks     Int?
+  uploadedChunks  Json?
+  chunkSize       Int          @default(5242880)
+  uploadedBy      Int
+  description     String?
+  tags            String[]
+  version         Int          @default(1)
+  isPublic        Boolean      @default(false)
+  downloadCount   Int          @default(0)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  tasks           tasks        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  users           users        @relation(fields: [uploadedBy], references: [id])
+
+  @@index([md5Hash])
+  @@index([taskId, fileType])
+  @@index([uploadSessionId])
+  @@index([uploadStatus])
+  @@index([uploadedBy])
+}
+
+model tasks {
+  id                                                         Int                 @id @default(autoincrement())
+  taskCode                                                   String              @unique
+  title                                                      String
+  description                                                String?
+  jobType                                                    JobType             @default(AP) // 任务类型: AC/AP/AQ/AS/AT
+  mineral                                                    String?             // 矿物类型 (Excel列6)
+  status                                                     TaskStatus          @default(TODO)
+  priority                                                   Priority            @default(MEDIUM)
+  approvalStatus                                             ApprovalStatus      @default(DRAFT)
+  approvedBy                                                 Int?                // 审批人ID
+  approvedAt                                                 DateTime?           // 审批时间
+  tags                                                       String?
+  projectId                                                  Int
+  parentTaskId                                               Int?
+  authorUserId                                               Int
+  assignedUserId                                             Int?
+  startDate                                                  DateTime?
+  dueDate                                                    DateTime?
+  completedAt                                                DateTime?
+  estimatedHours                                             Int?
+  actualHours                                                Int?
+  progress                                                   Int                 @default(0)
+  localFolderPath                                            String?
+  oneDriveFolderPath                                         String?
+  folderCreated                                              Boolean             @default(false)
+  excelRowNumber                                             Int?
+  syncStatus                                                 String              @default("NOT_SYNCED")
+  deleteRequestedBy                                          Int?                // 删除请求者ID
+  deleteRequestedAt                                          DateTime?           // 删除请求时间
+  deleteReason                                               String?             // 删除原因
+  // 原始Excel扩展字段
+  contactCompany                                             String?             // Excel列7: Contact Company(if not the Client)
+  projectManager                                             String?             // Excel列8: Project Manager (实际负责人名字)
+  quotationNumber                                            String?             // Excel列9: Quotation/Record Number(HQ)
+  requestDate                                                DateTime?           // Excel列10: Request Date
+  quotationDate                                              DateTime?           // Excel列11: Quotation Provided Date
+  clientFeedback                                             String?             // Excel列12: Feedback From Client
+  excelComment                                               String?             // Excel列13: Comment (区别于description)
+  originalOneDrivePath                                       String?             // Excel列15: Link (原始OneDrive链接)
+  createdAt                                                  DateTime            @default(now())
+  updatedAt                                                  DateTime            @updatedAt
+  task_dependencies_task_dependencies_dependentTaskIdTotasks task_dependencies[] @relation("task_dependencies_dependentTaskIdTotasks")
+  task_dependencies_task_dependencies_dependsOnTaskIdTotasks task_dependencies[] @relation("task_dependencies_dependsOnTaskIdTotasks")
+  task_files                                                 task_files[]
+  quotations                                                 quotations[]
+
+  users_tasks_approvedByTousers                              users?              @relation("tasks_approvedByTousers", fields: [approvedBy], references: [id])
+  users_tasks_assignedUserIdTousers                          users?              @relation("tasks_assignedUserIdTousers", fields: [assignedUserId], references: [id])
+  users_tasks_authorUserIdTousers                            users               @relation("tasks_authorUserIdTousers", fields: [authorUserId], references: [id])
+  users_tasks_deleteRequestedByTousers                       users?              @relation("tasks_deleteRequestedByTousers", fields: [deleteRequestedBy], references: [id])
+  tasks                                                      tasks?              @relation("tasksTotasks", fields: [parentTaskId], references: [id])
+  other_tasks                                                tasks[]             @relation("tasksTotasks")
+  projects                                                   projects            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([approvalStatus])
+  @@index([assignedUserId, status])
+  @@index([createdAt])
+  @@index([excelRowNumber])
+  @@index([jobType])
+  @@index([projectId, approvalStatus])
+  @@index([projectId, jobType])
+  @@index([projectId, status])
+  @@index([status, dueDate])
+  @@index([syncStatus])
+}
+
+model teams {
+  id                           Int             @id @default(autoincrement())
+  name                         String
+  description                  String?
+  managerId                    Int?
+  isActive                     Boolean         @default(true)
+  createdAt                    DateTime        @default(now())
+  updatedAt                   DateTime            @updatedAt
+  project_teams                project_teams[]
+  projects                     projects[]
+  users_teams_managerIdTousers users?          @relation("teams_managerIdTousers", fields: [managerId], references: [id])
+  users_users_teamIdToteams    users[]         @relation("users_teamIdToteams")
+}
+
+model test_monitoring {
+  id            Int        @id @default(autoincrement())
+  stepId        Int
+  parameterName String
+  value         Decimal    @db.Decimal(15, 6)
+  unit          String?
+  isNormal      Boolean    @default(true)
+  alertMessage  String?
+  recordedAt    DateTime   @default(now())
+  recordedBy    Int?
+  test_steps    test_steps @relation(fields: [stepId], references: [id], onDelete: Cascade)
+}
+
+model test_steps {
+  id                                   Int               @id @default(autoincrement())
+  testworkId                           Int
+  stepOrder                            Int
+  stepName                             String
+  description                          String?
+  status                               TaskStatus        @default(TODO)
+  operatorId                           Int?
+  supervisorId                         Int?
+  parameters                           Json?
+  results                              Json?
+  startTime                            DateTime?
+  endTime                              DateTime?
+  notes                                String?
+  createdAt                            DateTime          @default(now())
+  updatedAt                            DateTime
+  test_monitoring                      test_monitoring[]
+  users_test_steps_operatorIdTousers   users?            @relation("test_steps_operatorIdTousers", fields: [operatorId], references: [id])
+  users_test_steps_supervisorIdTousers users?            @relation("test_steps_supervisorIdTousers", fields: [supervisorId], references: [id])
+  testwork_projects                    testwork_projects @relation(fields: [testworkId], references: [id], onDelete: Cascade)
+}
+
+model testwork_projects {
+  id              Int          @id @default(autoincrement())
+  projectId       Int          @unique
+  testType        TestType
+  sampleCode      String       @unique
+  sampleSource    String?
+  testObjective   String?
+  methodology     String?
+  status          TestStatus   @default(PLANNING)
+  leadScientistId Int?
+  laboratory      String?
+  startDate       DateTime?
+  endDate         DateTime?
+  budget          Decimal?     @db.Decimal(10, 2)
+  notes           String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime
+  test_steps      test_steps[]
+  users           users?       @relation(fields: [leadScientistId], references: [id])
+  projects        projects     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model user_notification_settings {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique
+  emailEnabled Boolean  @default(true)
+  smsEnabled   Boolean  @default(false)
+  pushEnabled  Boolean  @default(true)
+  inAppEnabled Boolean  @default(true)
+  typeSettings Json     @default("{}")
+  quietHours   Json?
+  updatedAt    DateTime @default(now())
+  users        users    @relation(fields: [userId], references: [id])
+}
+
+model user_permissions {
+  id                                       Int                    @id @default(autoincrement())
+  userId                                   Int
+  permissionId                             Int
+  scope                                    PermissionScope
+  resourceType                             ResourceType?
+  resourceId                               Int?
+  granted                                  Boolean                @default(true)
+  assignedAt                               DateTime               @default(now())
+  expiresAt                                DateTime?
+  assignedBy                               Int?
+  reason                                   String?
+  users_user_permissions_assignedByTousers users?                 @relation("user_permissions_assignedByTousers", fields: [assignedBy], references: [id])
+  permission_definitions                   permission_definitions @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  users_user_permissions_userIdTousers     users                  @relation("user_permissions_userIdTousers", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, permissionId, scope, resourceType, resourceId])
+}
+
+model user_roles {
+  id           Int             @id @default(autoincrement())
+  userId       Int
+  roleId       Int
+  scope        PermissionScope @default(SYSTEM)
+  resourceType ResourceType?
+  resourceId   Int?
+  assignedAt   DateTime        @default(now())
+  expiresAt    DateTime?
+  isActive     Boolean         @default(true)
+  roles        roles           @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  users        users           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId, scope, resourceType, resourceId])
+}
+
+model users {
+  id                                                          Int                         @id @default(autoincrement())
+  cognitoId                                                   String                      @unique
+  username                                                    String                      @unique
+  email                                                       String                      @unique
+  password                                                    String
+  realName                                                    String?
+  phone                                                       String?
+  profilePictureUrl                                           String?
+  departmentId                                                Int?
+  position                                                    String?
+  employeeId                                                  String?                     @unique
+  teamId                                                      Int?
+  status                                                      UserStatus                  @default(ACTIVE)
+  role                                                        UserRole                    @default(USER)
+  lastNotificationReadTime                                    DateTime?
+  lastLoginAt                                                 DateTime?
+  oneDriveLocalPath                                           String?
+  createdAt                                                   DateTime                    @default(now())
+  updatedAt                                                   DateTime @updatedAt
+  attachments                                                 attachments[]
+  audit_logs                                                  audit_logs[]
+  backup_records                                              backup_records[]
+  chat_messages                                               chat_messages[]
+  chat_room_members                                           chat_room_members[]
+  comment_mentions                                            comment_mentions[]
+  comments                                                    comments[]
+  departments_departments_managerIdTousers                    departments[]               @relation("departments_managerIdTousers")
+  email_blacklist                                             email_blacklist[]
+  email_logs                                                  email_logs[]
+  email_templates_email_templates_createdByTousers            email_templates[]           @relation("email_templates_createdByTousers")
+  email_templates_email_templates_updatedByTousers            email_templates[]           @relation("email_templates_updatedByTousers")
+  error_logs_error_logs_resolvedByTousers                     error_logs[]                @relation("error_logs_resolvedByTousers")
+  error_logs_error_logs_userIdTousers                         error_logs[]                @relation("error_logs_userIdTousers")
+  notifications_notifications_recipientIdTousers              notifications[]             @relation("notifications_recipientIdTousers")
+  notifications_notifications_senderIdTousers                 notifications[]             @relation("notifications_senderIdTousers")
+  password_reset_tokens                                       password_reset_tokens[]
+  performance_logs                                            performance_logs[]
+  project_files                                               project_files[]
+  project_members                                             project_members[]
+  projects                                                    projects[]
+  refresh_tokens                                              refresh_tokens[]
+  resource_permissions                                        resource_permissions[]
+  search_logs                                                 search_logs[]
+  system_configs                                              system_configs[]
+  task_approvals                                              task_approvals[]
+  task_files                                                  task_files[]
+  tasks_tasks_approvedByTousers                               tasks[]                     @relation("tasks_approvedByTousers")
+  tasks_tasks_assignedUserIdTousers                           tasks[]                     @relation("tasks_assignedUserIdTousers")
+  tasks_tasks_authorUserIdTousers                             tasks[]                     @relation("tasks_authorUserIdTousers")
+  tasks_tasks_deleteRequestedByTousers                        tasks[]                     @relation("tasks_deleteRequestedByTousers")
+  quotations_quotations_createdByTousers                      quotations[]                @relation("quotations_createdByTousers")
+  quotations_quotations_approvedByTousers                     quotations[]                @relation("quotations_approvedByTousers")
+  teams_teams_managerIdTousers                                teams[]                     @relation("teams_managerIdTousers")
+  test_steps_test_steps_operatorIdTousers                     test_steps[]                @relation("test_steps_operatorIdTousers")
+  test_steps_test_steps_supervisorIdTousers                   test_steps[]                @relation("test_steps_supervisorIdTousers")
+  testwork_projects                                           testwork_projects[]
+  user_notification_settings                                  user_notification_settings?
+  user_permissions_user_permissions_assignedByTousers         user_permissions[]          @relation("user_permissions_assignedByTousers")
+  user_permissions_user_permissions_userIdTousers             user_permissions[]          @relation("user_permissions_userIdTousers")
+  user_roles                                                  user_roles[]
+  departments_users_departmentIdTodepartments                 departments?                @relation("users_departmentIdTodepartments", fields: [departmentId], references: [id])
+  teams_users_teamIdToteams                                   teams?                      @relation("users_teamIdToteams", fields: [teamId], references: [id])
+  workflow_delegations_workflow_delegations_fromUserIdTousers workflow_delegations[]      @relation("workflow_delegations_fromUserIdTousers")
+  workflow_delegations_workflow_delegations_toUserIdTousers   workflow_delegations[]      @relation("workflow_delegations_toUserIdTousers")
+  workflow_instances                                          workflow_instances[]
+  workflow_logs                                               workflow_logs[]
+  workflow_tasks                                              workflow_tasks[]
+  workflow_templates                                          workflow_templates[]
+}
+
+model workflow_delegations {
+  id                                           Int            @id @default(autoincrement())
+  taskId                                       Int
+  fromUserId                                   Int
+  toUserId                                     Int
+  reason                                       String?
+  startTime                                    DateTime       @default(now())
+  endTime                                      DateTime?
+  isActive                                     Boolean        @default(true)
+  users_workflow_delegations_fromUserIdTousers users          @relation("workflow_delegations_fromUserIdTousers", fields: [fromUserId], references: [id])
+  workflow_tasks                               workflow_tasks @relation(fields: [taskId], references: [id])
+  users_workflow_delegations_toUserIdTousers   users          @relation("workflow_delegations_toUserIdTousers", fields: [toUserId], references: [id])
+}
+
+model workflow_instances {
+  id                 Int                    @id @default(autoincrement())
+  templateId         Int
+  templateVersion    Int
+  businessType       String
+  businessId         Int
+  projectId          Int?
+  title              String
+  urgency            Priority               @default(MEDIUM)
+  status             WorkflowInstanceStatus @default(RUNNING)
+  currentNodes       String[]
+  completedNodes     String[]
+  startUserId        Int
+  startTime          DateTime               @default(now())
+  endTime            DateTime?
+  deadline           DateTime?
+  variables          Json?
+  snapshot           Json
+  projects           projects?              @relation(fields: [projectId], references: [id])
+  users              users                  @relation(fields: [startUserId], references: [id])
+  workflow_templates workflow_templates     @relation(fields: [templateId], references: [id])
+  workflow_logs      workflow_logs[]
+  workflow_tasks     workflow_tasks[]
+
+  @@index([businessType, businessId])
+  @@index([projectId, status])
+  @@index([startUserId, status])
+}
+
+model workflow_logs {
+  id                 Int                @id @default(autoincrement())
+  instanceId         Int
+  taskId             Int?
+  userId             Int
+  action             String
+  details            Json?
+  createdAt          DateTime           @default(now())
+  workflow_instances workflow_instances @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+  users              users              @relation(fields: [userId], references: [id])
+
+  @@index([instanceId, createdAt])
+}
+
+model workflow_tasks {
+  id                   Int                    @id @default(autoincrement())
+  instanceId           Int
+  nodeId               String
+  nodeName             String
+  taskType             WorkflowTaskType
+  assignmentType       String
+  assignmentValue      String
+  candidateUsers       Int[]
+  actualAssignee       Int?
+  approvalType         String                 @default("single")
+  requiredCount        Int?
+  status               WorkflowTaskStatus     @default(PENDING)
+  startTime            DateTime               @default(now())
+  endTime              DateTime?
+  deadline             DateTime?
+  result               String?
+  comments             String?
+  attachments          String[]
+  conditionExpression  String?
+  priority             Priority               @default(MEDIUM)
+  task_approvals       task_approvals[]
+  workflow_delegations workflow_delegations[]
+  users                users?                 @relation(fields: [actualAssignee], references: [id])
+  workflow_instances   workflow_instances     @relation(fields: [instanceId], references: [id], onDelete: Cascade)
+
+  @@index([actualAssignee, status])
+  @@index([instanceId, status])
+}
+
+model workflow_templates {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  description        String?
+  category           String
+  version            Int                  @default(1)
+  isActive           Boolean              @default(true)
+  isDefault          Boolean              @default(false)
+  nodeData           Json
+  edgeData           Json
+  canvasConfig       Json?
+  startNodeId        String
+  endNodeIds         String[]
+  variables          Json?
+  createdById        Int
+  departmentId       Int?
+  roleIds            Int[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime @updatedAt
+  workflow_instances workflow_instances[]
+  users              users                @relation(fields: [createdById], references: [id])
+  departments        departments?         @relation(fields: [departmentId], references: [id])
+
+  @@unique([category, name, version])
+}
+
+enum ActionType {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  MANAGE
+  EXECUTE
+  APPROVE
+  SHARE
+  EXPORT
+  ASSIGN
+  MONITOR
+  ANALYZE
+}
+
+enum ApprovalStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+  DELETE_PENDING
+}
+
+enum FileType {
+  DOCUMENT
+  CAD_DRAWING
+  IMAGE
+  VIDEO
+  DATA
+  ARCHIVE
+  OTHER
+}
+
+enum JobType {
+  AC
+  AP
+  AQ
+  AS
+  AT
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  SMS
+  PUSH
+}
+
+enum NotificationType {
+  SYSTEM_ANNOUNCEMENT
+  PROJECT_CREATED
+  PROJECT_STATUS_CHANGE
+  PROJECT_DEADLINE
+  PROJECT_MEMBER_ADDED
+  TASK_ASSIGNED
+  TASK_STATUS_CHANGE
+  TASK_DEADLINE
+  TASK_OVERDUE
+  COMMENT_MENTION
+  COMMENT_REPLY
+  CHAT_MESSAGE
+  CHAT_MENTION
+  APPROVAL_PENDING
+  APPROVAL_APPROVED
+  APPROVAL_REJECTED
+  TEST_STARTED
+  TEST_COMPLETED
+  TEST_ALERT
+}
+
+enum Permission {
+  SYSTEM_ADMIN
+  USER_MANAGE
+  ROLE_MANAGE
+  TEAM_MANAGE
+  PROJECT_CREATE
+  PROJECT_READ
+  PROJECT_UPDATE
+  PROJECT_DELETE
+  PROJECT_MEMBER_MANAGE
+  TASK_CREATE
+  TASK_READ
+  TASK_UPDATE
+  TASK_DELETE
+  TASK_ASSIGN
+  TESTWORK_CREATE
+  TESTWORK_READ
+  TESTWORK_UPDATE
+  TESTWORK_DELETE
+  TESTWORK_EXECUTE
+  TESTWORK_MONITOR
+  TESTWORK_ANALYZE
+  WORKFLOW_CREATE
+  WORKFLOW_APPROVE
+  WORKFLOW_DELEGATE
+  WORKFLOW_MANAGE
+  FILE_UPLOAD
+  FILE_DOWNLOAD
+  FILE_DELETE
+  FILE_SHARE
+  COMMENT_CREATE
+  COMMENT_READ
+  COMMENT_DELETE
+  CHAT_PARTICIPATE
+  CHAT_MANAGE
+  NOTIFICATION_SEND
+  NOTIFICATION_MANAGE
+  REPORT_VIEW
+  REPORT_EXPORT
+  REPORT_MANAGE
+  MINE_ZONE_CREATE
+  MINE_ZONE_READ
+  MINE_ZONE_UPDATE
+  MINE_ZONE_DELETE
+}
+
+enum PermissionScope {
+  SYSTEM
+  ORGANIZATION
+  PROJECT
+  TEAM
+  PERSONAL
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
+enum ResourceType {
+  SYSTEM
+  PROJECT
+  TASK
+  TESTWORK
+  FILE
+  WORKFLOW
+  USER
+  TEAM
+  COMMENT
+  CHAT
+  NOTIFICATION
+  REPORT
+  MINE_ZONE
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+  CANCELLED
+}
+
+enum TeamRole {
+  PRIMARY
+  COLLABORATOR
+  CONSULTANT
+  SUPPORT
+  REVIEWER
+}
+
+enum TestStatus {
+  PLANNING
+  IN_PROGRESS
+  ANALYSIS
+  COMPLETED
+  CANCELLED
+}
+
+enum TestType {
+  LABORATORY
+  PILOT
+  INDUSTRIAL
+  OPTIMIZATION
+}
+
+enum UploadStatus {
+  PENDING
+  UPLOADING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum UserRole {
+  USER     // Basic user with standard permissions
+  MANAGER  // Manager with project and team management permissions
+  ADMIN    // Administrator with full system access
+}
+
+enum WorkflowInstanceStatus {
+  RUNNING
+  COMPLETED
+  TERMINATED
+  SUSPENDED
+  ERROR
+}
+
+enum WorkflowStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum WorkflowTaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  DELEGATED
+  TRANSFERRED
+}
+
+enum WorkflowTaskType {
+  START
+  APPROVAL
+  NOTIFICATION
+  SCRIPT
+  PARALLEL
+  EXCLUSIVE
+  INCLUSIVE
+  END
+}

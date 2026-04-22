@@ -1,0 +1,99 @@
+HELO:<[127.0.0.1]>
+FROM:<noreply@longi.com>
+TO:<testuser@longi.com>
+
+From: =?UTF-8?B?TG9uZ2npobnnm67nrqHnkIbns7vnu58=?= <noreply@longi.com>
+To: testuser@longi.com
+Subject: =?UTF-8?B?6YeN572u5a+G56CBIC0gTG9uZ2npobnnm67nrqE=?=
+ =?UTF-8?B?55CG57O757uf?=
+Message-ID: <38741d20-4b16-61d7-66cc-b8685a9c8740@longi.com>
+Date: Thu, 02 Oct 2025 03:19:37 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--_NmP-cbba05677cda48d4-Part_1"
+
+----_NmP-cbba05677cda48d4-Part_1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+
+CuaCqOWlvSwgdGVzdHVzZXIsCgrmiJHku6zmlLbliLDkuobph43nva7mgqjotKbmiLflr4bnoIHn
+moTor7fmsYLjgIIKCuivt+iuv+mXruS7peS4i+mTvuaOpemHjee9ruWvhueggToKaHR0cDovL2xv
+Y2FsaG9zdDozMDAwL3Jlc2V0LXBhc3N3b3JkP3Rva2VuPTY5MWM3NGI4MTg3ODkyNDczOGViM2Nm
+YzlmNDBkZWIzYjIwODg5YjMzNjBmMDY1NTZkMjlhYWYzODc5NjVlYTYKCuivpemTvuaOpeacieaV
+iOacn+S4ujHlsI/ml7bjgIIKCuWmguaenOaCqOayoeacieivt+axgumHjee9ruWvhueggSzor7fl
+v73nlaXmraTpgq7ku7bjgIIKCsKpIDIwMjQgTG9uZ2npobnnm67nrqHnkIbns7vnu58KICAgICAg
+
+----_NmP-cbba05677cda48d4-Part_1
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset=3D"utf-8">
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color:=
+ #333; }
+            .container { max-width: 600px; margin: 0 auto; =
+padding: 20px; }
+            .header { background: #1890ff; color: white; =
+padding: 20px; text-align: center; border-radius: 5px 5px 0 0; }
+            .content { background: #f9f9f9; padding: 30px; border-radius: 0=
+ 0 5px 5px; }
+            .button { display: inline-block; padding: 12px =
+24px; background: #1890ff; color: white; text-decoration: none; =
+border-radius: 4px; margin: 20px 0; }
+            .footer { text-align: =
+center; margin-top: 20px; font-size: 12px; color: #999; }
+          </style>
+        </head>
+        <body>
+          <div =
+class=3D"container">
+            <div class=3D"header">
+              <h1>=E9=87=8D=E7=BD=AE=E5=AF=86=E7=A0=81</h1>
+            </div>
+            <div class=3D"content">
+              <p>=E6=82=A8=E5=A5=BD, <strong>testuser</strong>,</p>
+              <p>=E6=88=91=E4=BB=AC=E6=94=B6=E5=88=B0=E4=BA=86=E9=87=8D=
+=E7=BD=AE=E6=82=A8=E8=B4=A6=E6=88=B7=E5=AF=86=E7=A0=81=E7=9A=84=E8=AF=B7=
+=E6=B1=82=E3=80=82=E7=82=B9=E5=87=BB=E4=B8=8B=E6=96=B9=E6=8C=89=E9=92=AE=
+=E5=8F=AF=E4=BB=A5=E9=87=8D=E7=BD=AE=E5=AF=86=E7=A0=81:</p>
+              <p style=3D"text-align: center;">
+                <a =
+href=3D"http://localhost:3000/reset-password?token=3D691c74b81878924738eb3c=
+fc9f40deb3b20889b3360f06556d29aaf387965ea6" class=3D"button">=E9=87=8D=
+=E7=BD=AE=E5=AF=86=E7=A0=81</a>
+              </p>
+              =
+<p>=E6=88=96=E8=80=85=E5=A4=8D=E5=88=B6=E4=BB=A5=E4=B8=8B=E9=93=BE=
+=E6=8E=A5=E5=88=B0=E6=B5=8F=E8=A7=88=E5=99=A8:</p>
+              <p =
+style=3D"background: #fff; padding: 10px; border: 1px solid #ddd; =
+word-break: break-all;">http://localhost:3000/reset-password?=
+token=3D691c74b81878924738eb3cfc9f40deb3b20889b3360f06556d29aaf387965ea6</p=
+>
+              <p><strong>=E6=B3=A8=E6=84=8F:</strong></p>
+              <ul>
+                <li>=E8=AF=A5=E9=93=BE=E6=8E=A5=
+=E6=9C=89=E6=95=88=E6=9C=9F=E4=B8=BA <strong>1=E5=B0=8F=E6=97=B6</strong></=
+li>
+                <li>=E5=A6=82=E6=9E=9C=E6=82=A8=E6=B2=A1=E6=9C=89=
+=E8=AF=B7=E6=B1=82=E9=87=8D=E7=BD=AE=E5=AF=86=E7=A0=81,=
+=E8=AF=B7=E5=BF=BD=E7=95=A5=E6=AD=A4=E9=82=AE=E4=BB=B6</li>
+                <li>=E4=B8=BA=E4=BA=86=E5=AE=89=E5=85=A8,=
+=E8=AF=B7=E5=8B=BF=E5=B0=86=E6=AD=A4=E9=93=BE=E6=8E=A5=E5=88=86=E4=BA=AB=
+=E7=BB=99=E4=BB=96=E4=BA=BA</li>
+              </ul>
+            </div>
+            <div class=3D"footer">
+              <p>=C2=A9 2024 =
+Longi=E9=A1=B9=E7=9B=AE=E7=AE=A1=E7=90=86=E7=B3=BB=E7=BB=9F. =
+=E4=BF=9D=E7=95=99=E6=89=80=E6=9C=89=E6=9D=83=E5=88=A9.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+     =20
+----_NmP-cbba05677cda48d4-Part_1--

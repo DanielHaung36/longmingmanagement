@@ -1,0 +1,13 @@
+namespace: longi-prod
+
+portal:
+  image: harbor.longi.local:30003/longi/longi-portal:latest
+  replicas: 1
+  port: 80
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi

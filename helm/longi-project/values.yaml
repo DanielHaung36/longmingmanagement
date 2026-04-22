@@ -1,0 +1,233 @@
+# Longi 项目管理系统 - Helm 配置文件
+# 使用: helm install longi-project ./helm/longi-project -n longi-prod
+
+# 全局配置
+global:
+  # 命名空间
+  namespace: longi-prod
+  
+  # 存储配置
+  storageClass: longi-local-storage
+  storagePath: /mnt/longi-storage
+  
+  # 镜像仓库
+  imageRegistry: harbor.longi.local:30003
+  imagePullPolicy: Always
+  
+  # 域名配置
+  domain: longiproject.com
+
+# PostgreSQL 数据库
+postgresql:
+  enabled: true
+  replicaCount: 1
+  
+  image:
+    repository: postgres
+    tag: "15"
+  
+  auth:
+    username: postgres
+    password: superadminpass
+    databases:
+      - projectmanagement
+      - inventory
+  
+  persistence:
+    enabled: true
+    size: 50Gi
+    path: /data/postgres
+  
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "2Gi"
+      cpu: "2000m"
+  
+  service:
+    type: ClusterIP
+    port: 5432
+
+# Redis 缓存
+redis:
+  enabled: true
+  
+  image:
+    repository: redis
+    tag: "7-alpine"
+  
+  persistence:
+    enabled: true
+    size: 10Gi
+    path: /data/redis
+  
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  
+  service:
+    type: ClusterIP
+    port: 6379
+
+# 后端服务
+server:
+  enabled: true
+  replicaCount: 1
+  
+  image:
+    repository: longi-harbor.local/longi/server
+    tag: latest
+  
+  env:
+    DATABASE_URL: "postgresql://postgres:superadminpass@postgres:5432/projectmanagement?schema=public"
+    INVENTORY_DATABASE_URL: "postgresql://postgres:superadminpass@postgres:5432/inventory?schema=public"
+    REDIS_URL: "redis://redis:6379"
+    NODE_ENV: "production"
+    PORT: "8080"
+    CLIENT_URL: "https://clientlongi.easytool.page"
+    # OneDrive 逻辑路径（通过 Graph API 访问，不再依赖本地挂载）
+    LOCAL_PROJECT_ROOT: "/mnt/project-data/Projects"
+    ONEDRIVE_PROJECT_ROOT: "03 Project Management/Client"
+    ONEDRIVE_ROOT: "03 Project Management"
+    TEMPLATE_ROOT: "05 Templates/Project Management Template"
+    EXCEL_LOCAL_PATH: "/mnt/project-data/Projects/LJA Job Register Rev3_Export.xlsx"
+    EXCEL_ONEDRIVE_PATH: "03 Project Management/LJA Job Register Rev3_Export.xlsx"
+    # Keycloak SSO
+    KEYCLOAK_URL: "https://auth.easytool.page"
+    KEYCLOAK_REALM: "longi"
+    KEYCLOAK_CLIENT_ID: "longi-web"
+    # KEYCLOAK_CLIENT_SECRET comes from keycloak-secret K8s secret
+  
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "2Gi"
+      cpu: "2000m"
+  
+  service:
+    type: ClusterIP
+    port: 8080
+  
+  # 健康检查
+  healthCheck:
+    enabled: true
+    path: /api/health
+    initialDelaySeconds: 30
+    periodSeconds: 10
+
+# 前端服务
+client:
+  enabled: true
+  replicaCount: 1
+  
+  image:
+    repository: longi-harbor.local/longi/client
+    tag: latest
+  
+  env:
+    NEXT_PUBLIC_API_BASE_URL: "http://server:8080"
+  
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  
+  service:
+    type: ClusterIP
+    port: 3000
+
+# Cloudflare Tunnel
+cloudflared:
+  enabled: true
+  
+  image:
+    repository: cloudflare/cloudflared
+    tag: latest
+  
+  tunnel:
+    token: ""  # 需要填写实际的 tunnel token
+  
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+
+# Traefik Ingress (可选)
+traefik:
+  enabled: false
+  
+  service:
+    type: LoadBalancer
+  
+  ports:
+    web:
+      port: 80
+    websecure:
+      port: 443
+
+# Harbor 镜像仓库 (可选)
+harbor:
+  enabled: false
+  
+  expose:
+    type: nodePort
+    tls:
+      enabled: true
+  
+  externalURL: https://longi-harbor.local
+  
+  persistence:
+    persistentVolumeClaim:
+      registry:
+        size: 100Gi
+      database:
+        size: 10Gi
+      redis:
+        size: 5Gi
+
+# 存储类配置
+storage:
+  enabled: true
+  
+  class:
+    name: longi-local-storage
+    provisioner: kubernetes.io/no-provisioner
+    volumeBindingMode: WaitForFirstConsumer
+    reclaimPolicy: Retain
+
+# 备份配置
+backup:
+  enabled: true
+  
+  schedule: "0 2 * * *"  # 每天凌晨2点
+  
+  retention:
+    daily: 7    # 保留7天
+    monthly: 12 # 保留12个月
+  
+  storage:
+    path: /mnt/longi-storage/data-backup
+
+# 监控配置 (可选)
+monitoring:
+  enabled: false
+  
+  prometheus:
+    enabled: false
+  
+  grafana:
+    enabled: false

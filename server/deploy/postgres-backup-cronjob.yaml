@@ -1,0 +1,214 @@
+---
+# PostgreSQL 自动备份 CronJob
+# 每天凌晨2点自动备份所有数据库，保留最近7天的备份
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-backup-script
+  namespace: longi-prod
+data:
+  backup.sh: |
+    #!/bin/bash
+    set -e
+
+    echo "========================================="
+    echo "PostgreSQL 自动备份开始"
+    echo "时间: $(date '+%Y-%m-%d %H:%M:%S')"
+    echo "========================================="
+
+    # 配置
+    BACKUP_DIR="/backups"
+    TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+    DATE=$(date +%Y%m%d)
+    RETENTION_DAYS=7
+
+    # 创建备份目录
+    mkdir -p "${BACKUP_DIR}/${DATE}"
+
+    # 获取所有数据库列表（排除系统数据库）
+    DATABASES=$(psql -U ${POSTGRES_USER} -t -c "SELECT datname FROM pg_database WHERE datname NOT IN ('postgres', 'template0', 'template1');")
+
+    echo "发现以下数据库需要备份:"
+    echo "${DATABASES}"
+    echo ""
+
+    # 备份每个数据库
+    for DB in ${DATABASES}; do
+        DB=$(echo ${DB} | xargs)  # 去除空格
+        if [ -n "$DB" ]; then
+            echo "正在备份数据库: ${DB}"
+            BACKUP_FILE="${BACKUP_DIR}/${DATE}/${DB}_${TIMESTAMP}.sql"
+
+            # 使用pg_dump备份
+            pg_dump -U ${POSTGRES_USER} -d ${DB} -F p -f "${BACKUP_FILE}"
+
+            # 压缩备份文件
+            gzip "${BACKUP_FILE}"
+
+            BACKUP_SIZE=$(du -h "${BACKUP_FILE}.gz" | cut -f1)
+            echo "✓ 备份完成: ${DB} (大小: ${BACKUP_SIZE})"
+            echo ""
+        fi
+    done
+
+    # 清理旧备份（保留最近N天）
+    echo "清理 ${RETENTION_DAYS} 天前的备份..."
+    find ${BACKUP_DIR} -type f -name "*.sql.gz" -mtime +${RETENTION_DAYS} -delete
+    find ${BACKUP_DIR} -type d -empty -delete
+
+    echo "========================================="
+    echo "备份完成！"
+    echo "备份位置: ${BACKUP_DIR}/${DATE}"
+    echo "========================================="
+
+    # 显示当前备份列表
+    echo ""
+    echo "当前所有备份:"
+    ls -lh ${BACKUP_DIR}/*/*.sql.gz 2>/dev/null || echo "无备份文件"
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup
+  namespace: longi-prod
+  labels:
+    app: postgres-backup
+    longi.io/critical: "true"
+  annotations:
+    longi.io/description: "Daily PostgreSQL backup job"
+spec:
+  # 每天凌晨2点执行备份
+  schedule: "0 2 * * *"
+
+  # 保留最近3次成功的任务历史
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+
+  # 如果上一次备份还没完成，不启动新的备份
+  concurrencyPolicy: Forbid
+
+  jobTemplate:
+    spec:
+      # 备份任务最多运行2小时
+      activeDeadlineSeconds: 7200
+
+      template:
+        metadata:
+          labels:
+            app: postgres-backup
+        spec:
+          restartPolicy: OnFailure
+
+          containers:
+          - name: backup
+            image: postgres:16-alpine
+
+            command:
+            - /bin/sh
+            - /scripts/backup.sh
+
+            env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: longi-secrets
+                  key: POSTGRES_USER
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: longi-secrets
+                  key: POSTGRES_PASSWORD
+            - name: PGHOST
+              value: postgres.longi-prod.svc.cluster.local
+            - name: PGPORT
+              value: "5432"
+
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backups
+            - name: backup-script
+              mountPath: /scripts
+
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "200m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+
+          volumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: postgres-backup-pvc
+          - name: backup-script
+            configMap:
+              name: postgres-backup-script
+              defaultMode: 0755
+
+---
+# 立即执行一次备份的Job（用于测试）
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postgres-backup-manual
+  namespace: longi-prod
+  labels:
+    app: postgres-backup
+spec:
+  ttlSecondsAfterFinished: 3600  # 完成后1小时自动清理
+  template:
+    metadata:
+      labels:
+        app: postgres-backup
+    spec:
+      restartPolicy: OnFailure
+
+      containers:
+      - name: backup
+        image: postgres:16-alpine
+
+        command:
+        - /bin/sh
+        - /scripts/backup.sh
+
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: longi-secrets
+              key: POSTGRES_USER
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: longi-secrets
+              key: POSTGRES_PASSWORD
+        - name: PGHOST
+          value: postgres.longi-prod.svc.cluster.local
+        - name: PGPORT
+          value: "5432"
+
+        volumeMounts:
+        - name: backup-storage
+          mountPath: /backups
+        - name: backup-script
+          mountPath: /scripts
+
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+
+      volumes:
+      - name: backup-storage
+        persistentVolumeClaim:
+          claimName: postgres-backup-pvc
+      - name: backup-script
+        configMap:
+          name: postgres-backup-script
+          defaultMode: 0755

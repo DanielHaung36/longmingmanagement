@@ -1,0 +1,19 @@
+# Dockerfile for building Windows Electron app on Linux
+# docker run --rm -v "$(pwd):/project" -w /project longi-builder npm run build:win 
+FROM electronuserland/builder:wine
+
+WORKDIR /project
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source files
+COPY . .
+
+# Set the default command to build for Windows
+CMD ["npm", "run", "build:win"]
+
+# The output will be in /project/dist/ (mount as volume)

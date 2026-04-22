@@ -1,0 +1,6 @@
+/**
+ * Task 路由配置
+ */
+declare const router: import("express-serve-static-core").Router;
+export default router;
+//# sourceMappingURL=taskRoutes.d.ts.map

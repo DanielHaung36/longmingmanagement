@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>库存总览 Demo</title>
+  <!-- 引入 Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <!-- 引入 Font Awesome 图标库（可选）-->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-p3bvwTlqB5gF/E+n4YzU6ZwZpL3HTJtzjMnxnuXODkuaHHR+af7Vu5j+IuwVcOgvv1uJ/YFvYFfCkRzj+TNsBQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <style>
+    /* 全局 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.5;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* 容器 */
+    .container {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    /* 标题 */
+    .page-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .page-subtitle {
+      font-size: 16px;
+      color: #4caf50;
+      margin-bottom: 24px;
+    }
+
+    /* 卡片网格 */
+    .grid {
+      display: grid;
+      gap: 20px;
+      /* 不同宽度下自适应列数 */
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    /* 卡片 */
+    .card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    /* 卡片头部 */
+    .card-header {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border-bottom: 1px solid #eee;
+    }
+    .card-icon {
+      font-size: 28px;
+      color: #4caf50;
+      margin-right: 12px;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 500;
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 卡片内容 */
+    .card-body {
+      flex-grow: 1;
+      padding: 16px;
+    }
+    .card-body p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+    .card-body p span {
+      font-weight: 500;
+      color: #333;
+    }
+    /* 库存为 0 时的高亮提示 */
+    .quantity-zero {
+      color: #d32f2f !important;
+    }
+
+    /* 卡片操作按钮 */
+    .card-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 12px 16px;
+      border-top: 1px solid #eee;
+      background-color: #fafafa;
+      border-radius: 0 0 8px 8px;
+    }
+    .card-actions button {
+      font-size: 14px;
+      padding: 6px 12px;
+      margin-left: 8px;
+      border: none;
+      background-color: #4caf50;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .card-actions button.edit-btn {
+      background-color: #1976d2;
+    }
+    .card-actions button:hover {
+      background-color: #388e3c;
+    }
+    .card-actions button.edit-btn:hover {
+      background-color: #1565c0;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 480px) {
+      .page-title {
+        font-size: 28px;
+      }
+      .card-title {
+        font-size: 16px;
+      }
+      .card-icon {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 页面标题 -->
+    <h1 class="page-title">Inventory Overview</h1>
+    <p class="page-subtitle">Managing the Inventory Items</p>
+
+    <!-- 卡片网格 -->
+    <div class="grid">
+      <!-- 卡片 1 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-cubes card-icon"></i>
+          <h2 class="card-title">盘式变压器油泵 (Pump)</h2>
+        </div>
+        <div class="card-body">
+          <p><span>型号：</span>MD-001</p>
+          <p><span>库存量：</span>10</p>
+          <p><span>位置：</span>Longi 仓库 / 华东-上海</p>
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn">
+            <i class="fas fa-edit" style="margin-right: 4px;"></i>编辑
+          </button>
+          <button>
+            <i class="fas fa-info-circle" style="margin-right: 4px;"></i>详情
+          </button>
+        </div>
+      </div>
+
+      <!-- 卡片 2 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-cubes card-icon"></i>
+          <h2 class="card-title">变压器油泵 (Pump)</h2>
+        </div>
+        <div class="card-body">
+          <p><span>型号：</span>MD-002</p>
+          <p><span>库存量：</span>5</p>
+          <p><span>位置：</span>Longi 仓库 / 华东-上海</p>
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn">
+            <i class="fas fa-edit" style="margin-right: 4px;"></i>编辑
+          </button>
+          <button>
+            <i class="fas fa-info-circle" style="margin-right: 4px;"></i>详情
+          </button>
+        </div>
+      </div>
+
+      <!-- 卡片 3 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-cubes card-icon"></i>
+          <h2 class="card-title">夹管阀 (Pinch valve)</h2>
+        </div>
+        <div class="card-body">
+          <p><span>型号：</span>MD-003</p>
+          <p><span>库存量：</span>20</p>
+          <p><span>位置：</span>Longi 仓库 / 华东-上海</p>
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn">
+            <i class="fas fa-edit" style="margin-right: 4px;"></i>编辑
+          </button>
+          <button>
+            <i class="fas fa-info-circle" style="margin-right: 4px;"></i>详情
+          </button>
+        </div>
+      </div>
+
+      <!-- 卡片 4：库存为 0，高亮显示 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-cubes card-icon"></i>
+          <h2 class="card-title">推杆 (Rod)</h2>
+        </div>
+        <div class="card-body">
+          <p><span>型号：</span>MD-004</p>
+          <p><span class="quantity-zero">库存量：</span><span class="quantity-zero">0 (缺货)</span></p>
+          <p><span>位置：</span>Longi 仓库 / 华东-上海</p>
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn">
+            <i class="fas fa-edit" style="margin-right: 4px;"></i>编辑
+          </button>
+          <button>
+            <i class="fas fa-info-circle" style="margin-right: 4px;"></i>详情
+          </button>
+        </div>
+      </div>
+
+      <!-- 卡片 5 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-cubes card-icon"></i>
+          <h2 class="card-title">拉力圆盘 (Welded Disc)</h2>
+        </div>
+        <div class="card-body">
+          <p><span>型号：</span>MD-005</p>
+          <p><span>库存量：</span>12</p>
+          <p><span>位置：</span>Longi 仓库 / 华东-上海</p>
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn">
+            <i class="fas fa-edit" style="margin-right: 4px;"></i>编辑
+          </button>
+          <button>
+            <i class="fas fa-info-circle" style="margin-right: 4px;"></i>详情
+          </button>
+        </div>
+      </div>
+
+      <!-- 卡片 6 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-cubes card-icon"></i>
+          <h2 class="card-title">横梁（方孔）</h2>
+        </div>
+        <div class="card-body">
+          <p><span>型号：</span>MD-006</p>
+          <p><span>库存量：</span>8</p>
+          <p><span>位置：</span>Longi 仓库 / 华东-上海</p>
+        </div>
+        <div class="card-actions">
+          <button class="edit-btn">
+            <i class="fas fa-edit" style="margin-right: 4px;"></i>编辑
+          </button>
+          <button>
+            <i class="fas fa-info-circle" style="margin-right: 4px;"></i>详情
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+apiVersion: v2
+name: longi-project
+description: Longi 矿业项目管理系统 - 完整部署 Chart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+
+keywords:
+  - longi
+  - project-management
+  - mining
+  - kubernetes
+
+maintainers:
+  - name: Longi Team
+    email: admin@longi.com
+
+dependencies:
+  # Harbor 镜像仓库 (可选)
+  - name: harbor
+    version: "1.14.0"
+    repository: https://helm.goharbor.io
+    condition: harbor.enabled

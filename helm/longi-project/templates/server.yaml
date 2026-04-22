@@ -1,0 +1,74 @@
+{{- if .Values.server.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: server
+spec:
+  replicas: {{ .Values.server.replicaCount }}
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server
+        image: {{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.server.service.port }}
+          name: http
+        env:
+        {{- range $key, $value := .Values.server.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        envFrom:
+        - secretRef:
+            name: azure-onedrive-secret
+            optional: true
+        resources:
+          requests:
+            memory: {{ .Values.server.resources.requests.memory }}
+            cpu: {{ .Values.server.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.server.resources.limits.memory }}
+            cpu: {{ .Values.server.resources.limits.cpu }}
+        {{- if .Values.server.healthCheck.enabled }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.server.healthCheck.path }}
+            port: {{ .Values.server.service.port }}
+          initialDelaySeconds: {{ .Values.server.healthCheck.initialDelaySeconds }}
+          periodSeconds: {{ .Values.server.healthCheck.periodSeconds }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.server.healthCheck.path }}
+            port: {{ .Values.server.service.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: server
+spec:
+  type: {{ .Values.server.service.type }}
+  ports:
+  - port: {{ .Values.server.service.port }}
+    targetPort: {{ .Values.server.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    app: server
+{{- end }}

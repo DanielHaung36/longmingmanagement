@@ -1,0 +1,53 @@
+[
+  { "code": "SYSTEM:ADMIN", "name": "系统管理", "resource": "SYSTEM", "action": "MANAGE", "scope": "SYSTEM", "isActive": true },
+  { "code": "USER:MANAGE", "name": "用户管理", "resource": "USER", "action": "MANAGE", "scope": "SYSTEM", "isActive": true },
+  { "code": "ROLE:MANAGE", "name": "角色管理", "resource": "USER", "action": "MANAGE", "scope": "SYSTEM", "isActive": true },
+  { "code": "TEAM:MANAGE", "name": "团队管理", "resource": "TEAM", "action": "MANAGE", "scope": "ORGANIZATION", "isActive": true },
+
+  { "code": "PROJECT:CREATE", "name": "创建项目", "resource": "PROJECT", "action": "CREATE", "scope": "ORGANIZATION", "isActive": true },
+  { "code": "PROJECT:READ", "name": "查看项目", "resource": "PROJECT", "action": "READ", "scope": "PROJECT", "isActive": true },
+  { "code": "PROJECT:UPDATE", "name": "编辑项目", "resource": "PROJECT", "action": "UPDATE", "scope": "PROJECT", "isActive": true },
+  { "code": "PROJECT:DELETE", "name": "删除项目", "resource": "PROJECT", "action": "DELETE", "scope": "PROJECT", "isActive": true },
+  { "code": "PROJECT:MEMBER_MANAGE", "name": "管理项目成员", "resource": "PROJECT", "action": "MANAGE", "scope": "PROJECT", "isActive": true },
+
+  { "code": "TASK:CREATE", "name": "创建任务", "resource": "TASK", "action": "CREATE", "scope": "PROJECT", "isActive": true },
+  { "code": "TASK:READ", "name": "查看任务", "resource": "TASK", "action": "READ", "scope": "PROJECT", "isActive": true },
+  { "code": "TASK:UPDATE", "name": "编辑任务", "resource": "TASK", "action": "UPDATE", "scope": "PROJECT", "isActive": true },
+  { "code": "TASK:DELETE", "name": "删除任务", "resource": "TASK", "action": "DELETE", "scope": "PROJECT", "isActive": true },
+  { "code": "TASK:ASSIGN", "name": "分配任务", "resource": "TASK", "action": "ASSIGN", "scope": "PROJECT", "isActive": true },
+
+  { "code": "TESTWORK:CREATE", "name": "创建试验", "resource": "TESTWORK", "action": "CREATE", "scope": "PROJECT", "isActive": true },
+  { "code": "TESTWORK:READ", "name": "查看试验", "resource": "TESTWORK", "action": "READ", "scope": "PROJECT", "isActive": true },
+  { "code": "TESTWORK:UPDATE", "name": "编辑试验", "resource": "TESTWORK", "action": "UPDATE", "scope": "PROJECT", "isActive": true },
+  { "code": "TESTWORK:DELETE", "name": "删除试验", "resource": "TESTWORK", "action": "DELETE", "scope": "PROJECT", "isActive": true },
+  { "code": "TESTWORK:EXECUTE", "name": "执行试验", "resource": "TESTWORK", "action": "EXECUTE", "scope": "PROJECT", "isActive": true },
+  { "code": "TESTWORK:MONITOR", "name": "监控试验", "resource": "TESTWORK", "action": "MONITOR", "scope": "PROJECT", "isActive": true },
+  { "code": "TESTWORK:ANALYZE", "name": "分析试验", "resource": "TESTWORK", "action": "ANALYZE", "scope": "PROJECT", "isActive": true },
+
+  { "code": "WORKFLOW:CREATE", "name": "创建审批流程", "resource": "WORKFLOW", "action": "CREATE", "scope": "ORGANIZATION", "isActive": true },
+  { "code": "WORKFLOW:APPROVE", "name": "审批", "resource": "WORKFLOW", "action": "APPROVE", "scope": "PROJECT", "isActive": true },
+  { "code": "WORKFLOW:MANAGE", "name": "管理审批模板", "resource": "WORKFLOW", "action": "MANAGE", "scope": "ORGANIZATION", "isActive": true },
+
+  { "code": "FILE:UPLOAD", "name": "上传文件", "resource": "FILE", "action": "CREATE", "scope": "PROJECT", "isActive": true },
+  { "code": "FILE:DOWNLOAD", "name": "下载文件", "resource": "FILE", "action": "READ", "scope": "PROJECT", "isActive": true },
+  { "code": "FILE:DELETE", "name": "删除文件", "resource": "FILE", "action": "DELETE", "scope": "PROJECT", "isActive": true },
+  { "code": "FILE:SHARE", "name": "分享文件", "resource": "FILE", "action": "SHARE", "scope": "PROJECT", "isActive": true },
+
+  { "code": "COMMENT:CREATE", "name": "发表评论", "resource": "COMMENT", "action": "CREATE", "scope": "PROJECT", "isActive": true },
+  { "code": "COMMENT:READ", "name": "查看评论", "resource": "COMMENT", "action": "READ", "scope": "PROJECT", "isActive": true },
+  { "code": "COMMENT:DELETE", "name": "删除评论", "resource": "COMMENT", "action": "DELETE", "scope": "PROJECT", "isActive": true },
+  { "code": "CHAT:PARTICIPATE", "name": "参与聊天", "resource": "CHAT", "action": "CREATE", "scope": "TEAM", "isActive": true },
+  { "code": "CHAT:MANAGE", "name": "管理聊天室", "resource": "CHAT", "action": "MANAGE", "scope": "TEAM", "isActive": true },
+
+  { "code": "REPORT:VIEW", "name": "查看报表", "resource": "REPORT", "action": "READ", "scope": "ORGANIZATION", "isActive": true },
+  { "code": "REPORT:EXPORT", "name": "导出报表", "resource": "REPORT", "action": "EXPORT", "scope": "ORGANIZATION", "isActive": true },
+  { "code": "REPORT:MANAGE", "name": "管理报表模板", "resource": "REPORT", "action": "MANAGE", "scope": "ORGANIZATION", "isActive": true },
+
+  { "code": "MINE_ZONE:CREATE", "name": "创建矿区", "resource": "MINE_ZONE", "action": "CREATE", "scope": "ORGANIZATION", "isActive": true },
+  { "code": "MINE_ZONE:READ", "name": "查看矿区", "resource": "MINE_ZONE", "action": "READ", "scope": "ORGANIZATION", "isActive": true },
+  { "code": "MINE_ZONE:UPDATE", "name": "编辑矿区", "resource": "MINE_ZONE", "action": "UPDATE", "scope": "ORGANIZATION", "isActive": true },
+  { "code": "MINE_ZONE:DELETE", "name": "删除矿区", "resource": "MINE_ZONE", "action": "DELETE", "scope": "ORGANIZATION", "isActive": true },
+
+  { "code": "NOTIFICATION:SEND", "name": "发送通知", "resource": "NOTIFICATION", "action": "CREATE", "scope": "ORGANIZATION", "isActive": true },
+  { "code": "NOTIFICATION:MANAGE", "name": "管理通知", "resource": "NOTIFICATION", "action": "MANAGE", "scope": "SYSTEM", "isActive": true }
+]

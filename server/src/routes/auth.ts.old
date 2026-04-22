@@ -1,0 +1,456 @@
+import express, { Request, Response } from "express";
+import { config } from "../config/config";
+import { AuthService } from "../services/authService";
+import { authMiddleware } from "../middleware/auth";
+
+// 开发模式imports
+import {
+  DevAdmin,
+  DevUser,
+  getDevUser,
+  getUserFromCookie,
+} from "../data/devUser";
+
+const router = express.Router();
+
+// =============================================================================
+// 登录接口 - 自动切换开发/生产模式
+// =============================================================================
+router.post("/login", async (req: Request, res: Response) => {
+  try {
+    const { username, password } = req.body;
+
+    // 开发模式
+    if (config.isDevelopment && config.devAutoLogin) {
+      console.log(`🔐 [DEV] 登录请求: ${username}`);
+
+      const user = getDevUser(username);
+      const cookieValue =
+        username === "admin" ? "dev_admin_token" : "dev_user_token";
+
+      res.cookie("longi_session", cookieValue, {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        path: "/",
+      });
+
+      return res.json({
+        success: true,
+        user,
+        message: "[DEV] 登录成功",
+      });
+    }
+
+    // 生产模式 - 真实认证
+    const result = await AuthService.login(
+      { username, password },
+      req.ip,
+      req.headers["user-agent"]
+    );
+
+    // 在生产模式下，将 accessToken 写入 httpOnly Cookie，供前端基于 Cookie 的中间件与 API 访问
+    if (result.accessToken) {
+      res.cookie("accessToken", result.accessToken, {
+        maxAge: 15 * 60 * 1000, // 15 分钟
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        path: "/",
+      });
+    }
+
+    return res.json({
+      success: true,
+      ...result,
+      message: "登录成功",
+    });
+  } catch (error: any) {
+    return res.status(401).json({
+      success: false,
+      message: error.message || "登录失败",
+    });
+  }
+});
+
+// =============================================================================
+// 注册接口 - 自动切换开发/生产模式
+// =============================================================================
+router.post("/register", async (req: Request, res: Response) => {
+  try {
+    const { username, email, password, realName, phone } = req.body;
+
+    // 开发模式
+    if (config.isDevelopment && config.devAutoLogin) {
+      console.log(`📝 [DEV] 注册请求: ${username}, ${email}`);
+
+      const newUser = {
+        ...DevUser,
+        id: Date.now(),
+        username,
+        email,
+        cognitoId: `dev-${username}-${Date.now()}`,
+        realName: realName || username,
+        employeeId: `DEV${Date.now().toString().slice(-3)}`,
+      };
+
+      res.cookie("longi_session", "dev_user_token", {
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        path: "/",
+      });
+
+      return res.json({
+        success: true,
+        user: newUser,
+        message: "[DEV] 注册成功",
+      });
+    }
+
+    // 生产模式 - 真实注册
+    const result = await AuthService.register({
+      username,
+      email,
+      password,
+      realName,
+      phone,
+    });
+
+    return res.status(201).json({
+      success: true,
+      ...result,
+      message: "注册成功",
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || "注册失败",
+    });
+  }
+});
+
+// =============================================================================
+// Token刷新接口 (仅生产模式)
+// =============================================================================
+router.post("/refresh", async (req: Request, res: Response) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({
+        success: false,
+        message: "缺少refresh token",
+      });
+    }
+
+    const result = await AuthService.refreshToken(refreshToken);
+
+    return res.json({
+      success: true,
+      ...result,
+    });
+  } catch (error: any) {
+    return res.status(401).json({
+      success: false,
+      message: error.message || "Token刷新失败",
+    });
+  }
+});
+
+// =============================================================================
+// 登出接口
+// =============================================================================
+router.post("/logout", async (req: Request, res: Response) => {
+  try {
+    // 开发模式
+    if (config.isDevelopment && config.devAutoLogin) {
+      res.clearCookie("longi_session", { path: "/" });
+      console.log("👋 [DEV] 用户登出");
+      return res.json({
+        success: true,
+        message: "[DEV] 登出成功",
+      });
+    }
+
+    // 生产模式
+    const { refreshToken } = req.body;
+    if (refreshToken) {
+      await AuthService.logout(refreshToken);
+    }
+
+    // 清除生产模式下的 accessToken Cookie
+    res.clearCookie("accessToken", { path: "/" });
+
+    return res.json({
+      success: true,
+      message: "登出成功",
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "登出失败",
+    });
+  }
+});
+
+// =============================================================================
+// 验证认证状态
+// =============================================================================
+router.get("/verify", async (req: Request, res: Response) => {
+  try {
+    // 开发模式
+    if (config.isDevelopment && config.devAutoLogin) {
+      const sessionCookie = req.cookies["longi_session"];
+
+      if (!sessionCookie || !sessionCookie.startsWith("dev_")) {
+        return res.status(401).json({
+          success: false,
+          error: "未认证",
+          valid: false,
+        });
+      }
+
+      const user = getUserFromCookie(sessionCookie);
+      return res.json({
+        success: true,
+        user,
+        valid: true,
+      });
+    }
+
+    // 生产模式 - 优先从 Authorization 获取，否则从 Cookie(accessToken) 获取
+    const authHeader = req.headers.authorization;
+    let token: string | undefined;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7);
+    } else if (req.cookies && req.cookies["accessToken"]) {
+      token = req.cookies["accessToken"];
+    }
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "未提供认证token",
+        valid: false,
+      });
+    }
+    const user = await AuthService.verifyAccessToken(token);
+
+    return res.json({
+      success: true,
+      user,
+      valid: true,
+    });
+  } catch (error: any) {
+    return res.status(401).json({
+      success: false,
+      message: error.message || "认证失败",
+      valid: false,
+    });
+  }
+});
+
+// =============================================================================
+// 获取当前用户信息
+// =============================================================================
+router.get("/me", async (req: Request, res: Response) => {
+  try {
+    // 开发模式
+    if (config.isDevelopment && config.devAutoLogin) {
+      const sessionCookie = req.cookies["longi_session"];
+
+      if (!sessionCookie || !sessionCookie.startsWith("dev_")) {
+        return res.status(401).json({
+          success: false,
+          error: "未认证",
+        });
+      }
+
+      const user = getUserFromCookie(sessionCookie);
+      return res.json({
+        success: true,
+        user,
+      });
+    }
+
+    // 生产模式 - 优先 Authorization，否则使用 Cookie(accessToken)
+    const authHeader = req.headers.authorization;
+    let token: string | undefined;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7);
+    } else if (req.cookies && req.cookies["accessToken"]) {
+      token = req.cookies["accessToken"];
+    }
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "未认证",
+      });
+    }
+    const user = await AuthService.verifyAccessToken(token);
+
+    return res.json({
+      success: true,
+      user,
+    });
+  } catch (error: any) {
+    return res.status(401).json({
+      success: false,
+      message: error.message || "获取用户信息失败",
+    });
+  }
+});
+
+// =============================================================================
+// 忘记密码 (仅生产模式)
+// =============================================================================
+router.post("/forgot-password", async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "请提供邮箱地址",
+      });
+    }
+
+    const result = await AuthService.forgotPassword(email);
+
+    return res.json({
+      success: true,
+      ...result,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "请求失败",
+    });
+  }
+});
+
+// =============================================================================
+// 重置密码 (仅生产模式)
+// =============================================================================
+router.post("/reset-password", async (req: Request, res: Response) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "缺少必要参数",
+      });
+    }
+
+    const result = await AuthService.resetPassword(token, newPassword);
+
+    return res.json({
+      success: true,
+      ...result,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || "重置密码失败",
+    });
+  }
+});
+
+// =============================================================================
+// 修改密码 (需要认证)
+// =============================================================================
+router.post(
+  "/change-password",
+  authMiddleware,
+  async (req: Request, res: Response) => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+
+      // 开发模式
+      if (config.isDevelopment && config.devAutoLogin) {
+        console.log("🔑 [DEV] 修改密码请求");
+        return res.json({
+          success: true,
+          message: "[DEV] 密码修改成功",
+        });
+      }
+
+      // 生产模式
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "缺少必要参数",
+        });
+      }
+
+      const result = await AuthService.changePassword(
+        req.userId!,
+        currentPassword,
+        newPassword
+      );
+
+      return res.json({
+        success: true,
+        ...result,
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        success: false,
+        message: error.message || "修改密码失败",
+      });
+    }
+  }
+);
+
+// =============================================================================
+// 更新用户信息 (开发模式mock)
+// =============================================================================
+router.patch("/profile", async (req: Request, res: Response) => {
+  try {
+    // 开发模式
+    if (config.isDevelopment && config.devAutoLogin) {
+      const sessionCookie = req.cookies["longi_session"];
+
+      if (!sessionCookie || !sessionCookie.startsWith("dev_")) {
+        return res.status(401).json({
+          success: false,
+          error: "未认证",
+        });
+      }
+
+      const updates = req.body;
+      const currentUser = getUserFromCookie(sessionCookie);
+
+      const updatedUser = {
+        ...currentUser,
+        ...updates,
+        updatedAt: new Date(),
+      };
+
+      console.log("📝 [DEV] 更新用户信息:", updates);
+
+      return res.json({
+        success: true,
+        user: updatedUser,
+      });
+    }
+
+    // 生产模式 - TODO: 实现真实的用户信息更新
+    return res.status(501).json({
+      success: false,
+      message: "功能开发中",
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "更新失败",
+    });
+  }
+});
+
+export default router;

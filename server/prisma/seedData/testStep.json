@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "batchId": 1,
+    "stepOrder": 1,
+    "stepName": "样品制备",
+    "description": "对铁矿石样品进行破碎、研磨和筛分",
+    "status": "COMPLETED",
+    "parameters": {
+      "crushingSize": "5mm",
+      "grindingTime": "30min",
+      "meshSize": "200目"
+    },
+    "results": {
+      "sampleWeight": "1000g",
+      "particleSize": "-200目占85%",
+      "moisture": "2.3%"
+    },
+    "notes": "样品制备完成，质量符合测试要求",
+    "startTime": "2024-09-01T09:15:00.000Z",
+    "endTime": "2024-09-01T11:30:00.000Z",
+    "operatorId": 1
+  },
+  {
+    "id": 2,
+    "batchId": 1,
+    "stepOrder": 2,
+    "stepName": "化学成分分析",
+    "description": "使用XRF和ICP分析样品的化学成分",
+    "status": "IN_PROGRESS",
+    "parameters": {
+      "analysisMethod": "XRF+ICP",
+      "sampleAmount": "50g",
+      "testElements": ["Fe", "SiO2", "Al2O3", "CaO", "MgO", "P", "S"]
+    },
+    "results": null,
+    "notes": "正在进行XRF分析",
+    "startTime": "2024-09-01T14:00:00.000Z",
+    "operatorId": 1
+  },
+  {
+    "id": 3,
+    "batchId": 1,
+    "stepOrder": 3,
+    "stepName": "物理特性测试",
+    "description": "测试样品的密度、硬度等物理特性",
+    "status": "NOT_STARTED",
+    "parameters": {
+      "testItems": ["密度", "硬度", "磁性", "粒度分布"],
+      "testStandard": "GB/T 1479-2008"
+    },
+    "results": null,
+    "notes": null,
+    "operatorId": 2
+  }
+]

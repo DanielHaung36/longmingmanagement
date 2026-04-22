@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "123456",
+      "token": "admin-token-abc123"
+    },
+    {
+      "id": 2,
+      "username": "alice",
+      "password": "password",
+      "token": "alice-token-xyz456"
+    }
+  ],
+  "products": [
+    { "id": 1, "djj_code": "P001", "name": "起重机 A1", "price": 100000 },
+    { "id": 2, "djj_code": "P002", "name": "装载机 B2", "price": 85000 },
+    { "id": 3, "djj_code": "P003", "name": "挖掘机 C3", "price": 120000 },
+    { "id": 4, "djj_code": "P004", "name": "压路机 D4", "price": 95000 },
+    { "id": 5, "djj_code": "P005", "name": "平地机 E5", "price": 78000 },
+    { "id": 6, "djj_code": "P006", "name": "混凝土泵车 F6", "price": 110000 },
+    { "id": 7, "djj_code": "P007", "name": "叉车 G7", "price": 45000 },
+    { "id": 8, "djj_code": "P008", "name": "履带式起重机 H8", "price": 135000 },
+    { "id": 9, "djj_code": "P009", "name": "推土机 I9", "price": 98000 },
+    { "id": 10, "djj_code": "P010", "name": "铲车 J10", "price": 67000 },
+    { "id": 11, "djj_code": "P011", "name": "沥青摊铺机 K11", "price": 89000 },
+    { "id": 12, "djj_code": "P012", "name": "桥梁起重机 L12", "price": 145000 },
+    { "id": 13, "djj_code": "P013", "name": "管桩打桩机 M13", "price": 115000 },
+    { "id": 14, "djj_code": "P014", "name": "旋挖钻机 N14", "price": 125000 },
+    { "id": 15, "djj_code": "P015", "name": "钻机 O15", "price": 112000 },
+    {
+      "id": 16,
+      "djj_code": "P016",
+      "name": "高空作业平台 P16",
+      "price": 72000
+    },
+    { "id": 17, "djj_code": "P017", "name": "升降机 Q17", "price": 68000 },
+    { "id": 18, "djj_code": "P018", "name": "履带吊 R18", "price": 132000 },
+    { "id": 19, "djj_code": "P019", "name": "轨道吊 S19", "price": 140000 },
+    { "id": 20, "djj_code": "P020", "name": "汽车吊 T20", "price": 89000 }
+  ]
+}

@@ -1,0 +1,38 @@
+Sub CreateNestedFolders()
+    Dim ws As Worksheet
+    Dim baseFolderPath As String
+    Dim mainFolder As String
+    Dim subFolder As String
+    Dim c As Range
+
+    ' Set the worksheet where your data is located
+    Set ws = ThisWorkbook.Sheets("Basic Info") ' Change "Sheet1" to your sheet's name
+
+    ' Define the base path where folders will be created
+    baseFolderPath = "C:\Users\wubia\OneDrive - Longi Magnet Australia Pty ltd\Documents - Longi Australia\03 Project Management\Client\" ' Change this to your desired path
+
+    ' Loop through columns C, D, E, etc.
+    For Each c In ws.Range("C2:BV2") ' Adjust the range as needed
+        mainFolder = c.Value
+        If mainFolder <> "" Then
+            CreateFolder baseFolderPath & mainFolder
+            ' Create subfolders from row 3 to row 30
+            For i = 3 To 30
+                subFolder = ws.Cells(i, c.Column).Value
+                If subFolder <> "" Then
+                    CreateFolder baseFolderPath & mainFolder & "\" & subFolder
+                End If
+            Next i
+        End If
+    Next c
+End Sub
+
+Sub CreateFolder(folderPath As String)
+    If Not FolderExists(folderPath) Then
+        MkDir folderPath
+    End If
+End Sub
+
+Function FolderExists(path As String) As Boolean
+    FolderExists = (Dir(path, vbDirectory) <> "")
+End Function

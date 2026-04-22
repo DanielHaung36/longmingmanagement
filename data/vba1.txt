@@ -1,0 +1,118 @@
+Sub Button5_Click()
+    Dim btn As Object
+    Dim row As Integer
+    Dim sourceFolder As String
+    Dim destinationPath As String
+    Dim newFolderName As String
+    Dim finalPath As String
+    Dim sourcePath As String
+    Dim folderPrefix As String
+    Dim workbookPath As String
+    Dim relativePath As String
+
+    ' 获取工作簿路径
+    workbookPath = ThisWorkbook.FullName
+
+    ' 获取按钮所在行的信息
+    Set btn = ActiveSheet.Buttons(Application.Caller)
+    row = btn.TopLeftCell.row
+
+    ' 文件夹信息
+    folderPrefix = Cells(row, "A").Value
+
+    ' 设置源文件夹
+    Select Case Left(folderPrefix, 2)
+        Case "AT"
+            sourceFolder = "AT0000 template"
+        Case "AQ"
+            sourceFolder = "AQ0000 template"
+        Case "AC"
+            sourceFolder = "AC0000 template"
+        Case "AS"
+            sourceFolder = "AS0000 template"
+        Case "AP"
+            sourceFolder = "AP0000 template"
+        Case Else
+            MsgBox "Invalid prefix in column A.", vbExclamation
+            Exit Sub
+    End Select
+
+    ' Set path
+    sourcePath = "C:\Users\wubia\OneDrive - Longi Magnet Australia Pty ltd\Documents - Longi Australia\05 Templates\Project Management Template\" & sourceFolder
+    destinationPath = "C:\Users\wubia\OneDrive - Longi Magnet Australia Pty ltd\Documents - Longi Australia\03 Project Management\Client\" & Cells(row, "B").Value & "\" & Cells(row, "C").Value
+    newFolderName = Cells(row, "N").Value
+    finalPath = destinationPath & "\" & newFolderName
+
+    ' 复制并重命名
+    If Not CreateFolderAndCopyContents(sourcePath, destinationPath, newFolderName) Then
+        MsgBox "Error in copying the folder: " & Err.Description, vbCritical
+        Exit Sub
+    End If
+
+    ' 计算相对路径
+    relativePath = CalculateRelativePath(workbookPath, finalPath)
+
+    ' 创建超链接
+    ActiveSheet.Hyperlinks.Add Anchor:=Cells(row, "O"), Address:=relativePath, TextToDisplay:=relativePath
+End Sub
+
+
+Function CreateFolderAndCopyContents(source As String, destination As String, newFolderName As String) As Boolean
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+
+    ' Ensure the destination parent folder exists
+    Dim destinationParent As String
+    destinationParent = fso.GetParentFolderName(destination)
+    If Not fso.FolderExists(destinationParent) Then
+        fso.CreateFolder destinationParent
+    End If
+
+    ' Copy the folder
+    On Error Resume Next
+    fso.CopyFolder source, destinationParent & "\", True
+    If Err.Number <> 0 Then
+        MsgBox "Error in copying the folder: " & Err.Description & " - Error Number: " & Err.Number, vbCritical
+        CreateFolderAndCopyContents = False
+        Err.Clear
+    Else
+        ' Rename the copied folder
+        fso.MoveFolder destinationParent & "\" & fso.GetFileName(source), destination & "\" & newFolderName
+        CreateFolderAndCopyContents = True
+    End If
+
+    Set fso = Nothing
+End Function
+Function CalculateRelativePath(basePath As String, targetPath As String) As String
+    Dim baseParts As Variant
+    Dim targetParts As Variant
+    Dim i As Long
+    Dim relativePath As String
+    
+    baseParts = Split(basePath, "\")
+    targetParts = Split(targetPath, "\")
+    
+    ' 寻找共同的根目录
+    For i = LBound(baseParts) To UBound(baseParts)
+        If i > UBound(targetParts) Or baseParts(i) <> targetParts(i) Then Exit For
+    Next i
+    
+    ' 从基础路径返回到共同的根目录
+    For j = i To UBound(baseParts)
+        If j > LBound(baseParts) Then
+            relativePath = relativePath & "..\"
+        End If
+    Next j
+    
+    ' 添加从根目录到目标路径的部分
+    For j = i To UBound(targetParts)
+        relativePath = relativePath & targetParts(j) & "\"
+    Next j
+    
+    ' 移除最后一个反斜杠
+    If Len(relativePath) > 0 Then
+        relativePath = Left(relativePath, Len(relativePath) - 1)
+    End If
+
+    CalculateRelativePath = relativePath
+End Function

@@ -1,0 +1,21 @@
+{
+  "title": "用户资料",
+  "subtitle": "管理您的个人信息",
+  "basicInfo": "基本信息",
+  "accountInfo": "账户信息",
+  "edit": "编辑",
+  "save": "保存",
+  "saving": "保存中…",
+  "cancel": "取消",
+  "saveChanges": "保存更改",
+  "username": "用户名",
+  "fullName": "姓名",
+  "email": "邮箱",
+  "userId": "用户ID",
+  "role": "角色",
+  "status": "账户状态",
+  "active": "活跃",
+  "disabled": "已禁用",
+  "registeredAt": "注册时间",
+  "lastUpdated": "最后更新"
+}

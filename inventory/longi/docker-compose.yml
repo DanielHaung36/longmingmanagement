@@ -1,0 +1,99 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: longi_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: superadminpass
+      POSTGRES_DB: longinventory
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - longinet
+
+  inventory-backend:
+    image: longi-backend:latest
+    container_name: longi_backend
+    restart: always
+    depends_on:
+      - postgres
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./logs:/app/logs
+    networks:
+      - longinet
+
+  inventory-frontend:
+    image: longi-frontend:latest
+    container_name: longi_frontend
+    restart: always
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./frontend/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+      - ./backend/uploads:/app/uploads        # 让 nginx 也能访问上传目录
+    networks:
+      - longinet
+    depends_on:
+      - inventory-backend
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    container_name: longi_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - longinet
+  
+  # MailHog邮箱服务器
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: longi_mailhog
+    ports:
+      - "1025:1025"  # SMTP端口
+      - "8025:8025"  # Web UI端口
+    environment:
+      MH_STORAGE: maildir
+      MH_MAILDIR_PATH: /maildir
+    volumes:
+      - ./maildir:/maildir
+    user: "0:0"   # 👈 root 权限（可选，调试时用）
+    networks:
+      - longinet
+  
+  neo4j:
+    image: neo4j:latest
+    container_name: longi_neo4j
+    restart: always
+    ports:
+      - "7474:7474"   # Web UI
+      - "7687:7687"   # Bolt 协议
+    environment:
+      - NEO4J_AUTH=neo4j/longi2024
+    volumes:
+      - ./neo4j/data:/data
+      - ./neo4j/logs:/logs
+      - ./neo4j/import:/var/lib/neo4j/import
+    user: "0:0"   # 如果需要 root 权限，类似 mailhog
+    networks:
+      - longinet
+
+networks:
+  longinet:             # ← 这段一定要有
+volumes:
+    mailhog-data:  # ← 在这里声明，Docker 会自动创建和管理

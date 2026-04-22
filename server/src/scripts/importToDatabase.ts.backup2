@@ -1,0 +1,296 @@
+/**
+ * 数据库导入逻辑
+ * 创建 Project 和 Task 记录
+ */
+
+import { PrismaClient, Prisma } from '../../generated/prisma';
+import { ClientCompanyInfo, MineSiteInfo, TaskFolderInfo } from './scanOneDrive';
+import { ExcelTaskData } from './readExcelData';
+import { sanitizeFileName } from '../utils/sanitizeFileName';
+
+interface ImportConfig {
+  useProduction: boolean; // 是否使用生产环境 OneDrive 路径
+  oneDriveRoot: string; // 生产环境 OneDrive 根路径
+  oneDriveProjectRoot: string; // 开发环境 OneDrive 项目根路径
+  localProjectRoot: string; // 本地项目根路径
+}
+
+export interface ImportResult {
+  projectsCreated: number;
+  tasksCreated: number;
+  tasksFailed: number;
+  excelDataUsed: number;
+  excelDataMissing: number;
+  errors: string[];
+  warnings: string[];
+}
+
+/**
+ * 获取或创建默认用户
+ */
+async function getOrCreateDefaultUser(prisma: PrismaClient) {
+  // 尝试获取 id=11 的用户（开发模式默认管理员）
+  let user = await prisma.users.findUnique({
+    where: { id: 11 },
+  });
+
+  if (!user) {
+    // 如果不存在，创建它
+    user = await prisma.users.create({
+      data: {
+        id: 11,
+        username: 'admin',
+        email: 'admin@longiaus.com',
+        realName: 'Admin User',
+        password: 'hashed_password_placeholder', // 实际应该是加密密码
+        status: 'ACTIVE',
+        cognitoId: 'admin-cognito-id',
+      },
+    });
+  }
+
+  return user;
+}
+
+/**
+ * 创建 Project（客户+矿区 组合）
+ */
+async function createProject(
+  prisma: PrismaClient,
+  clientName: string,
+  mineSiteName: string,
+  mineSitePath: string,
+  config: ImportConfig,
+  user: any
+): Promise<any> {
+  const projectName = `${clientName} - ${mineSiteName}`;
+
+  // 确定路径
+  let oneDrivePath = '';
+  if (config.useProduction) {
+    // 生产环境：使用真实 OneDrive 路径
+    oneDrivePath = mineSitePath;
+  } else {
+    // 开发环境：使用开发环境 OneDrive 路径
+    const relativePath = mineSitePath.replace(
+      config.oneDriveRoot,
+      ''
+    ).replace(/\\/g, '/');
+    oneDrivePath = `${config.oneDriveProjectRoot}${relativePath}`;
+  }
+
+  const localPath = `${config.localProjectRoot}/${clientName}/${mineSiteName}`;
+
+  try {
+    const project = await prisma.projects.create({
+      data: {
+        name: projectName,
+        description: `Project for ${projectName}`,
+        projectCode: `TEMP-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        jobType: 'AT', // 默认设置为 AT，实际应该可配置
+        clientCompany: clientName,
+        mineSiteName: mineSiteName,
+        status: 'IN_PROGRESS',
+        approvalStatus: 'APPROVED',
+        priority: 'MEDIUM',
+        ownerId: user.id,
+        oneDriveFolderPath: oneDrivePath,
+        localFolderPath: localPath,
+        mineSiteFolderPath: mineSitePath,
+      },
+    });
+
+    return project;
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    throw new Error(
+      `Failed to create project ${projectName}: ${errorMsg}`
+    );
+  }
+}
+
+/**
+ * 创建 Task
+ */
+async function createTask(
+  prisma: PrismaClient,
+  projectId: number,
+  taskFolderInfo: TaskFolderInfo,
+  excelData: ExcelTaskData | undefined,
+  config: ImportConfig,
+  user: any,
+  result: ImportResult
+): Promise<void> {
+  try {
+    // 确定路径
+    let oneDrivePath = '';
+    if (config.useProduction) {
+      oneDrivePath = taskFolderInfo.fullPath;
+    } else {
+      // 开发环境：使用开发环境 OneDrive 路径
+      const relativePath = taskFolderInfo.fullPath.replace(
+        config.oneDriveRoot,
+        ''
+      ).replace(/\\/g, '/');
+      oneDrivePath = `${config.oneDriveProjectRoot}${relativePath}`;
+    }
+
+    // 使用 Excel 数据的标题，如果没有则使用文件夹名称
+    const title = excelData?.title || taskFolderInfo.title;
+    const description = excelData?.description || `Task folder: ${taskFolderInfo.originalName}`;
+
+    // 确定状态（从 Excel 或使用默认值）
+    const status = excelData?.status === 'DONE' ? 'DONE' : 'IN_PROGRESS';
+
+    const task = await prisma.tasks.create({
+      data: {
+        taskCode: taskFolderInfo.taskCode,
+        title: title,
+        description: description,
+        projectId: projectId,
+        status: status,
+        approvalStatus: 'APPROVED',
+        priority: 'MEDIUM',
+        authorUserId: user.id,
+        assignedUserId: user.id,
+        oneDriveFolderPath: oneDrivePath,
+        localFolderPath: taskFolderInfo.fullPath,
+        folderCreated: true,
+        syncStatus: 'SYNCED',
+        excelRowNumber: excelData?.rowNumber || 0,
+        estimatedHours: excelData?.estimatedHours || 0,
+        actualHours: excelData?.actualHours || 0,
+        progress: status === 'DONE' ? 100 : 50,
+      },
+    });
+
+    result.tasksCreated++;
+
+    if (excelData) {
+      result.excelDataUsed++;
+    } else {
+      result.excelDataMissing++;
+    }
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    result.errors.push(
+      `Failed to create task ${taskFolderInfo.taskCode}: ${errorMsg}`
+    );
+    result.tasksFailed++;
+  }
+}
+
+/**
+ * 主导入函数
+ */
+export async function importToDatabase(
+  prisma: PrismaClient,
+  scanResult: {
+    clients: ClientCompanyInfo[];
+  },
+  excelDataMap: Map<string, ExcelTaskData>,
+  config: ImportConfig
+): Promise<ImportResult> {
+  const result: ImportResult = {
+    projectsCreated: 0,
+    tasksCreated: 0,
+    tasksFailed: 0,
+    excelDataUsed: 0,
+    excelDataMissing: 0,
+    errors: [],
+    warnings: [],
+  };
+
+  try {
+    // 获取或创建默认用户
+    const user = await getOrCreateDefaultUser(prisma);
+
+    // 遍历所有客户和矿区
+    for (const client of scanResult.clients) {
+      for (const mineSite of client.mineSites) {
+        try {
+          // 创建 Project
+          const project = await createProject(
+            prisma,
+            client.name,
+            mineSite.name,
+            mineSite.path,
+            config,
+            user
+          );
+
+          result.projectsCreated++;
+
+          // 创建 Tasks
+          for (const taskFolder of mineSite.taskFolders) {
+            // 从 Excel 查找对应的数据
+            const excelData = excelDataMap.get(taskFolder.taskCode);
+
+            await createTask(
+              prisma,
+              project.id,
+              taskFolder,
+              excelData,
+              config,
+              user,
+              result
+            );
+          }
+        } catch (error) {
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
+          result.errors.push(
+            `Error processing ${client.name} - ${mineSite.name}: ${errorMsg}`
+          );
+        }
+      }
+    }
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    result.errors.push(`Fatal import error: ${errorMsg}`);
+  }
+
+  return result;
+}
+
+/**
+ * 生成导入报告
+ */
+export function generateImportReport(result: ImportResult): string {
+  let report = `\n╔════════════════════════════════════════════════════╗\n`;
+  report += `║          数据库导入报告                             ║\n`;
+  report += `╚════════════════════════════════════════════════════╝\n\n`;
+
+  report += `✅ 导入统计:\n`;
+  report += `  • Projects 创建: ${result.projectsCreated}\n`;
+  report += `  • Tasks 创建: ${result.tasksCreated}\n`;
+  report += `  • Tasks 失败: ${result.tasksFailed}\n`;
+  report += `  • Excel 数据使用: ${result.excelDataUsed}\n`;
+  report += `  • Excel 数据缺失: ${result.excelDataMissing}\n\n`;
+
+  const successRate = result.tasksCreated + result.tasksFailed === 0
+    ? 0
+    : ((result.tasksCreated / (result.tasksCreated + result.tasksFailed)) * 100).toFixed(2);
+  report += `  • 成功率: ${successRate}%\n\n`;
+
+  if (result.warnings.length > 0) {
+    report += `⚠️  警告:\n`;
+    for (const warning of result.warnings) {
+      report += `   • ${warning}\n`;
+    }
+    report += '\n';
+  }
+
+  if (result.errors.length > 0) {
+    report += `❌ 错误 (显示前 10 个):\n`;
+    for (let i = 0; i < Math.min(10, result.errors.length); i++) {
+      report += `   • ${result.errors[i]}\n`;
+    }
+    if (result.errors.length > 10) {
+      report += `   ... 还有 ${result.errors.length - 10} 个错误\n`;
+    }
+    report += '\n';
+  }
+
+  return report;
+}

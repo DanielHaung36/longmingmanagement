@@ -1,0 +1,10 @@
+{{- if .Values.global }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.global.namespace | default "longi-prod" }}
+  labels:
+    name: {{ .Values.global.namespace | default "longi-prod" }}
+    app.kubernetes.io/name: longi-project
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}

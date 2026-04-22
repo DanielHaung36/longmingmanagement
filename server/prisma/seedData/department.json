@@ -1,0 +1,7 @@
+[
+  { "code": "MGMT", "name": "管理部", "description": "负责公司运营和行政管理", "isActive": true },
+  { "code": "TECH", "name": "技术部", "description": "负责技术开发和试验研究", "isActive": true },
+  { "code": "SALES", "name": "业务部", "description": "负责客户对接和项目销售", "isActive": true },
+  { "code": "QA", "name": "质检部", "description": "负责质量控制和检验", "isActive": true },
+  { "code": "FIN", "name": "财务部", "description": "负责财务管理和成本控制", "isActive": true }
+]

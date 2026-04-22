@@ -1,0 +1,171 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 数据库
+  postgres:
+    image: postgres:15-alpine
+    container_name: longi-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: superadminpass
+      POSTGRES_DB: projectmanagement
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - longi-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # # Redis 缓存
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: longi-redis
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - longi-network
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 3s
+  #     retries: 5
+
+  # # Neo4j 图数据库
+  # neo4j:
+  #   image: neo4j:5-community
+  #   container_name: longi-neo4j
+  #   restart: unless-stopped
+  #   environment:
+  #     NEO4J_AUTH: neo4j/longi2024
+  #     NEO4J_dbms_memory_pagecache_size: 512M
+  #     NEO4J_dbms_memory_heap_max__size: 1G
+  #   ports:
+  #     - "7474:7474"  # HTTP
+  #     - "7687:7687"  # Bolt
+  #   volumes:
+  #     - neo4j_data:/data
+  #     - neo4j_logs:/logs
+  #   networks:
+  #     - longi-network
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+  #     interval: 15s
+  #     timeout: 10s
+  #     retries: 5
+
+  # # MinIO 对象存储
+  # minio:
+  #   image: minio/minio:latest
+  #   container_name: longi-minio
+  #   restart: unless-stopped
+  #   command: server /data --console-address ":9001"
+  #   environment:
+  #     MINIO_ROOT_USER: minioadmin
+  #     MINIO_ROOT_PASSWORD: minioadmin123
+  #   ports:
+  #     - "9000:9000"  # API
+  #     - "9001:9001"  # Console
+  #   volumes:
+  #     - minio_data:/data
+  #   networks:
+  #     - longi-network
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+  #     interval: 30s
+  #     timeout: 20s
+  #     retries: 3
+
+  # # Elasticsearch 搜索引擎
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+  #   container_name: longi-elasticsearch
+  #   restart: unless-stopped
+  #   environment:
+  #     - discovery.type=single-node
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #     - xpack.security.enabled=false
+  #   ports:
+  #     - "9200:9200"
+  #   volumes:
+  #     - es_data:/usr/share/elasticsearch/data
+  #   networks:
+  #     - longi-network
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
+
+  # # RabbitMQ 消息队列
+  # rabbitmq:
+  #   image: rabbitmq:3.12-management-alpine
+  #   container_name: longi-rabbitmq
+  #   restart: unless-stopped
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: admin
+  #     RABBITMQ_DEFAULT_PASS: admin123
+  #   ports:
+  #     - "5672:5672"   # AMQP
+  #     - "15672:15672" # Management UI
+  #   volumes:
+  #     - rabbitmq_data:/var/lib/rabbitmq
+  #   networks:
+  #     - longi-network
+  #   healthcheck:
+  #     test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
+
+  # # InfluxDB 时序数据库
+  # influxdb:
+  #   image: influxdb:2.7-alpine
+  #   container_name: longi-influxdb
+  #   restart: unless-stopped
+  #   environment:
+  #     DOCKER_INFLUXDB_INIT_MODE: setup
+  #     DOCKER_INFLUXDB_INIT_USERNAME: admin
+  #     DOCKER_INFLUXDB_INIT_PASSWORD: admin123456
+  #     DOCKER_INFLUXDB_INIT_ORG: longi
+  #     DOCKER_INFLUXDB_INIT_BUCKET: metrics
+  #     DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: longi-admin-token-2024
+  #   ports:
+  #     - "8086:8086"
+  #   volumes:
+  #     - influxdb_data:/var/lib/influxdb2
+  #   networks:
+  #     - longi-network
+
+  # # MailHog 邮件测试工具 (开发环境)
+  # mailhog:
+  #   image: mailhog/mailhog:latest
+  #   container_name: longi-mailhog
+  #   restart: unless-stopped
+  #   ports:
+  #     - "1025:1025" # SMTP
+  #     - "8025:8025" # Web UI
+  #   networks:
+  #     - longi-network
+
+networks:
+  longi-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  # redis_data:
+  # neo4j_data:
+  # neo4j_logs:
+  # minio_data:
+  # es_data:
+  # rabbitmq_data:
+  # influxdb_data:

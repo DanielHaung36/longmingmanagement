@@ -1,0 +1,21 @@
+{
+  "title": "Profile",
+  "subtitle": "Manage your personal information",
+  "basicInfo": "Basic Information",
+  "accountInfo": "Account Information",
+  "edit": "Edit",
+  "save": "Save",
+  "saving": "Saving…",
+  "cancel": "Cancel",
+  "saveChanges": "Save Changes",
+  "username": "Username",
+  "fullName": "Full Name",
+  "email": "Email",
+  "userId": "User ID",
+  "role": "Role",
+  "status": "Account Status",
+  "active": "Active",
+  "disabled": "Disabled",
+  "registeredAt": "Registered On",
+  "lastUpdated": "Last Updated"
+}

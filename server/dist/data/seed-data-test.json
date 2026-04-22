@@ -1,0 +1,146 @@
+{
+    "projects": [
+        {
+            "name": "ALS Balcata Quotation Project",
+            "clientCompany": "ALS",
+            "mineSiteName": "ALS Balcata",
+            "jobType": "AQ",
+            "description": "Quotation project for ALS - ALS Balcata",
+            "priority": "MEDIUM",
+            "teamId": 1,
+            "ownerId": 1
+        },
+        {
+            "name": "The Australian Vanadium Project Consultation Project",
+            "clientCompany": "AVL",
+            "mineSiteName": "The Australian Vanadium Project",
+            "jobType": "AC",
+            "description": "Consultation project for AVL - The Australian Vanadium Project",
+            "priority": "MEDIUM",
+            "teamId": 1,
+            "ownerId": 1
+        },
+        {
+            "name": "Commonwelth_Hill Consultation Project",
+            "clientCompany": "Agile_Mining",
+            "mineSiteName": "Commonwelth_Hill",
+            "jobType": "AC",
+            "description": "Consultation project for Agile_Mining - Commonwelth_Hill",
+            "priority": "MEDIUM",
+            "teamId": 1,
+            "ownerId": 1
+        }
+    ],
+    "tasks": [
+        {
+            "title": "LGS-500 Rentel",
+            "taskCode": "AQ0043",
+            "description": "Quotation task for ALS Balcata",
+            "clientCompany": "ALS",
+            "mineSiteName": "ALS Balcata",
+            "jobType": "AQ",
+            "priority": "MEDIUM",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        },
+        {
+            "title": "LGS-100",
+            "taskCode": "AQ0046",
+            "description": "Quotation task for ALS Balcata",
+            "clientCompany": "ALS",
+            "mineSiteName": "ALS Balcata",
+            "jobType": "AQ",
+            "priority": "MEDIUM",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        },
+        {
+            "title": "LGS-500 Installation",
+            "taskCode": "AS0007",
+            "description": "Sales task for ALS Balcata",
+            "clientCompany": "ALS",
+            "mineSiteName": "ALS Balcata",
+            "jobType": "AS",
+            "priority": "HIGH",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        },
+        {
+            "title": "General Inquiry",
+            "taskCode": "AC0005",
+            "description": "Consultation task for The Australian Vanadium Project",
+            "clientCompany": "AVL",
+            "mineSiteName": "The Australian Vanadium Project",
+            "jobType": "AC",
+            "priority": "MEDIUM",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        },
+        {
+            "title": "AVL CV002 Mag Sep-",
+            "taskCode": "AQ0093",
+            "description": "Quotation task for The Australian Vanadium Project",
+            "clientCompany": "AVL",
+            "mineSiteName": "The Australian Vanadium Project",
+            "jobType": "AQ",
+            "priority": "MEDIUM",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        },
+        {
+            "title": "General Inquiry",
+            "taskCode": "AC0022",
+            "description": "Consultation task for Commonwelth_Hill",
+            "clientCompany": "Agile_Mining",
+            "mineSiteName": "Commonwelth_Hill",
+            "jobType": "AC",
+            "priority": "MEDIUM",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        },
+        {
+            "title": "Magnetic Separation Testwork",
+            "taskCode": "AT0047",
+            "description": "Testwork task for Commonwelth_Hill",
+            "clientCompany": "Agile_Mining",
+            "mineSiteName": "Commonwelth_Hill",
+            "jobType": "AT",
+            "priority": "HIGH",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        },
+        {
+            "title": "LIMS(IHC JN561)",
+            "taskCode": "AQ0061",
+            "description": "Quotation task for McLaren_Project",
+            "clientCompany": "Allup_Silica",
+            "mineSiteName": "McLaren_Project",
+            "jobType": "AQ",
+            "priority": "MEDIUM",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        },
+        {
+            "title": "General Inquiry",
+            "taskCode": "AC0008",
+            "description": "Consultation task for Byro",
+            "clientCompany": "Athenas_Reource",
+            "mineSiteName": "Byro",
+            "jobType": "AC",
+            "priority": "MEDIUM",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        },
+        {
+            "title": "Metallurgical Testworks",
+            "taskCode": "AT0061",
+            "description": "Testwork task for Byro",
+            "clientCompany": "Athenas_Reource",
+            "mineSiteName": "Byro",
+            "jobType": "AT",
+            "priority": "HIGH",
+            "authorUserId": 1,
+            "assignedUserId": 1
+        }
+    ]
+}

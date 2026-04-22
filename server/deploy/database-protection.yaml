@@ -1,0 +1,66 @@
+---
+# 数据库数据保护配置
+# 此配置为关键数据库资源添加保护，防止意外删除
+
+# 1. 为PV添加保护注解和finalizer
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-old-data
+  annotations:
+    # 防止意外删除的警告注解
+    longi.io/critical-data: "true"
+    longi.io/backup-required: "true"
+    longi.io/deletion-warning: "WARNING: This PV contains critical PostgreSQL data. Deletion will cause permanent data loss!"
+  finalizers:
+    - kubernetes.io/pv-protection
+spec:
+  persistentVolumeReclaimPolicy: Retain  # 确保删除PVC后PV保留
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  hostPath:
+    path: /var/lib/local-path-provisioner/pvc-9dba6b2f-2231-48fb-8fe5-e27291e68aee_longi-prod_data-postgres-0
+    type: DirectoryOrCreate
+  storageClassName: local-path
+  volumeMode: Filesystem
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: data-postgres-0
+    namespace: longi-prod
+
+---
+# 2. 为namespace添加保护标签
+# 使用: kubectl label namespace longi-prod longi.io/protected=true --overwrite
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: longi-prod
+  labels:
+    longi.io/protected: "true"
+    longi.io/critical: "true"
+  annotations:
+    longi.io/deletion-warning: "WARNING: This namespace contains production databases. DO NOT DELETE!"
+    longi.io/backup-policy: "daily"
+
+---
+# 3. 数据库备份存储PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-backup-pvc
+  namespace: longi-prod
+  labels:
+    app: postgres-backup
+    longi.io/critical-data: "true"
+  annotations:
+    longi.io/description: "PostgreSQL backup storage - DO NOT DELETE"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi  # 足够存储多个备份
+  storageClassName: local-path

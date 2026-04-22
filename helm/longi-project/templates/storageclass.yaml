@@ -1,0 +1,12 @@
+{{- if .Values.storage.enabled }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.storage.class.name }}
+  labels:
+    app.kubernetes.io/name: longi-project
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+provisioner: {{ .Values.storage.class.provisioner }}
+volumeBindingMode: {{ .Values.storage.class.volumeBindingMode }}
+reclaimPolicy: {{ .Values.storage.class.reclaimPolicy }}
+{{- end }}

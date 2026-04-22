@@ -1,0 +1,36 @@
+{{- if .Values.cloudflared.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: cloudflared
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudflared
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      containers:
+      - name: cloudflared
+        image: {{ .Values.cloudflared.image.repository }}:{{ .Values.cloudflared.image.tag }}
+        args:
+        - tunnel
+        - --no-autoupdate
+        - run
+        - --token
+        - {{ .Values.cloudflared.tunnel.token | quote }}
+        resources:
+          requests:
+            memory: {{ .Values.cloudflared.resources.requests.memory }}
+            cpu: {{ .Values.cloudflared.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.cloudflared.resources.limits.memory }}
+            cpu: {{ .Values.cloudflared.resources.limits.cpu }}
+{{- end }}

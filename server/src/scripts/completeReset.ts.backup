@@ -1,0 +1,945 @@
+/**
+ * 完整的系统重置脚本 - 简化版
+ *
+ * 核心流程：
+ * 1. 清空数据库
+ * 2. 清空本地文件夹
+ * 3. 扫描 OneDrive 文件夹结构（3层：Client/MineSite/Task）
+ * 4. 读取原始 Excel 文件（.xlsm）
+ * 5. 创建本地文件夹结构（空文件夹 + 空文件）
+ * 6. 导入数据到数据库
+ * 7. 验证结果
+ *
+ * 使用方法：
+ *   npm run reset:complete
+ *   或
+ *   npx ts-node src/scripts/completeReset.ts
+ */
+
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import ExcelJS from 'exceljs';
+import { PrismaClient, JobType, UserRole } from '../../generated/prisma';
+
+const prisma = new PrismaClient();
+
+// 从环境变量读取所有路径配置
+const ONEDRIVE_PROJECT_ROOT = process.env.ONEDRIVE_PROJECT_ROOT;
+const EXCEL_PATH = process.env.ONEDRIVE_PROJECT_EXCEL_FILE; // 使用原始Excel文件
+const LOCAL_PROJECT_ROOT = process.env.LOCAL_PROJECT_ROOT;
+const TEMPLATE_ROOT = process.env.TEMPLATE_ROOT; // 模板文件夹路径
+
+// 验证必需的环境变量
+if (!ONEDRIVE_PROJECT_ROOT) {
+  throw new Error('环境变量 ONEDRIVE_PROJECT_ROOT 未设置！请在 .env 文件中配置。');
+}
+if (!EXCEL_PATH) {
+  throw new Error('环境变量 ONEDRIVE_PROJECT_EXCEL_FILE 未设置！请在 .env 文件中配置。');
+}
+if (!LOCAL_PROJECT_ROOT) {
+  throw new Error('环境变量 LOCAL_PROJECT_ROOT 未设置！请在 .env 文件中配置。');
+}
+if (!TEMPLATE_ROOT) {
+  console.warn('⚠️  环境变量 TEMPLATE_ROOT 未设置，将使用默认的8个子文件夹。');
+}
+
+// TaskCode 正则
+const TASK_CODE_REGEX = /^(AT|AC|AQ|AS|AP)(\d{4})\s+(.+)$/;
+
+interface TaskFolderInfo {
+  taskCode: string;
+  jobType: JobType;
+  title: string;
+  oneDriveFolderPath: string;
+  localFolderPath: string;
+}
+
+interface MineSiteInfo {
+  mineSiteName: string;
+  oneDriveFolderPath: string;
+  localFolderPath: string;
+  tasks: TaskFolderInfo[];
+}
+
+interface ClientInfo {
+  clientCompany: string;
+  oneDriveFolderPath: string;
+  localFolderPath: string;
+  mineSites: MineSiteInfo[];
+}
+
+interface ExcelTaskData {
+  taskCode: string;
+  title?: string;
+  description?: string;
+  mineral?: string;
+  contactCompany?: string;
+  projectManager?: string;
+  quotationNumber?: string;
+  requestDate?: string;
+  quotationDate?: string;
+  clientFeedback?: string;
+  comment?: string;
+}
+
+/**
+ * 解析 TaskCode 文件夹名
+ */
+function parseTaskFolder(folderName: string): { taskCode: string; jobType: JobType; title: string } | null {
+  const match = folderName.match(TASK_CODE_REGEX);
+  if (!match) return null;
+
+  const [, jobTypeStr, number, title] = match;
+  return {
+    taskCode: `${jobTypeStr}${number}`,
+    jobType: jobTypeStr as JobType,
+    title: title.trim(),
+  };
+}
+
+/**
+ * 获取单元格值
+ */
+function getCellValue(row: ExcelJS.Row, colNumber: number): string {
+  const cell = row.getCell(colNumber);
+  let value = cell.value;
+
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'object' && 'richText' in value) {
+    return value.richText.map((t: any) => t.text).join('');
+  }
+  return String(value).trim();
+}
+
+/**
+ * 读取原始 Excel 数据（.xlsm文件）
+ */
+async function readExcelData(): Promise<Map<string, ExcelTaskData>> {
+  console.log('\n📂 读取原始 Excel 文件 (.xlsm)...');
+  console.log(`   路径: ${EXCEL_PATH}\n`);
+
+  const excelDataMap = new Map<string, ExcelTaskData>();
+
+  if (!await fs.pathExists(EXCEL_PATH!)) {
+    console.log('⚠️  Excel 文件不存在，将只使用文件夹扫描数据\n');
+    return excelDataMap;
+  }
+
+  try {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(EXCEL_PATH!);
+
+    // 尝试找到包含数据的工作表
+    let worksheet = workbook.worksheets[0];
+
+    // 如果有多个工作表，尝试找到名为 "Job Register" 或类似的
+    const targetSheet = workbook.worksheets.find(ws =>
+      ws.name.toLowerCase().includes('job') ||
+      ws.name.toLowerCase().includes('register')
+    );
+
+    if (targetSheet) {
+      worksheet = targetSheet;
+    }
+
+    console.log(`   工作表: ${worksheet.name}`);
+    console.log(`   总行数: ${worksheet.rowCount}\n`);
+
+    // 从第13行开始读取（跳过表头）
+    for (let i = 13; i <= worksheet.rowCount; i++) {
+      const row = worksheet.getRow(i);
+      const jobId = getCellValue(row, 1); // Column A: Job ID
+
+      if (!jobId || jobId.trim() === '') continue;
+
+      const excelData: ExcelTaskData = {
+        taskCode: jobId.trim(),
+        title: getCellValue(row, 4), // Column D: Title
+        description: getCellValue(row, 5), // Column E: Description
+        mineral: getCellValue(row, 6), // Column F: Mineral
+        contactCompany: getCellValue(row, 7), // Column G: Contact Company
+        projectManager: getCellValue(row, 8), // Column H: Project Manager
+        quotationNumber: getCellValue(row, 9), // Column I: Quotation Number
+        requestDate: getCellValue(row, 10), // Column J: Request Date
+        quotationDate: getCellValue(row, 11), // Column K: Quotation Date
+        clientFeedback: getCellValue(row, 12), // Column L: Client Feedback
+        comment: getCellValue(row, 13), // Column M: Comment
+      };
+
+      excelDataMap.set(jobId.trim(), excelData);
+    }
+
+    console.log(`   ✅ 成功读取 ${excelDataMap.size} 条 Excel 数据\n`);
+
+    // 输出前5条数据作为预览
+    if (excelDataMap.size > 0) {
+      console.log('   📋 数据预览（前5条）:');
+      let count = 0;
+      for (const [key, data] of excelDataMap) {
+        if (count >= 5) break;
+        console.log(`      ${key}: ${data.title || '(无标题)'}`);
+        count++;
+      }
+      console.log('');
+    }
+
+    return excelDataMap;
+
+  } catch (error: any) {
+    console.error(`   ❌ 读取 Excel 失败: ${error.message}`);
+    console.error(`   错误详情: ${error.stack}\n`);
+    return excelDataMap;
+  }
+}
+
+/**
+ * 扫描 OneDrive 文件夹结构
+ */
+async function scanOneDriveFolders(): Promise<ClientInfo[]> {
+  console.log('\n📂 扫描 OneDrive 文件夹结构...');
+  console.log(`   源路径: ${ONEDRIVE_PROJECT_ROOT}\n`);
+
+  const clientInfos: ClientInfo[] = [];
+
+  if (!await fs.pathExists(ONEDRIVE_PROJECT_ROOT)) {
+    throw new Error(`OneDrive 路径不存在: ${ONEDRIVE_PROJECT_ROOT}`);
+  }
+
+  const clientFolders = await fs.readdir(ONEDRIVE_PROJECT_ROOT);
+
+  for (const clientFolder of clientFolders) {
+    const clientOneDrivePath = path.join(ONEDRIVE_PROJECT_ROOT, clientFolder);
+    const clientStats = await fs.stat(clientOneDrivePath);
+
+    if (!clientStats.isDirectory()) continue;
+    if (clientFolder.startsWith('.') || clientFolder.startsWith('~$')) continue;
+
+    const clientInfo: ClientInfo = {
+      clientCompany: clientFolder,
+      oneDriveFolderPath: clientOneDrivePath,
+      localFolderPath: path.join(LOCAL_PROJECT_ROOT, clientFolder),
+      mineSites: [],
+    };
+
+    // 扫描矿区文件夹
+    const mineSiteFolders = await fs.readdir(clientOneDrivePath);
+
+    for (const mineSiteFolder of mineSiteFolders) {
+      const mineSiteOneDrivePath = path.join(clientOneDrivePath, mineSiteFolder);
+      const mineSiteStats = await fs.stat(mineSiteOneDrivePath);
+
+      if (!mineSiteStats.isDirectory()) continue;
+      if (mineSiteFolder.startsWith('.') || mineSiteFolder.startsWith('~$')) continue;
+      if (mineSiteFolder.includes('General')) continue; // 跳过 General Info 文件夹
+
+      const mineSiteInfo: MineSiteInfo = {
+        mineSiteName: mineSiteFolder,
+        oneDriveFolderPath: mineSiteOneDrivePath,
+        localFolderPath: path.join(clientInfo.localFolderPath, mineSiteFolder),
+        tasks: [],
+      };
+
+      // 扫描任务文件夹
+      const taskFolders = await fs.readdir(mineSiteOneDrivePath);
+
+      for (const taskFolder of taskFolders) {
+        const taskOneDrivePath = path.join(mineSiteOneDrivePath, taskFolder);
+        const taskStats = await fs.stat(taskOneDrivePath);
+
+        if (!taskStats.isDirectory()) continue;
+        if (taskFolder.startsWith('.') || taskFolder.startsWith('~$')) continue;
+        if (taskFolder.includes('General')) continue;
+
+        const parsed = parseTaskFolder(taskFolder);
+        if (!parsed) continue;
+
+        const taskInfo: TaskFolderInfo = {
+          taskCode: parsed.taskCode,
+          jobType: parsed.jobType,
+          title: parsed.title,
+          oneDriveFolderPath: taskOneDrivePath,
+          localFolderPath: path.join(mineSiteInfo.localFolderPath, taskFolder),
+        };
+
+        mineSiteInfo.tasks.push(taskInfo);
+      }
+
+      if (mineSiteInfo.tasks.length > 0) {
+        clientInfo.mineSites.push(mineSiteInfo);
+      }
+    }
+
+    if (clientInfo.mineSites.length > 0) {
+      clientInfos.push(clientInfo);
+    }
+  }
+
+  const totalMineSites = clientInfos.reduce((sum, c) => sum + c.mineSites.length, 0);
+  const totalTasks = clientInfos.reduce((sum, c) =>
+    sum + c.mineSites.reduce((s, m) => s + m.tasks.length, 0), 0);
+
+  console.log(`   ✅ 扫描完成:`);
+  console.log(`      - 客户: ${clientInfos.length}`);
+  console.log(`      - 矿区: ${totalMineSites}`);
+  console.log(`      - 任务: ${totalTasks}\n`);
+
+  return clientInfos;
+}
+
+/**
+ * 复制或创建本地文件夹结构
+ * @param clientInfos - 客户信息列表
+ * @param copyRealFiles - 是否复制真实文件（开发模式=true，生产模式=false）
+ */
+async function createOrCopyLocalStructure(
+  clientInfos: ClientInfo[],
+  copyRealFiles: boolean
+): Promise<void> {
+  if (copyRealFiles) {
+    console.log('\n📁 复制真实文件到本地（开发模式）...');
+  } else {
+    console.log('\n📁 创建空文件和空文件夹（生产模式）...');
+  }
+  console.log(`   源路径: ${ONEDRIVE_PROJECT_ROOT}`);
+  console.log(`   目标路径: ${LOCAL_PROJECT_ROOT}\n`);
+
+  let folderCount = 0;
+  let fileCount = 0;
+
+  // 清空并重新创建根目录
+  if (await fs.pathExists(LOCAL_PROJECT_ROOT)) {
+    console.log('   🗑️  清空现有本地文件夹...');
+    await fs.remove(LOCAL_PROJECT_ROOT);
+  }
+  await fs.ensureDir(LOCAL_PROJECT_ROOT);
+
+  for (const clientInfo of clientInfos) {
+    console.log(`   📦 客户: ${clientInfo.clientCompany}`);
+
+    if (copyRealFiles) {
+      // 开发模式：复制所有真实文件和文件夹
+      await fs.copy(clientInfo.oneDriveFolderPath, clientInfo.localFolderPath, {
+        overwrite: true,
+        errorOnExist: false,
+      });
+
+      // 统计复制的文件和文件夹
+      const stats = await countFilesAndFolders(clientInfo.localFolderPath);
+      folderCount += stats.folders;
+      fileCount += stats.files;
+
+      console.log(`      ✅ 复制 ${stats.folders} 个文件夹, ${stats.files} 个文件`);
+    } else {
+      // 生产模式：创建同名空文件和空文件夹
+      const stats = await mirrorFolderStructure(
+        clientInfo.oneDriveFolderPath,
+        clientInfo.localFolderPath
+      );
+      folderCount += stats.folders;
+      fileCount += stats.files;
+
+      console.log(`      ✅ 创建 ${stats.folders} 个空文件夹, ${stats.files} 个空文件`);
+    }
+  }
+
+  console.log(`\n   ✅ ${copyRealFiles ? '复制' : '创建'}完成:`);
+  console.log(`      - 文件夹: ${folderCount}`);
+  console.log(`      - 文件: ${fileCount}`);
+  console.log('');
+}
+
+/**
+ * 统计文件夹和文件数量
+ */
+async function countFilesAndFolders(dirPath: string): Promise<{ folders: number; files: number }> {
+  let folders = 0;
+  let files = 0;
+
+  async function count(dir: string) {
+    const entries = await fs.readdir(dir);
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry);
+      try {
+        const stats = await fs.stat(fullPath);
+        if (stats.isDirectory()) {
+          folders++;
+          await count(fullPath);
+        } else {
+          files++;
+        }
+      } catch (error) {
+        continue;
+      }
+    }
+  }
+
+  await count(dirPath);
+  return { folders, files };
+}
+
+/**
+ * 镜像文件夹结构（创建同名空文件和空文件夹）
+ * @returns 统计信息 { folders: number, files: number }
+ */
+async function mirrorFolderStructure(
+  sourcePath: string,
+  destPath: string
+): Promise<{ folders: number; files: number }> {
+  let folders = 0;
+  let files = 0;
+
+  if (!await fs.pathExists(sourcePath)) {
+    return { folders, files };
+  }
+
+  // 创建目标根目录
+  await fs.ensureDir(destPath);
+  folders++;
+
+  const entries = await fs.readdir(sourcePath);
+
+  for (const entry of entries) {
+    const sourceEntryPath = path.join(sourcePath, entry);
+    const destEntryPath = path.join(destPath, entry);
+
+    try {
+      const stats = await fs.stat(sourceEntryPath);
+
+      if (stats.isDirectory()) {
+        // 递归创建子文件夹
+        const subStats = await mirrorFolderStructure(sourceEntryPath, destEntryPath);
+        folders += subStats.folders;
+        files += subStats.files;
+      } else if (stats.isFile()) {
+        // 创建空文件（0字节）
+        await fs.ensureFile(destEntryPath);
+        files++;
+      }
+    } catch (error) {
+      // 忽略无法访问的文件/文件夹
+      continue;
+    }
+  }
+
+  return { folders, files };
+}
+
+/**
+ * 清空数据库
+ */
+async function clearDatabase(): Promise<void> {
+  console.log('\n🗑️  清空数据库...\n');
+
+  await prisma.task_files.deleteMany({});
+  await prisma.task_dependencies.deleteMany({});
+  await prisma.comments.deleteMany({});
+  await prisma.tasks.deleteMany({});
+  await prisma.project_files.deleteMany({});
+  await prisma.project_budgets.deleteMany({});
+  await prisma.project_quotations.deleteMany({});
+  await prisma.project_mining_info.deleteMany({});
+  await prisma.project_members.deleteMany({});
+  await prisma.project_teams.deleteMany({});
+  await prisma.testwork_projects.deleteMany({});
+  await prisma.sync_logs.deleteMany({});
+  await prisma.workflow_instances.deleteMany({});
+  await prisma.chat_rooms.deleteMany({});
+  await prisma.projects.deleteMany({});
+
+  console.log('   ✅ 数据库已清空\n');
+}
+
+/**
+ * 创建Task文件夹（如果不存在）
+ */
+async function ensureTaskFolders(taskInfo: TaskFolderInfo): Promise<void> {
+  // 确保本地文件夹存在
+  if (!await fs.pathExists(taskInfo.localFolderPath)) {
+    await fs.ensureDir(taskInfo.localFolderPath);
+
+    // 如果有模板，复制模板子文件夹
+    if (TEMPLATE_ROOT && await fs.pathExists(TEMPLATE_ROOT)) {
+      const templateFolders = await fs.readdir(TEMPLATE_ROOT);
+      for (const folder of templateFolders) {
+        const templatePath = path.join(TEMPLATE_ROOT, folder);
+        const targetPath = path.join(taskInfo.localFolderPath, folder);
+
+        if ((await fs.stat(templatePath)).isDirectory()) {
+          await fs.ensureDir(targetPath);
+        }
+      }
+    } else {
+      // 没有模板，创建默认的8个子文件夹
+      const defaultFolders = [
+        '01_Incoming',
+        '02_Project_Management',
+        '03_Design',
+        '04_Procurement',
+        '05_Manufacturing',
+        '06_Site_Works',
+        '07_Commissioning',
+        '08_Outgoing',
+      ];
+
+      for (const folder of defaultFolders) {
+        await fs.ensureDir(path.join(taskInfo.localFolderPath, folder));
+      }
+    }
+  }
+}
+
+/**
+ * 导入数据到数据库并创建文件夹
+ */
+async function importToDatabase(
+  clientInfos: ClientInfo[],
+  excelDataMap: Map<string, ExcelTaskData>
+): Promise<void> {
+  console.log('\n📥 导入数据到数据库并创建文件夹...\n');
+
+  // 获取或创建管理员用户
+  let adminUser = await prisma.users.findFirst({
+    where: {
+      OR: [
+        { role: UserRole.ADMIN },
+        { username: 'admin' },
+      ],
+    },
+  });
+
+  if (!adminUser) {
+    console.log('   ⚠️  未找到管理员用户，创建默认管理员...');
+    try {
+      adminUser = await prisma.users.create({
+        data: {
+          cognitoId: 'local-admin-' + Date.now(),
+          username: 'admin',
+          email: 'admin@longiaus.com',
+          password: '$2b$10$59mXeTA8zWdK.saBq9BHK.w7xOqOiaViF53osRkUP8ed9cjG42W3m', // "admin123"
+          role: UserRole.ADMIN,
+          status: 'ACTIVE',
+        },
+      });
+      console.log(`   ✅ 创建管理员用户 (ID: ${adminUser.id})\n`);
+    } catch (error: any) {
+      console.log('   ⚠️  管理员用户可能已存在，重新查找...');
+      adminUser = await prisma.users.findFirst({});
+      if (!adminUser) {
+        throw new Error('无法找到或创建管理员用户！');
+      }
+      console.log(`   ✅ 使用现有用户 (ID: ${adminUser.id}, username: ${adminUser.username})\n`);
+    }
+  } else {
+    console.log(`   ✅ 使用现有管理员 (ID: ${adminUser.id}, username: ${adminUser.username})\n`);
+  }
+
+  let projectCount = 0;
+  let taskCount = 0;
+  let excelMatchCount = 0;
+  let foldersCreated = 0;
+  const createdTaskCodes = new Set<string>();
+
+  for (const clientInfo of clientInfos) {
+    console.log(`   📦 客户: ${clientInfo.clientCompany}`);
+
+    // 确保客户文件夹存在
+    await fs.ensureDir(clientInfo.localFolderPath);
+
+    for (const mineSiteInfo of clientInfo.mineSites) {
+      console.log(`      📍 矿区: ${mineSiteInfo.mineSiteName}`);
+
+      // 确保矿区文件夹存在
+      await fs.ensureDir(mineSiteInfo.localFolderPath);
+
+      // 创建 Project（临时编号）
+      const timestamp = Date.now();
+      const project = await prisma.projects.create({
+        data: {
+          name: `${clientInfo.clientCompany} - ${mineSiteInfo.mineSiteName}`,
+          projectCode: `TEMP-${timestamp}-${projectCount + 1}`,
+          jobType: mineSiteInfo.tasks[0]?.jobType || JobType.AT,
+          clientCompany: clientInfo.clientCompany,
+          mineSiteName: mineSiteInfo.mineSiteName,
+          priority: 'MEDIUM',
+          status: 'IN_PROGRESS',
+          approvalStatus: 'APPROVED',
+          approvedBy: adminUser.id,
+          approvedAt: new Date(),
+          ownerId: adminUser.id,
+          clientFolderPath: clientInfo.localFolderPath,
+          mineSiteFolderPath: mineSiteInfo.localFolderPath,
+          oneDriveClientFolderPath: clientInfo.oneDriveFolderPath,
+          oneDriveMineSiteFolderPath: mineSiteInfo.oneDriveFolderPath,
+        },
+      });
+
+      projectCount++;
+
+      // 创建 Tasks
+      for (const taskInfo of mineSiteInfo.tasks) {
+        if (createdTaskCodes.has(taskInfo.taskCode)) {
+          console.log(`         ⚠️  跳过重复: ${taskInfo.taskCode}`);
+          continue;
+        }
+
+        const excelData = excelDataMap.get(taskInfo.taskCode);
+        if (excelData) excelMatchCount++;
+
+        // 确保Task文件夹存在
+        await ensureTaskFolders(taskInfo);
+        foldersCreated++;
+
+        await prisma.tasks.create({
+          data: {
+            taskCode: taskInfo.taskCode,
+            title: excelData?.title || taskInfo.title,
+            description: excelData?.description || excelData?.comment || `从 OneDrive 和 Excel 导入`,
+            mineral: excelData?.mineral,
+            projectId: project.id,
+            status: 'IN_PROGRESS',
+            priority: 'MEDIUM',
+            approvalStatus: 'APPROVED',
+            approvedBy: adminUser.id,
+            approvedAt: new Date(),
+            authorUserId: adminUser.id,
+            progress: 0,
+            folderCreated: true,
+            syncStatus: 'NOT_SYNCED',
+            localFolderPath: taskInfo.localFolderPath,
+            oneDriveFolderPath: taskInfo.oneDriveFolderPath,
+          },
+        });
+
+        createdTaskCodes.add(taskInfo.taskCode);
+        taskCount++;
+      }
+
+      console.log(`         ✅ 创建 ${mineSiteInfo.tasks.length} 个任务`);
+    }
+  }
+
+  console.log(`\n   📊 导入统计:`);
+  console.log(`      - Projects: ${projectCount}`);
+  console.log(`      - Tasks: ${taskCount}`);
+  console.log(`      - Excel 匹配: ${excelMatchCount}`);
+  console.log(`      - 创建文件夹: ${foldersCreated}\n`);
+}
+
+/**
+ * 计算文件MD5
+ */
+async function calculateMD5(filePath: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const hash = crypto.createHash('md5');
+    const stream = fs.createReadStream(filePath);
+
+    stream.on('data', (data) => hash.update(data));
+    stream.on('end', () => resolve(hash.digest('hex')));
+    stream.on('error', reject);
+  });
+}
+
+/**
+ * 验证文件复制结果
+ * @param clientInfos - 客户信息列表
+ * @param checkMD5 - 是否检查MD5（生产模式需要）
+ */
+async function verifyFileCopy(
+  clientInfos: ClientInfo[],
+  checkMD5: boolean
+): Promise<void> {
+  console.log('\n🔍 验证文件复制结果...\n');
+
+  let totalFolders = 0;
+  let totalFiles = 0;
+  let missingFolders = 0;
+  let missingFiles = 0;
+  let md5Mismatches = 0;
+
+  for (const clientInfo of clientInfos) {
+    console.log(`   📦 验证客户: ${clientInfo.clientCompany}`);
+
+    // 验证客户文件夹
+    if (!await fs.pathExists(clientInfo.localFolderPath)) {
+      console.log(`      ❌ 缺失客户文件夹: ${clientInfo.localFolderPath}`);
+      missingFolders++;
+      continue;
+    }
+
+    for (const mineSiteInfo of clientInfo.mineSites) {
+      // 验证矿区文件夹
+      if (!await fs.pathExists(mineSiteInfo.localFolderPath)) {
+        console.log(`      ❌ 缺失矿区文件夹: ${mineSiteInfo.mineSiteName}`);
+        missingFolders++;
+        continue;
+      }
+
+      for (const taskInfo of mineSiteInfo.tasks) {
+        // 验证任务文件夹
+        if (!await fs.pathExists(taskInfo.localFolderPath)) {
+          console.log(`      ❌ 缺失任务文件夹: ${taskInfo.taskCode}`);
+          missingFolders++;
+          continue;
+        }
+
+        // 递归验证文件夹内容
+        const result = await compareDirectories(
+          taskInfo.oneDriveFolderPath,
+          taskInfo.localFolderPath,
+          checkMD5
+        );
+
+        totalFolders += result.folders;
+        totalFiles += result.files;
+        missingFolders += result.missingFolders;
+        missingFiles += result.missingFiles;
+        md5Mismatches += result.md5Mismatches;
+      }
+    }
+
+    console.log(`      ✅ 客户验证完成`);
+  }
+
+  console.log(`\n   📊 验证统计:`);
+  console.log(`      - 总文件夹: ${totalFolders}`);
+  console.log(`      - 总文件: ${totalFiles}`);
+  console.log(`      - 缺失文件夹: ${missingFolders}`);
+  console.log(`      - 缺失文件: ${missingFiles}`);
+  if (checkMD5) {
+    console.log(`      - MD5不匹配: ${md5Mismatches}`);
+  }
+
+  if (missingFolders > 0 || missingFiles > 0 || (checkMD5 && md5Mismatches > 0)) {
+    console.log(`\n   ⚠️  验证发现问题！请检查日志。`);
+  } else {
+    console.log(`\n   ✅ 所有文件验证通过！`);
+  }
+  console.log('');
+}
+
+/**
+ * 对比两个目录
+ */
+async function compareDirectories(
+  sourceDir: string,
+  targetDir: string,
+  checkMD5: boolean
+): Promise<{
+  folders: number;
+  files: number;
+  missingFolders: number;
+  missingFiles: number;
+  md5Mismatches: number;
+}> {
+  let folders = 0;
+  let files = 0;
+  let missingFolders = 0;
+  let missingFiles = 0;
+  let md5Mismatches = 0;
+
+  if (!await fs.pathExists(sourceDir)) {
+    return { folders, files, missingFolders, missingFiles, md5Mismatches };
+  }
+
+  const entries = await fs.readdir(sourceDir);
+
+  for (const entry of entries) {
+    const sourcePath = path.join(sourceDir, entry);
+    const targetPath = path.join(targetDir, entry);
+
+    try {
+      const stats = await fs.stat(sourcePath);
+
+      if (stats.isDirectory()) {
+        folders++;
+
+        if (!await fs.pathExists(targetPath)) {
+          missingFolders++;
+          console.log(`         ❌ 缺失文件夹: ${entry}`);
+        } else {
+          // 递归检查子目录
+          const subResult = await compareDirectories(sourcePath, targetPath, checkMD5);
+          folders += subResult.folders;
+          files += subResult.files;
+          missingFolders += subResult.missingFolders;
+          missingFiles += subResult.missingFiles;
+          md5Mismatches += subResult.md5Mismatches;
+        }
+      } else if (stats.isFile()) {
+        files++;
+
+        if (!await fs.pathExists(targetPath)) {
+          missingFiles++;
+          console.log(`         ❌ 缺失文件: ${entry}`);
+        } else if (checkMD5) {
+          // 生产模式：检查MD5
+          const sourceMD5 = await calculateMD5(sourcePath);
+          const targetMD5 = await calculateMD5(targetPath);
+
+          if (sourceMD5 !== targetMD5) {
+            md5Mismatches++;
+            console.log(`         ❌ MD5不匹配: ${entry}`);
+            console.log(`            源: ${sourceMD5}`);
+            console.log(`            目标: ${targetMD5}`);
+          }
+        }
+      }
+    } catch (error) {
+      // 忽略无法访问的文件
+      continue;
+    }
+  }
+
+  return { folders, files, missingFolders, missingFiles, md5Mismatches };
+}
+
+/**
+ * 验证导入结果
+ */
+async function verifyImport(): Promise<void> {
+  console.log('\n✅ 验证导入结果...\n');
+
+  const stats = await prisma.$transaction([
+    prisma.projects.count(),
+    prisma.tasks.count(),
+    prisma.users.count(),
+  ]);
+
+  console.log('   📊 数据库统计:');
+  console.log(`      - Projects: ${stats[0]}`);
+  console.log(`      - Tasks: ${stats[1]}`);
+  console.log(`      - Users: ${stats[2]}`);
+
+  // 检查任务编号分布（根据 taskCode 前缀）
+  const allTasks = await prisma.tasks.findMany({
+    select: { taskCode: true },
+  });
+
+  const tasksByType: Record<string, number> = {
+    AT: 0,
+    AC: 0,
+    AQ: 0,
+    AS: 0,
+    AP: 0,
+  };
+
+  allTasks.forEach((task) => {
+    const prefix = task.taskCode.substring(0, 2);
+    if (prefix in tasksByType) {
+      tasksByType[prefix]++;
+    }
+  });
+
+  console.log('\n   📈 任务类型分布:');
+  const labels: any = {
+    AT: 'Testwork (试验)',
+    AC: 'Consultation (咨询)',
+    AQ: 'Quote (报价)',
+    AS: 'Sales (销售)',
+    AP: 'Production (生产)',
+  };
+  Object.entries(tasksByType).forEach(([type, count]) => {
+    if (count > 0) {
+      console.log(`      - ${labels[type]}: ${count}`);
+    }
+  });
+
+  console.log('');
+}
+
+/**
+ * 主函数
+ */
+async function main() {
+  console.log('\n' + '='.repeat(80));
+  console.log(`🔄 完整系统重置${useProduction ? '（生产环境）' : '（测试环境）'}`);
+  console.log('='.repeat(80));
+  console.log(`\n环境: ${useProduction ? '🔴 生产环境' : '🟢 测试环境'}`);
+  console.log(`OneDrive路径: ${ONEDRIVE_PROJECT_ROOT}`);
+  console.log(`本地路径: ${LOCAL_PROJECT_ROOT}`);
+  console.log(`Excel路径: ${EXCEL_PATH}`);
+  console.log(`跳过文件操作: ${skipFolders ? '是' : '否'}`);
+  console.log('\n' + '='.repeat(80) + '\n');
+
+  if (useProduction) {
+    console.log('💡 生产环境说明:');
+    console.log('   - 只读扫描 OneDrive（不复制文件）');
+    console.log('   - 数据库记录路径信息');
+    console.log('   - 真实文件保留在 OneDrive\n');
+  } else {
+    console.log('💡 测试环境说明:');
+    console.log('   - 从 OneDrive 复制真实文件到本地');
+    console.log('   - 可以完整测试所有功能');
+    console.log('   - 数据库记录本地和 OneDrive 两个路径\n');
+  }
+
+  try {
+    // 步骤 1: 扫描 OneDrive
+    console.log('📋 步骤 1/6: 扫描 OneDrive 文件夹结构');
+    const clientInfos = await scanOneDriveFolders();
+
+    // 步骤 2: 复制或创建本地文件夹（可选）
+    if (!skipFolders) {
+      console.log('📋 步骤 2/6: ' + (useProduction ? '创建空文件结构' : '复制真实文件到本地'));
+      // 开发模式：复制真实文件，生产模式：创建空文件
+      await createOrCopyLocalStructure(clientInfos, !useProduction);
+
+      // 步骤 3: 验证文件复制
+      console.log('📋 步骤 3/6: 验证文件复制结果');
+      // 开发模式：只验证文件名和结构，生产模式：验证MD5
+      await verifyFileCopy(clientInfos, useProduction);
+    } else {
+      console.log('⏭️  跳过文件操作\n');
+    }
+
+    // 步骤 4: 读取 Excel
+    console.log('📋 步骤 4/6: 读取 Excel 数据');
+    const excelDataMap = await readExcelData();
+
+    // 步骤 5: 清空数据库
+    console.log('📋 步骤 5/6: 清空数据库');
+    await clearDatabase();
+
+    // 步骤 6: 导入数据
+    console.log('📋 步骤 6/6: 导入数据到数据库');
+    await importToDatabase(clientInfos, excelDataMap);
+
+    // 步骤 7: 验证数据库导入结果
+    console.log('📋 验证: 检查数据库导入结果');
+    await verifyImport();
+
+    console.log('\n' + '='.repeat(80));
+    console.log('✅ 完整重置成功！');
+    console.log('='.repeat(80) + '\n');
+
+    if (useProduction) {
+      console.log('💡 生产环境重置完成:');
+      console.log('   1. 数据库已清空并重新导入');
+      console.log('   2. 数据库记录了 OneDrive 和本地路径');
+      console.log('   3. 真实文件保留在 OneDrive（未修改）');
+      console.log('   4. 本地路径仅作为记录，未创建文件\n');
+    } else {
+      console.log('💡 测试环境重置完成:');
+      console.log('   1. 真实文件已从 OneDrive 复制到本地');
+      console.log('   2. 数据库已清空并重新导入');
+      console.log('   3. 本地路径: ' + LOCAL_PROJECT_ROOT);
+      console.log('   4. 可以完整测试所有功能\n');
+    }
+
+    console.log('📌 后续操作:');
+    console.log('   1. 启动前后端服务器');
+    console.log('   2. 测试 API 接口');
+    console.log('   3. 验证文件路径显示正确');
+    console.log('   4. 在前端查看项目和任务数据\n');
+
+  } catch (error: any) {
+    console.error('\n❌ 重置失败:', error.message);
+    console.error('错误详情:', error.stack);
+    process.exit(1);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+// 运行脚本
+main();

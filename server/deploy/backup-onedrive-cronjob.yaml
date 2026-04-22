@@ -1,0 +1,82 @@
+---
+# PostgreSQL 备份上传到 OneDrive CronJob
+# 每天凌晨 2:30 执行，在本地备份(2:00)完成后将 .sql.gz 文件上传到 OneDrive
+# OneDrive 路径: 03 Project Management/Database Backups/YYYYMMDD/
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-onedrive
+  namespace: longi-prod
+  labels:
+    app: backup-onedrive
+    longi.io/critical: "true"
+  annotations:
+    longi.io/description: "Upload PostgreSQL backups to OneDrive"
+spec:
+  schedule: "30 2 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 3600
+      backoffLimit: 2
+
+      template:
+        metadata:
+          labels:
+            app: backup-onedrive
+        spec:
+          restartPolicy: OnFailure
+
+          containers:
+          - name: upload
+            image: harbor.longi.local:30003/longi/longi-server:latest
+            imagePullPolicy: Always
+
+            command:
+            - node
+            - dist/scripts/backupToOneDrive.js
+
+            env:
+            - name: BACKUP_DIR
+              value: "/backups"
+            - name: AZURE_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: longi-secrets
+                  key: AZURE_TENANT_ID
+            - name: AZURE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: longi-secrets
+                  key: AZURE_CLIENT_ID
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: longi-secrets
+                  key: AZURE_CLIENT_SECRET
+            - name: SHAREPOINT_SITE_HOSTNAME
+              value: "longimagnetaustraliaptyltd.sharepoint.com"
+            - name: SHAREPOINT_SITE_PATH
+              value: "/sites/LongiAustralia"
+
+            volumeMounts:
+            - name: backup-storage
+              mountPath: /backups
+              readOnly: true
+
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "200m"
+              limits:
+                memory: "512Mi"
+                cpu: "500m"
+
+          volumes:
+          - name: backup-storage
+            persistentVolumeClaim:
+              claimName: postgres-backup-pvc

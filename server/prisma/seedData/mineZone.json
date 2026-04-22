@@ -1,0 +1,638 @@
+[
+  {
+    "code": "ALS_BALCATA",
+    "name": "ALS Balcata",
+    "isActive": true,
+    "description": "Clients: ALS"
+  },
+  {
+    "code": "BAREMAR",
+    "name": "Baremar",
+    "isActive": true,
+    "description": "Clients: Ladestone"
+  },
+  {
+    "code": "BARROSO_LITHIUM_PROJECT_PORTUGAL",
+    "name": "Barroso Lithium Project(Portugal)",
+    "isActive": true,
+    "description": "Clients: Savannah_Resources"
+  },
+  {
+    "code": "BELINGA",
+    "name": "Belinga",
+    "isActive": true,
+    "description": "Clients: FMG"
+  },
+  {
+    "code": "BINDULI",
+    "name": "Binduli",
+    "isActive": true,
+    "description": "Clients: Norton"
+  },
+  {
+    "code": "BROULA_MAGNETITE",
+    "name": "Broula_Magnetite",
+    "isActive": true,
+    "description": "Clients: Karawara_Minerals"
+  },
+  {
+    "code": "BROWNS_RANGE",
+    "name": "Browns_Range",
+    "isActive": true,
+    "description": "Clients: Northern_Mineral"
+  },
+  {
+    "code": "BULDANIA",
+    "name": "Buldania",
+    "isActive": true,
+    "description": "Clients: Lion_Town"
+  },
+  {
+    "code": "BV_PERTH",
+    "name": "BV Perth",
+    "isActive": true,
+    "description": "Clients: BV"
+  },
+  {
+    "code": "BYRO",
+    "name": "Byro",
+    "isActive": true,
+    "description": "Clients: Athenas_Reource"
+  },
+  {
+    "code": "CARMICHAEL",
+    "name": "Carmichael",
+    "isActive": true,
+    "description": "Clients: Bravus_Mining&Resuroces"
+  },
+  {
+    "code": "CHRISTMAS_CREEK",
+    "name": "Christmas Creek",
+    "isActive": true,
+    "description": "Clients: FMG"
+  },
+  {
+    "code": "CLOUDBREAK",
+    "name": "Cloudbreak",
+    "isActive": true,
+    "description": "Clients: FMG"
+  },
+  {
+    "code": "COCKATOO_ISLAND",
+    "name": "Cockatoo_Island",
+    "isActive": true,
+    "description": "Clients: Cockatoo_Island_Mining"
+  },
+  {
+    "code": "COMMMONWELTH_HILL",
+    "name": "Commmonwelth_Hill",
+    "isActive": true,
+    "description": "Clients: Young_Steel"
+  },
+  {
+    "code": "COMMONWELTH_HILL",
+    "name": "Commonwelth_Hill",
+    "isActive": true,
+    "description": "Clients: Agile_Mining"
+  },
+  {
+    "code": "DANTE",
+    "name": "Dante",
+    "isActive": true,
+    "description": "Clients: Terra_Metals"
+  },
+  {
+    "code": "DENDROBIUM_MINE",
+    "name": "Dendrobium Mine",
+    "isActive": true,
+    "description": "Clients: GM_3"
+  },
+  {
+    "code": "DOLPHIN_TUNGSTEN_MINE",
+    "name": "Dolphin Tungsten Mine",
+    "isActive": true,
+    "description": "Clients: Group6Metals"
+  },
+  {
+    "code": "DRAGON",
+    "name": "Dragon",
+    "isActive": true,
+    "description": "Clients: FMG"
+  },
+  {
+    "code": "ELIWANA",
+    "name": "Eliwana",
+    "isActive": true,
+    "description": "Clients: FMG"
+  },
+  {
+    "code": "EXTENSION_HILL",
+    "name": "Extension Hill",
+    "isActive": true,
+    "description": "Clients: Blackore, Terra_mining"
+  },
+  {
+    "code": "GONNEVILLE_SULPHIDE_PROCESSING_FACILITY",
+    "name": "Gonneville Sulphide Processing Facility",
+    "isActive": true,
+    "description": "Clients: Chalice_Mining"
+  },
+  {
+    "code": "GOULAMINA",
+    "name": "GOULAMINA",
+    "isActive": true,
+    "description": "Clients: Leo_Lithium"
+  },
+  {
+    "code": "GRANTS_GRANTS_BASIN",
+    "name": "GRANTS_GRANTS_BASIN",
+    "isActive": true,
+    "description": "Clients: Havilah_Resources"
+  },
+  {
+    "code": "GREEN_IRON_MAGNETITE",
+    "name": "Green Iron Magnetite",
+    "isActive": true,
+    "description": "Clients: Lincoln_Minerals"
+  },
+  {
+    "code": "GREEN_STEEL",
+    "name": "Green Steel",
+    "isActive": true,
+    "description": "Clients: Riotinto"
+  },
+  {
+    "code": "GREENBUSH",
+    "name": "Greenbush",
+    "isActive": true,
+    "description": "Clients: Talison"
+  },
+  {
+    "code": "GREENSTEEL",
+    "name": "Greensteel",
+    "isActive": true,
+    "description": "Clients: CXL"
+  },
+  {
+    "code": "GUDAI_DARRI_3",
+    "name": "Gudai-Darri 3",
+    "isActive": true,
+    "description": "Clients: Riotinto"
+  },
+  {
+    "code": "HALLECK_CREEK",
+    "name": "Halleck Creek",
+    "isActive": true,
+    "description": "Clients: Wyoming_Rare_USA"
+  },
+  {
+    "code": "HAWKS_NEST_MAGNETITE",
+    "name": "Hawks Nest Magnetite",
+    "isActive": true,
+    "description": "Clients: Peak_Iron"
+  },
+  {
+    "code": "HAWSONS_IRON_PROJECT",
+    "name": "Hawsons Iron Project",
+    "isActive": true,
+    "description": "Clients: Hawsons_Iron"
+  },
+  {
+    "code": "HEMATITE",
+    "name": "Hematite",
+    "isActive": true,
+    "description": "Clients: SIMEC"
+  },
+  {
+    "code": "HVO",
+    "name": "HVO",
+    "isActive": true,
+    "description": "Clients: Riotinto"
+  },
+  {
+    "code": "IRON_BRIDGE",
+    "name": "Iron Bridge",
+    "isActive": true,
+    "description": "Clients: FMG"
+  },
+  {
+    "code": "JUPITER",
+    "name": "Jupiter",
+    "isActive": true,
+    "description": "Clients: Critica_Limited"
+  },
+  {
+    "code": "KANGANKUNDE",
+    "name": "Kangankunde",
+    "isActive": true,
+    "description": "Clients: Lindian_Resources"
+  },
+  {
+    "code": "KARARA",
+    "name": "Karara",
+    "isActive": true,
+    "description": "Clients: Karara_Mining"
+  },
+  {
+    "code": "KARLAWINDA_EXPANSION",
+    "name": "Karlawinda Expansion",
+    "isActive": true,
+    "description": "Clients: Capricorn_Metals"
+  },
+  {
+    "code": "KATHLEEN_VALLEY",
+    "name": "Kathleen Valley",
+    "isActive": true,
+    "description": "Clients: Lion_Town"
+  },
+  {
+    "code": "KHALZAN_BUREGTEI",
+    "name": "Khalzan_Buregtei",
+    "isActive": true,
+    "description": "Clients: MNREC"
+  },
+  {
+    "code": "KINGS",
+    "name": "Kings",
+    "isActive": true,
+    "description": "Clients: FMG"
+  },
+  {
+    "code": "KUREEM",
+    "name": "KUREEM",
+    "isActive": true,
+    "description": "Clients: KUREEM"
+  },
+  {
+    "code": "LIBERIA_BANG",
+    "name": "Liberia Bang",
+    "isActive": true,
+    "description": "Clients: Blackore"
+  },
+  {
+    "code": "LOESCHE",
+    "name": "Loesche",
+    "isActive": true,
+    "description": "Clients: Loesche"
+  },
+  {
+    "code": "MANNA_LITHIUM",
+    "name": "Manna Lithium",
+    "isActive": true,
+    "description": "Clients: Globel_Lithium"
+  },
+  {
+    "code": "MARDIE_SALT",
+    "name": "Mardie Salt",
+    "isActive": true,
+    "description": "Clients: BCI"
+  },
+  {
+    "code": "MAURITANIA",
+    "name": "Mauritania",
+    "isActive": true,
+    "description": "Clients: MRL"
+  },
+  {
+    "code": "MCLAREN_PROJECT",
+    "name": "McLaren_Project",
+    "isActive": true,
+    "description": "Clients: Allup_Silica"
+  },
+  {
+    "code": "MEP_1",
+    "name": "MEP 1",
+    "isActive": true,
+    "description": "Clients: SIMEC"
+  },
+  {
+    "code": "MEP_2",
+    "name": "MEP 2",
+    "isActive": true,
+    "description": "Clients: SIMEC"
+  },
+  {
+    "code": "MEP_3",
+    "name": "MEP 3",
+    "isActive": true,
+    "description": "Clients: SIMEC"
+  },
+  {
+    "code": "MID_WEST_PORT_AUTHORITY",
+    "name": "Mid West Port Authority",
+    "isActive": true,
+    "description": "Clients: _MWPA"
+  },
+  {
+    "code": "MOMO",
+    "name": "Momo",
+    "isActive": true,
+    "description": "Clients: HY_Mineral"
+  },
+  {
+    "code": "MOUNT_HOLLAND",
+    "name": "Mount Holland",
+    "isActive": true,
+    "description": "Clients: Covalent_Lithium"
+  },
+  {
+    "code": "MOURILYA_SILICA_SANDS_PROJECT",
+    "name": "Mourilya_ Silica_Sands_Project",
+    "isActive": true,
+    "description": "Clients: Silica_Resources_Australia"
+  },
+  {
+    "code": "MT_BEAVAN",
+    "name": "Mt Beavan",
+    "isActive": true,
+    "description": "Clients: HanRoy"
+  },
+  {
+    "code": "MT_FORREST",
+    "name": "Mt Forrest",
+    "isActive": true,
+    "description": "Clients: Mindax"
+  },
+  {
+    "code": "MT_GIBSON_GOLD",
+    "name": "MT GIBSON GOLD",
+    "isActive": true,
+    "description": "Clients: Crimson_Metals"
+  },
+  {
+    "code": "MT_LYELL_CLASS_2",
+    "name": "Mt Lyell Class 2",
+    "isActive": true,
+    "description": "Clients: Sibanye_Stillwater"
+  },
+  {
+    "code": "MT_MAGNET_PROJECT",
+    "name": "Mt Magnet Project",
+    "isActive": true,
+    "description": "Clients: Green_Capital"
+  },
+  {
+    "code": "MT_MARION",
+    "name": "Mt Marion",
+    "isActive": true,
+    "description": "Clients: MRL"
+  },
+  {
+    "code": "MT_OSCAR_IRON_ORE_PROJECT",
+    "name": "Mt Oscar Iron Ore Project",
+    "isActive": true,
+    "description": "Clients: Oscar_Resources"
+  },
+  {
+    "code": "MT_MULGINE",
+    "name": "Mt_Mulgine",
+    "isActive": true,
+    "description": "Clients: Tungsten_Mining"
+  },
+  {
+    "code": "MT_VETERAN",
+    "name": "Mt_Veteran",
+    "isActive": true,
+    "description": "Clients: Huntore_Australia"
+  },
+  {
+    "code": "MURCHISON",
+    "name": "Murchison",
+    "isActive": true,
+    "description": "Clients: TMT"
+  },
+  {
+    "code": "NAGROM",
+    "name": "Nagrom",
+    "isActive": true,
+    "description": "Clients: Nagrom"
+  },
+  {
+    "code": "NEWMAN",
+    "name": "Newman",
+    "isActive": true,
+    "description": "Clients: FMG"
+  },
+  {
+    "code": "NGUALLA",
+    "name": "Ngualla",
+    "isActive": true,
+    "description": "Clients: PeakRE"
+  },
+  {
+    "code": "NORTHERN_IRON",
+    "name": "Northern Iron",
+    "isActive": true,
+    "description": "Clients: Northern_Iron"
+  },
+  {
+    "code": "OROKOLO_BAY",
+    "name": "Orokolo_Bay",
+    "isActive": true,
+    "description": "Clients: Mayur"
+  },
+  {
+    "code": "PADDINGTON",
+    "name": "Paddington",
+    "isActive": true,
+    "description": "Clients: Norton"
+  },
+  {
+    "code": "PEKO",
+    "name": "Peko",
+    "isActive": true,
+    "description": "Clients: Young_Steel"
+  },
+  {
+    "code": "PILGANGOORA",
+    "name": "Pilgangoora",
+    "isActive": true,
+    "description": "Clients: PLS"
+  },
+  {
+    "code": "PITFIELD",
+    "name": "Pitfield",
+    "isActive": true,
+    "description": "Clients: Empire_Metals"
+  },
+  {
+    "code": "PRETREATMENT_FACILITY",
+    "name": "Pretreatment Facility",
+    "isActive": true,
+    "description": "Clients: Iondrive"
+  },
+  {
+    "code": "QUARRY",
+    "name": "Quarry",
+    "isActive": true,
+    "description": "Clients: Aurora_Construction_Materials"
+  },
+  {
+    "code": "RAVENSWORTH_COAL",
+    "name": "Ravensworth_Coal",
+    "isActive": true,
+    "description": "Clients: Glencore"
+  },
+  {
+    "code": "RECYCLING_BELT_MAGNET",
+    "name": "Recycling  belt magnet",
+    "isActive": true,
+    "description": "Clients: YINGHUI_INTERNATIONAL"
+  },
+  {
+    "code": "REEDY_CREEK_GARNET_PROJECT",
+    "name": "Reedy Creek Garnet Project",
+    "isActive": true,
+    "description": "Clients: Pure_Resources"
+  },
+  {
+    "code": "RIDLEY",
+    "name": "Ridley",
+    "isActive": true,
+    "description": "Clients: HanRoy"
+  },
+  {
+    "code": "ROY_HILL",
+    "name": "Roy_Hill",
+    "isActive": true,
+    "description": "Clients: Roy_Hill"
+  },
+  {
+    "code": "SAVAGE_RIVER",
+    "name": "Savage River",
+    "isActive": true,
+    "description": "Clients: Grange"
+  },
+  {
+    "code": "SIGATOKA_IRONSANDS_PROJECT",
+    "name": "Sigatoka_Ironsands_Project",
+    "isActive": true,
+    "description": "Clients: Dome_Gold"
+  },
+  {
+    "code": "SNAEFELL",
+    "name": "Snaefell",
+    "isActive": true,
+    "description": "Clients: Young_Steel"
+  },
+  {
+    "code": "SOLOMON",
+    "name": "Solomon",
+    "isActive": true,
+    "description": "Clients: FMG"
+  },
+  {
+    "code": "SOUTHDOWN",
+    "name": "Southdown",
+    "isActive": true,
+    "description": "Clients: Grange"
+  },
+  {
+    "code": "TANBREEZ_PROJECT",
+    "name": "Tanbreez Project",
+    "isActive": true,
+    "description": "Clients: Tanbreez_Mining"
+  },
+  {
+    "code": "TBA",
+    "name": "TBA",
+    "isActive": true,
+    "description": "Clients: MRL, Ridge"
+  },
+  {
+    "code": "TBA_1",
+    "name": "TBA 1",
+    "isActive": true,
+    "description": "Clients: TBA"
+  },
+  {
+    "code": "THE_AUSTRALIAN_VANADIUM_PROJECT",
+    "name": "The Australian Vanadium Project",
+    "isActive": true,
+    "description": "Clients: AVL"
+  },
+  {
+    "code": "THE_RAZORBACK",
+    "name": "The Razorback",
+    "isActive": true,
+    "description": "Clients: Magnetite_Mines"
+  },
+  {
+    "code": "TOM_PRICE",
+    "name": "Tom Price",
+    "isActive": true,
+    "description": "Clients: Riotinto"
+  },
+  {
+    "code": "TRENEL",
+    "name": "Trenel",
+    "isActive": true,
+    "description": "Clients: Trenel"
+  },
+  {
+    "code": "ULTRA_HIGH_GRADE_QUARTZ",
+    "name": "Ultra High Grade Quartz",
+    "isActive": true,
+    "description": "Clients: Vytas"
+  },
+  {
+    "code": "UNKNOWN",
+    "name": "Unknown",
+    "isActive": true,
+    "description": "Clients: Riotinto"
+  },
+  {
+    "code": "WAREHOUSE",
+    "name": "Warehouse",
+    "isActive": true,
+    "description": "Clients: LMA"
+  },
+  {
+    "code": "WASTE_DAM",
+    "name": "Waste Dam",
+    "isActive": true,
+    "description": "Clients: Young_Steel"
+  },
+  {
+    "code": "WINBO",
+    "name": "WINBO",
+    "isActive": true,
+    "description": "Clients: PEABODY_ENERGY"
+  },
+  {
+    "code": "WODGINA",
+    "name": "Wodgina",
+    "isActive": true,
+    "description": "Clients: MRL"
+  },
+  {
+    "code": "WOODIE_WOODIE",
+    "name": "Woodie Woodie",
+    "isActive": true,
+    "description": "Clients: ConsMin"
+  },
+  {
+    "code": "YANGIBANA",
+    "name": "Yangibana",
+    "isActive": true,
+    "description": "Clients: HASTING"
+  },
+  {
+    "code": "YINNETHARRA",
+    "name": "Yinnetharra",
+    "isActive": true,
+    "description": "Clients: Delta_Lithium"
+  },
+  {
+    "code": "YOUANMI",
+    "name": "Youanmi",
+    "isActive": true,
+    "description": "Clients: Rox_Resources"
+  },
+  {
+    "code": "YOUNAMI_GABBRO_PROJECT",
+    "name": "Younami_Gabbro_Project",
+    "isActive": true,
+    "description": "Clients: Venus_Metals"
+  }
+]

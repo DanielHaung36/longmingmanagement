@@ -1,0 +1,56 @@
+{{- if .Values.client.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: client
+spec:
+  replicas: {{ .Values.client.replicaCount }}
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - name: client
+        image: {{ .Values.client.image.repository }}:{{ .Values.client.image.tag }}
+        imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.client.service.port }}
+          name: http
+        env:
+        {{- range $key, $value := .Values.client.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        resources:
+          requests:
+            memory: {{ .Values.client.resources.requests.memory }}
+            cpu: {{ .Values.client.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.client.resources.limits.memory }}
+            cpu: {{ .Values.client.resources.limits.cpu }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: client
+spec:
+  type: {{ .Values.client.service.type }}
+  ports:
+  - port: {{ .Values.client.service.port }}
+    targetPort: {{ .Values.client.service.port }}
+    protocol: TCP
+    name: http
+  selector:
+    app: client
+{{- end }}
